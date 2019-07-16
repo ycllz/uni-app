@@ -1,0 +1,62 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages	
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/service/service",
+			"style": {
+				"navigationBarTitleText": "服务中心",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/market/market",
+			"style": {
+				"navigationBarTitleText": "世界集市",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/personal/personalCenter",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "看图",
+		"navigationBarBackgroundColor": "#249873",
+		"backgroundColor": "#249873"
+	},
+	"tabBar": {
+		"color": "#444444",
+		"selectedColor": "#249873",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+				"pagePath": "pages/market/market",
+				"iconPath": "static/hot-0.png",
+				"selectedIconPath": "static/hot-1.png",
+				"text": "世界集市"
+			},
+			{
+				"pagePath": "pages/service/service",
+				"iconPath": "static/index-0.png",
+				"selectedIconPath": "static/index-1.png",
+				"text": "服务中心"
+			},
+			{
+				"pagePath": "pages/personal/personalCenter",
+				"iconPath": "static/center-0.png",
+				"selectedIconPath": "static/center-1.png",
+				"text": "个人中心"
+			}
+		]
+	}
+}

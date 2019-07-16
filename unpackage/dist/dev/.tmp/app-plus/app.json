@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/service/service",
+    "pages/market/market",
+    "pages/personal/personalCenter"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "看图",
+    "navigationBarBackgroundColor": "#249873",
+    "backgroundColor": "#249873"
+  },
+  "tabBar": {
+    "color": "#444444",
+    "selectedColor": "#249873",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/market/market",
+        "iconPath": "static/hot-0.png",
+        "selectedIconPath": "static/hot-1.png",
+        "text": "世界集市"
+      },
+      {
+        "pagePath": "pages/service/service",
+        "iconPath": "static/index-0.png",
+        "selectedIconPath": "static/index-1.png",
+        "text": "服务中心"
+      },
+      {
+        "pagePath": "pages/personal/personalCenter",
+        "iconPath": "static/center-0.png",
+        "selectedIconPath": "static/center-1.png",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "nvueCompiler": "weex",
+  "splashscreen": {
+    "alwaysShowBeforeRender": true,
+    "autoclose": false
+  },
+  "appname": "QKH",
+  "compilerVersion": "2.1.1",
+  "usingComponents": {}
+}

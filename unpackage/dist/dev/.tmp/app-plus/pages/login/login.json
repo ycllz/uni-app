@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "登录",
+  "usingComponents": {
+    "yu-toast": "/components/yu-toast/yu-toast"
+  }
+}
