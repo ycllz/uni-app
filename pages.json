@@ -26,6 +26,24 @@
 				"navigationBarTitleText": "个人中心",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/personal/personalCenter",
+			"style": {
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle":"light",
+				"navigationBarBackgroundColor":"#f06c7a",
+				"backgroundColorTop":"#f06c7a",
+				"navigationBarTextStyle":"white",
+				"app-plus": {
+					"titleNView": false ,//禁用原生导航栏
+					"subNVues":[{  
+						"id": "userTitleNvue", // 唯一标识  
+						"path": "pages/personal/subNvue/userTitleNvue", // 页面路径  
+						"type":"navigationBar"
+					}]
+				}
+			}
 		}
 	],
 	"globalStyle": {

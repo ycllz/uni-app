@@ -3,6 +3,7 @@
     "pages/login/login",
     "pages/service/service",
     "pages/market/market",
+    "pages/personal/personalCenter",
     "pages/personal/personalCenter"
   ],
   "subPackages": [],

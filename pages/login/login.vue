@@ -31,8 +31,8 @@
 			return {
 				providerList: [],
 				hasProvider: false,
-				account: '',
-				password: '',
+				account: '18510011002',
+				password: '123456',
 				message: '',
 				positionTop: 0
 			}
@@ -45,22 +45,20 @@
 			...mapMutations(['login']),
 			bindLogin() {
 
-				let pwd = 123456
-				let p1 = md5(pwd.toString())
+				let p1 = md5(this.password.toString())
 				let p2 = md5(p1)
-				console.log(p2)
-
+				
 				let body = {
 					"grant_type": "password",
-					"username": "18510011002",
+					"username": this.account,
 					"password": p2
 				}
 				http.config.header = {
 					'Content-Type': 'application/x-www-form-urlencoded'
 				}
 				http.post('oauth2/token', body).then((res) => {
-					this.message = '登录成功'
-					this.$refs.toast.show()
+					uni.setStorageSync("account", this.account);
+					uni.setStorageSync("token", res.access_token);
 					this.toMain("18510011002");
 				}).catch((err) => {
 					this.message = '失败' + err
