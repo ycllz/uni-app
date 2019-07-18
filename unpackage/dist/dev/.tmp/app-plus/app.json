@@ -4,7 +4,10 @@
     "pages/service/service",
     "pages/market/market",
     "pages/personal/personalCenter",
-    "pages/personal/personalCenter"
+    "pages/personal/personalCenter",
+    "pages/personal/order/reservationRecord",
+    "pages/personal/order/adoptRecord",
+    "pages/personal/order/transferRecord"
   ],
   "subPackages": [],
   "window": {

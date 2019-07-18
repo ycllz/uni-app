@@ -56,7 +56,7 @@
 					</view>
 				</view>
 			</view>
-			
+
 			<!-- 订单类型 -->
 			<view class="list">
 				<view class="box" v-for="(row,index) in orderList" :key="index" @tap="toOrderList(index)">
@@ -66,7 +66,7 @@
 					<view class="text">{{row.text}}</view>
 				</view>
 			</view>
-			
+
 		</view>
 		<!-- 工具栏 -->
 		<view class="toolbar">
@@ -148,16 +148,16 @@
 						text: '账户安全',
 						img: '../../static/mingxi.png'
 					},
-				/* 	{
-						url: '',
-						text: '银行卡',
-						img: '../../static/mingxi.png'
-					},
-					{
-						url: '',
-						text: '抽奖',
-						img: '../../static/mingxi.png'
-					}, */
+					/* 	{
+							url: '',
+							text: '银行卡',
+							img: '../../static/mingxi.png'
+						},
+						{
+							url: '',
+							text: '抽奖',
+							img: '../../static/mingxi.png'
+						}, */
 					// {text:'客服',img:'/static/img/user/kefu.png'},
 					// {text:'签到',img:'/static/img/user/mingxi.png'}
 
@@ -217,9 +217,21 @@
 				})
 			},
 			toOrderList(index) {
-				uni.setStorageSync('tbIndex', index);
+				//uni.setStorageSync('tbIndex', index);
+				var toUrl = ""
+				switch (index) {
+					case 0:
+						toUrl = './order/reservationRecord'
+						break;
+					case 1:
+						toUrl = './order/adoptRecord'
+						break;
+					case 2:
+						toUrl = './order/transferRecord'
+						break;
+				}
 				uni.navigateTo({
-					url: '../../user/order_list/order_list?tbIndex=' + index
+					url: toUrl
 				})
 			},
 			toSetting() {
@@ -407,7 +419,7 @@
 		.list {
 			display: flex;
 			padding-bottom: 10upx;
-			padding-top:  25upx;
+			padding-top: 25upx;
 
 			.box {
 				width: 33.333333%;

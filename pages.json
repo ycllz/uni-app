@@ -1,11 +1,13 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages	
+
 		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
 		},
+
 		{
 			"path": "pages/service/service",
 			"style": {
@@ -31,18 +33,37 @@
 			"path": "pages/personal/personalCenter",
 			"style": {
 				"enablePullDownRefresh": true,
-				"backgroundTextStyle":"light",
-				"navigationBarBackgroundColor":"#f06c7a",
-				"backgroundColorTop":"#f06c7a",
-				"navigationBarTextStyle":"white",
+				"backgroundTextStyle": "light",
+				"navigationBarBackgroundColor": "#f06c7a",
+				"backgroundColorTop": "#f06c7a",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
-					"titleNView": false ,//禁用原生导航栏
-					"subNVues":[{  
+					"titleNView": false, //禁用原生导航栏
+					"subNVues": [{
 						"id": "userTitleNvue", // 唯一标识  
 						"path": "pages/personal/subNvue/userTitleNvue", // 页面路径  
-						"type":"navigationBar"
+						"type": "navigationBar"
 					}]
 				}
+			}
+		},
+		{
+			"path": "pages/personal/order/reservationRecord",
+			"style": {
+				"navigationBarTitleText": "预约记录",
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/personal/order/adoptRecord",
+			"style": {
+				"navigationBarTitleText": "领养记录",
+				"enablePullDownRefresh": true
+			}
+		}, {
+			"path": "pages/personal/order/transferRecord",
+			"style": {
+				"navigationBarTitleText": "转让记录",
+				"enablePullDownRefresh": true
 			}
 		}
 	],

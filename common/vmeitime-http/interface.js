@@ -33,12 +33,14 @@ export default {
 	config: {
 		baseUrl: "http://39.100.76.224:8081/",
 		header: {
-			'Content-Type':'application/json;charset=UTF-8',
-			'Content-Type':'application/x-www-form-urlencoded'
-		},  
+			'Content-Type': 'application/json;charset=UTF-8',
+			'Authorization': "bearer 6CXB99hdjVQ9UGg3HS_DFJbYhO3S3kiWNJbVAWNraQ3FJk2lNjsd8Os_BFaLRj9lhUMRggZE8dCfmH8n1cPDkzu-d-owVzsukQ_HU_eLKSuymFi_Ud7d7onCxmLQN-m0AkBl2q43CUBZuL8yXRTqQNmhTdOwjJRfKmjRGpsGbA6z-ohAAxyLXzwuyvSRGJJ3IrT7BW5F0y37wupA7zrhUF2Pu-hNXMqdyNvyOIHBw7W5BWNMAFULB0up38cXBJTu" //uni.getStorageSync("token")
+		},
+		//'Content-Type': 'application/x-www-form-urlencoded',
 		data: {},
 		method: "GET",
-		dataType: "json",  /* 如设为json，会对返回的数据做一次 JSON.parse */
+		dataType: "json",
+		/* 如设为json，会对返回的数据做一次 JSON.parse */
 		responseType: "text",
 		success() {},
 		fail() {},
@@ -57,18 +59,21 @@ export default {
 		options.url = options.baseUrl + options.url
 		options.data = options.data || {}
 		options.method = options.method || this.config.method
+		/* http.config.header = {
+			'Authorization':  "bearer iJgPdeF2Nccb7z5ovVl_RkqHmQ1y0HvEysH4Bx-WW1s3w3_pEX2uYfCKFlz7GRSELev2l0Fes1RxCtAEYXaRNbSxtCHwGmUsa9zKeTYfh4GocC53vHVzXMkU2ckfcnxKgQSquzZ7vZJdqMK4qDLLEUdrd0ePJd3kqKVNV1tXomrd3OUIgZoXB049LFjGpOpc75D3qDUkQoHEjdA__-uiyvbLl5tmhZs4SXYdBd4UqnSW4LiZe0JujZNPOQLZ1jNy" //uni.getStorageSync("token")
+		} */
 		//TODO 加密数据
-		
+
 		//TODO 数据签名
-		/* 
-		_token = {'token': getStorage(STOREKEY_LOGIN).token || 'undefined'},
-		_sign = {'sign': sign(JSON.stringify(options.data))}
-		options.header = Object.assign({}, options.header, _token,_sign) 
-		*/
-	   
+		
+		/* var token = {'Authorization': "123" || 'undefined'},
+		var sign = {'sign': sign(JSON.stringify(options.data))}
+		options.header = Object.assign({}, options.header, _token,_sign) */
+		
+
 		return new Promise((resolve, reject) => {
 			let _config = null
-			
+
 			options.complete = (response) => {
 				let statusCode = response.statusCode
 				response.config = _config
@@ -98,7 +103,7 @@ export default {
 			if (this.interceptor.request) {
 				this.interceptor.request(_config)
 			}
-			
+
 			// 统一的请求日志记录
 			_reqlog(_config)
 
@@ -118,7 +123,7 @@ export default {
 		}
 		options.url = url
 		options.data = data
-		options.method = 'GET'  
+		options.method = 'GET'
 		return this.request(options)
 	},
 	post(url, data, options) {
@@ -177,7 +182,7 @@ function _reslog(res) {
 		console.log("【" + res.config.requestId + "】 响应结果：" + JSON.stringify(res))
 	}
 	//TODO 除了接口服务错误外，其他日志调接口异步写入日志数据库
-	switch(_statusCode){
+	switch (_statusCode) {
 		case 200:
 			break;
 		case 401:
@@ -188,4 +193,3 @@ function _reslog(res) {
 			break;
 	}
 }
-

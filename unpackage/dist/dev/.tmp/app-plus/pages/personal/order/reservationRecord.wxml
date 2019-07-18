@@ -1,0 +1,1 @@
+<view><block wx:for="{{recordList}}" wx:for-item="target" wx:for-index="index" wx:key="index"><view class="_div"><text>{{''+target.name+''}}</text></view></block><text class="loadMore">加载中...</text></view>
