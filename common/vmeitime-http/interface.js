@@ -34,7 +34,7 @@ export default {
 		baseUrl: "http://39.100.76.224:8081/",
 		header: {
 			'Content-Type': 'application/json;charset=UTF-8',
-			'Authorization': "bearer 6CXB99hdjVQ9UGg3HS_DFJbYhO3S3kiWNJbVAWNraQ3FJk2lNjsd8Os_BFaLRj9lhUMRggZE8dCfmH8n1cPDkzu-d-owVzsukQ_HU_eLKSuymFi_Ud7d7onCxmLQN-m0AkBl2q43CUBZuL8yXRTqQNmhTdOwjJRfKmjRGpsGbA6z-ohAAxyLXzwuyvSRGJJ3IrT7BW5F0y37wupA7zrhUF2Pu-hNXMqdyNvyOIHBw7W5BWNMAFULB0up38cXBJTu" //uni.getStorageSync("token")
+			'Content-Type': 'application/x-www-form-urlencoded',
 		},
 		//'Content-Type': 'application/x-www-form-urlencoded',
 		data: {},
@@ -59,17 +59,22 @@ export default {
 		options.url = options.baseUrl + options.url
 		options.data = options.data || {}
 		options.method = options.method || this.config.method
+	
+// 		
+// 		options.header.Authorization = uni.getStorageSync("token")
+// 
+
 		/* http.config.header = {
 			'Authorization':  "bearer iJgPdeF2Nccb7z5ovVl_RkqHmQ1y0HvEysH4Bx-WW1s3w3_pEX2uYfCKFlz7GRSELev2l0Fes1RxCtAEYXaRNbSxtCHwGmUsa9zKeTYfh4GocC53vHVzXMkU2ckfcnxKgQSquzZ7vZJdqMK4qDLLEUdrd0ePJd3kqKVNV1tXomrd3OUIgZoXB049LFjGpOpc75D3qDUkQoHEjdA__-uiyvbLl5tmhZs4SXYdBd4UqnSW4LiZe0JujZNPOQLZ1jNy" //uni.getStorageSync("token")
 		} */
 		//TODO 加密数据
 
 		//TODO 数据签名
-		
+
 		/* var token = {'Authorization': "123" || 'undefined'},
 		var sign = {'sign': sign(JSON.stringify(options.data))}
 		options.header = Object.assign({}, options.header, _token,_sign) */
-		
+
 
 		return new Promise((resolve, reject) => {
 			let _config = null
@@ -103,6 +108,7 @@ export default {
 			if (this.interceptor.request) {
 				this.interceptor.request(_config)
 			}
+			
 
 			// 统一的请求日志记录
 			_reqlog(_config)

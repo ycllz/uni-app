@@ -47,7 +47,7 @@
 
 				let p1 = md5(this.password.toString())
 				let p2 = md5(p1)
-				
+
 				let body = {
 					"grant_type": "password",
 					"username": this.account,
@@ -57,8 +57,10 @@
 					'Content-Type': 'application/x-www-form-urlencoded'
 				}
 				http.post('oauth2/token', body).then((res) => {
+					console.log("---------------------------------------------------------------")
+					console.log(res.data.access_token)
 					uni.setStorageSync("account", this.account);
-					uni.setStorageSync("token", res.access_token);
+					uni.setStorageSync("token", 'basic ' + res.data.access_token);
 					this.toMain("18510011002");
 				}).catch((err) => {
 					this.message = '失败' + err
@@ -102,7 +104,7 @@
 				 * 强制登录时使用reLaunch方式跳转过来
 				 * 返回首页也使用reLaunch方式
 				 */
-				
+
 				uni.reLaunch({
 					url: '../market/market',
 				});

@@ -221,13 +221,13 @@
 				var toUrl = ""
 				switch (index) {
 					case 0:
-						toUrl = './order/reservationRecord'
-						break;
-					case 1:
 						toUrl = './order/adoptRecord'
 						break;
-					case 2:
+					case 1:
 						toUrl = './order/transferRecord'
+						break;
+					case 2:
+						toUrl = './order/reservationRecord'
 						break;
 				}
 				uni.navigateTo({

@@ -19,6 +19,8 @@
 </template>
 
 <script>
+	import http from '../../common/vmeitime-http/interface.js'
+
 	let keys = 0;
 	export default {
 		data() {
@@ -30,39 +32,6 @@
 		},
 		onLoad() {
 			this.getData();
-			uni.getProvider({
-				service: 'share',
-				success: (e) => {
-					let data = [];
-					for (let i = 0; i < e.provider.length; i++) {
-						switch (e.provider[i]) {
-							case 'weixin':
-								data.push({
-									name: '分享到微信好友',
-									id: 'weixin'
-								});
-								data.push({
-									name: '分享到微信朋友圈',
-									id: 'weixin',
-									type: 'WXSenceTimeline'
-								});
-								break;
-							case 'qq':
-								data.push({
-									name: '分享到QQ',
-									id: 'qq'
-								});
-								break;
-							default:
-								break;
-						}
-					}
-					this.providerList = data;
-				},
-				fail: (e) => {
-					console.log('获取登录通道失败', e);
-				}
-			});
 		},
 		onPullDownRefresh() {
 			console.log('下拉刷新');
@@ -74,55 +43,52 @@
 		},
 		methods: {
 			getData() {
-				uni.request({
+
+
+				/* http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				} */
+				/* http.config.baseUrl = "http://39.100.76.224:8081/api"
+				//设置请求前拦截器
+				http.interceptor.request = (config) => {
+					config.header = {
+						'Content-Type': 'application/json;charset=UTF-8',
+						'Content-Type': 'application/x-www-form-urlencoded',
+						"Authorization": uni.getStorageSync("token")
+					}
+				} */
+				http.config.header = {
+					'Content-Type': 'application/json;charset=UTF-8'
+				}
+
+				http.get('/TemplateInfo/GetCanSelledTemplateList').then((res) => {
+					console.log("1111111111111")
+
+				}).catch((err) => {
+					console.log("222222222222")
+
+				})
+
+
+
+
+
+				/* uni.request({
 					url: this.$serverUrl + '/api/picture/posts.php?page=' + (this.refreshing ? 1 : this.fetchPageNum) +
 						'&per_page=10',
 					success: (ret) => {
-						if (ret.statusCode !== 200) {
-							console.log('请求失败:', ret)
+						console.log('得到lists', lists);
+						if (this.refreshing) {
+							this.refreshing = false;
+							uni.stopPullDownRefresh()
+							this.lists = lists;
+							this.fetchPageNum = 2;
 						} else {
-							if (this.refreshing && ret.data[0].id === this.lists[0].data[0].id) {
-								uni.showToast({
-									title: '已经最新',
-									icon: 'none',
-								});
-								this.refreshing = false;
-								uni.stopPullDownRefresh();
-								return;
-							}
-
-							let list = {
-									id: '',
-									data: []
-								},
-								lists = [],
-								data = ret.data;
-							for (let i = 0, length = data.length; i < length; i++) {
-								let index = Math.floor(i / 2);
-								list.id = 'list' + keys;
-								data[i].keys = keys++
-								list.data.push(data[i]);
-								if (i % 2 == 1) {
-									lists.push(list);
-									list = {
-										id: '',
-										data: []
-									};
-								}
-							}
-							console.log('得到lists', lists);
-							if (this.refreshing) {
-								this.refreshing = false;
-								uni.stopPullDownRefresh()
-								this.lists = lists;
-								this.fetchPageNum = 2;
-							} else {
-								this.lists = this.lists.concat(lists);
-								this.fetchPageNum += 1;
-							}
+							this.lists = this.lists.concat(lists);
+							this.fetchPageNum += 1;
 						}
 					}
-				});
+				}); */
 			},
 			goDetail(e) {
 				uni.navigateTo({
@@ -170,19 +136,19 @@
 </script>
 
 <style>
-		@import '../../common/common.css';
-	
+	@import '../../common/common.css';
+
 	page,
 	view {
 		display: flex;
 	}
-	
+
 	page {
 		display: flex;
 		min-height: 100%;
 		background-color: #EFEFEF;
 	}
-	
+
 	template {
 		display: flex;
 		flex: 1;
