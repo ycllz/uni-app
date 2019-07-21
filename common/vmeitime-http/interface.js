@@ -34,7 +34,7 @@ export default {
 		baseUrl: "http://39.100.76.224:8081/",
 		header: {
 			'Content-Type': 'application/json;charset=UTF-8',
-			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Type': 'application/x-www-form-urlencoded'
 		},
 		//'Content-Type': 'application/x-www-form-urlencoded',
 		data: {},
@@ -59,10 +59,10 @@ export default {
 		options.url = options.baseUrl + options.url
 		options.data = options.data || {}
 		options.method = options.method || this.config.method
-	
-// 		
-// 		options.header.Authorization = uni.getStorageSync("token")
-// 
+
+		// 		
+		// 		options.header.Authorization = uni.getStorageSync("token")
+		// 
 
 		/* http.config.header = {
 			'Authorization':  "bearer iJgPdeF2Nccb7z5ovVl_RkqHmQ1y0HvEysH4Bx-WW1s3w3_pEX2uYfCKFlz7GRSELev2l0Fes1RxCtAEYXaRNbSxtCHwGmUsa9zKeTYfh4GocC53vHVzXMkU2ckfcnxKgQSquzZ7vZJdqMK4qDLLEUdrd0ePJd3kqKVNV1tXomrd3OUIgZoXB049LFjGpOpc75D3qDUkQoHEjdA__-uiyvbLl5tmhZs4SXYdBd4UqnSW4LiZe0JujZNPOQLZ1jNy" //uni.getStorageSync("token")
@@ -108,7 +108,7 @@ export default {
 			if (this.interceptor.request) {
 				this.interceptor.request(_config)
 			}
-			
+
 
 			// 统一的请求日志记录
 			_reqlog(_config)

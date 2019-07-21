@@ -7,7 +7,13 @@
     "pages/personal/personalCenter",
     "pages/personal/order/reservationRecord",
     "pages/personal/order/adoptRecord",
-    "pages/personal/order/transferRecord"
+    "pages/personal/order/transferRecord",
+    "pages/personal/tools/salfCenter",
+    "pages/personal/tools/modifyPassword",
+    "pages/personal/tools/realNameAuthentication",
+    "pages/personal/order/profitRecord",
+    "pages/personal/order/diffRecord",
+    "pages/personal/order/promoteRecord"
   ],
   "subPackages": [],
   "window": {

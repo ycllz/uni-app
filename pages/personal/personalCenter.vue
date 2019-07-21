@@ -42,15 +42,15 @@
 			<!-- 微分 -->
 			<view class="balance-info">
 				<view class="left">
-					<view class="box">
+					<view class="box" @tap="toRecerd(1)">
 						<view class="num">1000</view>
 						<view class="text">微分</view>
 					</view>
-					<view class="box">
+					<view class="box" @tap="toRecerd(2)">
 						<view class="num">20000</view>
 						<view class="text">累计收益</view>
 					</view>
-					<view class="box">
+					<view class="box" @tap="toRecerd(3)">
 						<view class="num">3000</view>
 						<view class="text">推广收益</view>
 					</view>
@@ -118,34 +118,34 @@
 				],
 				// 工具栏列表
 				mytoolbarList: [{
-						url: '../../user/keep/keep',
-						text: '我的收藏',
+						url: './tools/salfCenter',
+						text: '安全中心',
 						img: '../../static/mingxi.png'
 					},
 					{
-						url: '../../user/coupon/coupon',
-						text: '优惠券',
-						img: '../../static/mingxi.png'
-					},
-					{
-						url: '',
-						text: '新客豪礼',
+						url: './tools/realNameAuthentication',
+						text: '实名认证',
 						img: '../../static/mingxi.png'
 					},
 					{
 						url: '',
-						text: '领红包',
+						text: '我的银行卡',
+						img: '../../static/mingxi.png'
+					},
+					{
+						url: '',
+						text: '我的团队',
 						img: '../../static/mingxi.png'
 					},
 
 					{
 						url: '../../user/address/address',
-						text: '收货地址',
+						text: '邀请好友',
 						img: '../../static/mingxi.png'
 					},
 					{
 						url: '',
-						text: '账户安全',
+						text: '系统消息',
 						img: '../../static/mingxi.png'
 					},
 					/* 	{
@@ -234,6 +234,24 @@
 					url: toUrl
 				})
 			},
+			toRecerd(index){
+				console.log(index)
+				var toUrl = ""
+				switch (index) {
+					case 1:
+						toUrl = './order/diffRecord'
+						break;
+					case 2:
+						toUrl = './order/profitRecord'
+						break;
+					case 3:
+						toUrl = './order/promoteRecord'
+						break;
+				}
+				uni.navigateTo({
+					url: toUrl
+				})
+			},
 			toSetting() {
 				uni.navigateTo({
 					url: '../../user/setting/setting'
@@ -268,13 +286,6 @@
 				})
 			},
 			toPage(url) {
-				if (!url) {
-					uni.showToast({
-						title: '模板未包含此页面',
-						icon: "none"
-					});
-					return;
-				}
 				uni.navigateTo({
 					url: url
 				})

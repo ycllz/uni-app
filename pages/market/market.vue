@@ -1,20 +1,53 @@
 <template>
 	<view class="index">
-		<block v-for="list in lists" :key="list.id">
+		<block v-for="row in lists" :key="row.id">
 			<view class="row">
-				<view class="card card-list2" v-for="item in list.data" @click="goDetail(item)" :key="item.keys">
-					<image class="card-img card-list2-img" :src="item.img_src"></image>
-					<text class="card-num-view card-list2-num-view">{{item.img_num}}P</text>
+				<view class="card card-list2" v-for="item in row.list" :key="item.f_ID">
+					<image class="card-img card-list2-img" src="../../static/map2.jpg"></image>
 					<view class="card-bottm row">
 						<view class="car-title-view row">
-							<text class="card-title card-list2-title">{{item.title}} </text>
+							<text class="card-title card-list2-title">{{item.f_Name}} </text>
+							<text class="card-title card-list2-title">级别:{{item.f_LevelStr}} </text>
 						</view>
-						<view @click.stop="share(item)" class="card-share-view"></view>
 					</view>
+					<view class="card-bottm row">
+						<view class="car-title-view row">
+							<text class="card-title card-list2-title">价值:{{item.f_StartPrice}}-{{item.f_EndPrice}} </text>
+						</view>
+					</view>
+					<view class="card-bottm row">
+						<view class="car-title-view row">
+							<text class="card-title card-list2-title">领养时间:{{item.f_StartTime}}-{{item.f_EndTime}} </text>
+						</view>
+					</view>
+					<view class="card-bottm row">
+						<view class="car-title-view row">
+							<text class="card-title card-list2-title">预约/领养微分:{{item.f_ReserveValue}}/{{item.f_RealtimeValue}} </text>
+						</view>
+					</view>
+					<view class="card-bottm row">
+						<view class="car-title-view row">
+							<text class="card-title card-list2-title">智能合约收益:{{item.f_TimeLimit}}天/{{item.f_TimeLimit}}% </text>
+						</view>
+					</view>
+					<view class="card-bottm row">
+						<view class="car-title-view row">
+							<text class="card-title card-list2-title">可挖WIA:{{item.f_RateOfRate}}枚 </text>
+						</view>
+					</view>
+					<view class="card-bottm row">
+						<view class="car-title-view row">
+							<text class="card-title card-list2-title">可挖DOGE:收益{{item.f_TimeLimit}}% </text>
+						</view>
+					</view>
+					<view class="card-bottm row">
+						<button type="primary" @click="diffSubscribe(item)" plain="true">预约</button>
+					</view>
+
 				</view>
 			</view>
 		</block>
-		<text class="loadMore">加载中...</text>
+		<!-- <text class="loadMore">加载中...</text> -->
 	</view>
 </template>
 
@@ -27,6 +60,8 @@
 			return {
 				refreshing: false,
 				lists: [],
+				msgId: '',
+				timer: null,
 				fetchPageNum: 1
 			}
 		},
@@ -39,96 +74,98 @@
 			this.getData();
 		},
 		onReachBottom() {
-			this.getData();
+			//this.getData();
 		},
 		methods: {
 			getData() {
-
-
-				/* http.config.header = {
-					'Authorization': uni.getStorageSync("token")
-				} */
-				/* http.config.baseUrl = "http://39.100.76.224:8081/api"
-				//设置请求前拦截器
-				http.interceptor.request = (config) => {
-					config.header = {
-						'Content-Type': 'application/json;charset=UTF-8',
-						'Content-Type': 'application/x-www-form-urlencoded',
-						"Authorization": uni.getStorageSync("token")
-					}
-				} */
 				http.config.header = {
-					'Content-Type': 'application/json;charset=UTF-8'
+					'Authorization': uni.getStorageSync("token")
 				}
+				http.get('api/TemplateInfo/GetCanSelledTemplateList').then((res) => {
+					this.lists = []
+					for (let i = 0; i < res.data.length; i++) {
 
-				http.get('/TemplateInfo/GetCanSelledTemplateList').then((res) => {
-					console.log("1111111111111")
-
-				}).catch((err) => {
-					console.log("222222222222")
-
-				})
-
-
-
-
-
-				/* uni.request({
-					url: this.$serverUrl + '/api/picture/posts.php?page=' + (this.refreshing ? 1 : this.fetchPageNum) +
-						'&per_page=10',
-					success: (ret) => {
-						console.log('得到lists', lists);
-						if (this.refreshing) {
-							this.refreshing = false;
-							uni.stopPullDownRefresh()
-							this.lists = lists;
-							this.fetchPageNum = 2;
+						res.data[i].f_LevelStr = this.getLevelStr(res.data[i].f_Level)
+						console.log(res.data[i].f_LevelStr)
+						if (i % 2 == 0) {
+							let row = {}
+							row.list = []
+							row.id = i
+							row.list.push(res.data[i])
+							this.lists.push(row)
 						} else {
-							this.lists = this.lists.concat(lists);
-							this.fetchPageNum += 1;
+							this.lists[this.lists.length - 1].id = i
+							this.lists[this.lists.length - 1].list.push(res.data[i])
 						}
 					}
-				}); */
-			},
-			goDetail(e) {
-				uni.navigateTo({
-					url: '../detail/detail?data=' + encodeURIComponent(JSON.stringify(e))
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
+				}).catch((err) => {
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
+					console.log("222222222222")
 				})
 			},
-			share(e) {
-				if (this.providerList.length === 0) {
-					uni.showModal({
-						title: '当前环境无分享渠道!',
-						showCancel: false
-					})
-					return;
+			getLevelStr(value) {
+				let res = "其他"
+				switch (value) {
+					case 1:
+						res = "普通"
+						break;
+					case 2:
+						res = "勇者"
+						break;
+					case 3:
+						res = "卓越"
+						break;
+					case 4:
+						res = "稀有"
+						break;
 				}
-				let itemList = this.providerList.map(function(value) {
-					return value.name
+				return res
+			},
+
+			diffSubscribe(item) {
+				/* http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+
+				let account = uni.getStorageSync("account")
+				let diff = item.f_ReserveValue
+				http.post('api/UserInfo/DiffSubscribe?account=' + account + "&diff=" + diff).then((res) => {
+					console.log("111111111111111111")
+				}).catch((err) => {
+					console.log("222222222222")
+				}) */
+
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+
+				let templateId = item.f_ID
+				http.post('api/Order/PlaceOrder?templateId=' + templateId).then((res) => {
+					this.msgId = res.data
+					this.timer = setInterval(
+						this.processResult, 1000
+					);
+				}).catch((err) => {
+					console.log("222222222222")
 				})
-				uni.showActionSheet({
-					itemList: itemList,
-					success: (res) => {
-						uni.share({
-							provider: this.providerList[res.tapIndex].id,
-							scene: this.providerList[res.tapIndex].type && this.providerList[res.tapIndex].type === 'WXSenceTimeline' ?
-								'WXSenceTimeline' : 'WXSceneSession',
-							type: 0,
-							title: 'uni-app模版',
-							summary: e.title,
-							imageUrl: e.img_src,
-							href: 'https://uniapp.dcloud.io',
-							success: (res) => {
-								console.log('success:' + JSON.stringify(res));
-							},
-							fail: (e) => {
-								uni.showModal({
-									content: e.errMsg,
-									showCancel: false
-								})
-							}
-						});
+			},
+			processResult(msgId) {
+
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+
+				http.post('api/Order/ProcessResult?msgId=' + this.msgId).then((res) => {
+					this.fetchPageNum++
+					if (this.fetchPageNum == 5) {
+						window.clearInterval(this.timer); // 清除定时器
+						this.timer = null;
 					}
+				}).catch((err) => {
+					console.log("222222222222")
 				})
 			}
 		}
@@ -152,5 +189,27 @@
 	template {
 		display: flex;
 		flex: 1;
+	}
+
+	.card-bottm uni-button[type=primary][plain] {
+		color: #249873 !important;
+		border: 1px solid #249873 !important;
+		;
+		background-color: rgba(0, 0, 0, 0);
+	}
+
+	.card-bottm uni-button {
+		margin-bottom: 10px !important;
+		;
+		margin-top: 10px !important;
+		;
+		width: 95px !important;
+		;
+		height: 30px !important;
+		;
+		line-height: 30px !important;
+		;
+		text-align: center;
+		font-size: 20px;
 	}
 </style>

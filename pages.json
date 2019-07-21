@@ -64,7 +64,47 @@
 				"enablePullDownRefresh": true
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/personal/tools/salfCenter",
+            "style": {
+            	"navigationBarTitleText": "安全中心",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/personal/tools/modifyPassword",
+            "style": {
+            	"navigationBarTitleText": "修改密码",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/personal/tools/realNameAuthentication",
+             "style": {
+            	"navigationBarTitleText": "实名认证",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/personal/order/profitRecord",
+             "style": {
+            	"navigationBarTitleText": "收益记录",
+            	"enablePullDownRefresh": false
+            }
+        },{
+            "path" : "pages/personal/order/diffRecord",
+             "style": {
+            	"navigationBarTitleText": "微分",
+            	"enablePullDownRefresh": false
+            }
+        },{
+            "path" : "pages/personal/order/promoteRecord",
+             "style": {
+            	"navigationBarTitleText": "推广收益",
+            	"enablePullDownRefresh": false
+            }
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "看图",

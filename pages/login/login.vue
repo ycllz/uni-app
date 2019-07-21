@@ -60,7 +60,7 @@
 					console.log("---------------------------------------------------------------")
 					console.log(res.data.access_token)
 					uni.setStorageSync("account", this.account);
-					uni.setStorageSync("token", 'basic ' + res.data.access_token);
+					uni.setStorageSync("token", 'bearer ' + res.data.access_token);
 					this.toMain("18510011002");
 				}).catch((err) => {
 					this.message = '失败' + err

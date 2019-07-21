@@ -13,6 +13,9 @@
 </script>
 
 <style>
-
 	
+
+	.view-btn uni-button {
+		background-color: #249873 !important;
+	}
 </style>

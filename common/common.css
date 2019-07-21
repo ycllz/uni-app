@@ -28,7 +28,7 @@
 	position: relative;
 	width: 710upx;
 	margin: 20upx 20upx 20upx 20upx;
-	border-radius: 10upx;
+	border-radius: 15upx;
 	overflow: hidden;
 	flex-direction: column;
 	background-color: #FFFFFF;
@@ -82,7 +82,7 @@
 
 .car-title-view {
 	flex: 1;
-	padding: 14upx 0upx 14upx 20upx;
+	padding: 4upx 0upx 4upx 20upx;
 }
 
 .card-title {
@@ -114,12 +114,13 @@
 
 .card-list2 {
 	width: 345upx;
+	height: 545upx;
 	margin: 20upx 0 20upx 20upx;
 }
 
 .card-list2-img {
 	width: 345upx;
-	height: 517upx;
+	height: 240upx;
 }
 
 .card-list2-num-view {
@@ -132,7 +133,7 @@
 }
 
 .card-list2-title {
-	font-size: 26upx;
+	font-size: 24upx;
 }
 
 
