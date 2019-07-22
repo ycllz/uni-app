@@ -2,8 +2,8 @@
 	<view>
 		<view class="main">
 
-			<view style="margin-top: 20upx;">
-				<uni-card note="Tips">
+			<view class="top-card" style="margin-top: 20upx;">
+				<uni-card>
 					推广累计 2000
 				</uni-card>
 			</view>
@@ -70,5 +70,12 @@
 		box-sizing: border-box;
 		flex-direction: row;
 		padding: 0upx 20upx;
+	}
+	
+	.top-card .uni-card {
+		border-radius: 10px;
+		text-align: center;
+		padding-top: 15px;
+		padding-bottom: 15px;
 	}
 </style>

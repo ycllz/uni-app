@@ -1,17 +1,44 @@
-<!-- 预约记录 -->
 <template>
+	<!-- 预约记录 -->
 	<view>
-		<div v-for="(target, index) in recordList" :key="index">
-			<text> {{target.name}} </text>
-		</div>
-		<text class="loadMore">加载中...</text>
+		<view class="main">
+			<view class="main-list">
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
+
+
+			</view>
+
+
+
+		</view>
+		<view class="load-more-view">
+			<text class="loadMore">加载中...</text>
+		</view>
+
 	</view>
 </template>
 
 <script>
 	import http from '../../../common/vmeitime-http/interface.js'
+	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
+
 
 	export default {
+		components: {
+			cmdCellItem,
+		},
 		data() {
 			return {
 				recordList: [],
@@ -51,11 +78,11 @@
 					/* this.message = '失败' + err
 					this.$refs.toast.show() */
 				})
-				
-				for(var i=0;i<35;i++){
+
+				for (var i = 0; i < 35; i++) {
 					this.recordList.push({
-						"name":"测试数据-"+i,
-						"id":i
+						"name": "测试数据-" + i,
+						"id": i
 					})
 				}
 				this.refreshing = false;
@@ -65,5 +92,27 @@
 </script>
 
 <style>
+	.main {
+		flex-direction: column;
+		min-height: 100vh;
+	}
 
+	.main-list {
+		background-color: #FFFFFF;
+		width: 750upx;
+		flex-direction: column;
+	}
+
+	.main-list-item {
+		height: 90upx;
+		width: 750upx;
+		box-sizing: border-box;
+		flex-direction: row;
+		padding: 0upx 20upx;
+	}
+
+	.load-more-view {
+		font-size: 14px;
+		text-align: center;
+	}
 </style>

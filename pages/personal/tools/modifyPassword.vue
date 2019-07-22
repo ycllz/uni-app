@@ -15,8 +15,6 @@
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 			<button type="primary" @tap="submitModify">确认修改</button>
 		</view>
-		
-
 	</view>
 </template>
 

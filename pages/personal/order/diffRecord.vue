@@ -2,8 +2,8 @@
 	<view>
 		<view class="main">
 
-			<view style="margin-top: 20upx;">
-				<uni-card note="Tips">
+			<view class="top-card" style="margin-top: 20upx;">
+				<uni-card>
 					当前剩余 20
 				</uni-card>
 			</view>
@@ -22,9 +22,6 @@
 
 
 			</view>
-
-
-
 		</view>
 	</view>
 
@@ -35,6 +32,7 @@
 <script>
 	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
 	import uniCard from "@/components/uni-card/uni-card"
+	import http from '../../../common/vmeitime-http/interface.js'
 
 	export default {
 		components: {
@@ -71,5 +69,12 @@
 		box-sizing: border-box;
 		flex-direction: row;
 		padding: 0upx 20upx;
+	}
+
+	.top-card .uni-card {
+		border-radius: 10px;
+		text-align: center;
+		padding-top: 15px;
+		padding-bottom: 15px;
 	}
 </style>
