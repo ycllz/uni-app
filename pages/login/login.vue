@@ -1,13 +1,17 @@
 <template>
 	<view class="zai-box">
-		<image src="../../static/login.png" mode='aspectFit' class="zai-logo"></image>
-		<view class="zai-title">LOGO区域</view>
+		<image src="../../static/face.jpg" mode='aspectFit' class="zai-logo"></image>
+		<view class="zai-title"></view>
 		<view class="zai-form">
 			<input class="zai-input" placeholder-class v-model="account" placeholder="请输入用户名" />
 			<input class="zai-input" placeholder-class v-model="password" password placeholder="请输入密码" />
-			<view class="zai-label">忘记密码？</view>
+			<view class="zai-verify">
+				<move-verify @result='verifyResult'></move-verify>
+			</view>
 			<button class="zai-btn" @click="bindLogin">立即登录</button>
-			<navigator url="../zaizai-register/index" hover-class="none" class="zai-label">还没有账号？点此注册.</navigator>
+			<view class="zai-label">
+				<text>忘记密码</text> <text class="register">点此注册</text>
+			</view>
 		</view>
 
 		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
@@ -20,6 +24,7 @@
 	import service from '../../service.js'
 	import md5 from 'js-md5'
 	import yuToast from '@/components/yu-toast/yu-toast'
+	import moveVerify from "@/components/helang-moveVerify/helang-moveVerify.vue"
 
 
 	import {
@@ -34,16 +39,21 @@
 				account: '18510011002',
 				password: '123456',
 				message: '',
+				isVerify: false,
 				positionTop: 0
 			}
 		},
 		components: {
-			yuToast
+			yuToast,
+			"move-verify": moveVerify
 		},
 		computed: mapState(['forcedLogin']),
 		methods: {
 			...mapMutations(['login']),
 			bindLogin() {
+				if (!this.isVerify) {
+					return
+				}
 
 				let p1 = md5(this.password.toString())
 				let p2 = md5(p1)
@@ -77,7 +87,9 @@
 				    });
 				} */
 			},
-
+			verifyResult() {
+				this.isVerify = true
+			},
 			oauth(value) {
 				uni.login({
 					provider: value,
@@ -130,6 +142,11 @@
 		margin-top: 80upx;
 	}
 
+	.zai-verify {
+		margin-top: 30upx;
+		margin-bottom: 30upx;
+	}
+
 	.zai-title {
 		position: absolute;
 		top: 0;
@@ -142,7 +159,7 @@
 	}
 
 	.zai-form {
-		margin-top: 150upx;
+		margin-top: 110upx;
 	}
 
 	.zai-input {
@@ -153,20 +170,24 @@
 		font-size: 36upx;
 	}
 
+	.zai-label .register {
+		margin: 40upx;
+	}
+
 	.input-placeholder,
 	.zai-input {
 		color: #94afce;
 	}
 
 	.zai-label {
-		padding: 60upx 0;
+		padding: 12upx 0;
 		text-align: center;
 		font-size: 30upx;
 		color: #a7b6d0;
 	}
 
 	.zai-btn {
-		background: #ff65a3;
+		background: #249873;
 		color: #fff;
 		border: 0;
 		border-radius: 100upx;

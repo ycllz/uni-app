@@ -1,4 +1,5 @@
 <template>
+	<!-- 微分 -->
 	<view>
 		<view class="main">
 
@@ -32,7 +33,7 @@
 <script>
 	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
 	import uniCard from "@/components/uni-card/uni-card"
-	import http from '../../../common/vmeitime-http/interface.js'
+	import http from '@/common/vmeitime-http/interface.js'
 
 	export default {
 		components: {
@@ -41,12 +42,28 @@
 		},
 		data() {
 			return {
-
+				body: {
+					"page": 1,
+					"rowCount": 10
+				}
 			}
 		},
 
 		methods: {
+			getPageList() {
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
 
+				http.post('api/DigitalCoin/GetPageList', this.body).then((res) => {
+					console.log("11111111111")
+				}).catch((err) => {
+					console.log("222222222222")
+				})
+			}
+		},
+		mounted() {
+			this.getPageList()
 		}
 	}
 </script>

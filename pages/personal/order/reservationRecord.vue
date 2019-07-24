@@ -31,7 +31,7 @@
 </template>
 
 <script>
-	import http from '../../../common/vmeitime-http/interface.js'
+	import http from '@/common/vmeitime-http/interface.js'
 	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
 
 
@@ -43,6 +43,10 @@
 			return {
 				recordList: [],
 				refreshing: false,
+				body: {
+					"page": 1,
+					"rowCount": 10
+				}
 			}
 		},
 		onLoad() {
@@ -65,10 +69,10 @@
 				}
 
 
-				/* http.config.header = {
-					'Authorization':  "bearer iJgPdeF2Nccb7z5ovVl_RkqHmQ1y0HvEysH4Bx-WW1s3w3_pEX2uYfCKFlz7GRSELev2l0Fes1RxCtAEYXaRNbSxtCHwGmUsa9zKeTYfh4GocC53vHVzXMkU2ckfcnxKgQSquzZ7vZJdqMK4qDLLEUdrd0ePJd3kqKVNV1tXomrd3OUIgZoXB049LFjGpOpc75D3qDUkQoHEjdA__-uiyvbLl5tmhZs4SXYdBd4UqnSW4LiZe0JujZNPOQLZ1jNy" //uni.getStorageSync("token")
-				} */
-				http.get('api/DigitalCoin/GetPageList', params).then((res) => {
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+				http.post('api/DigitalCoin/GetPageList', this.body).then((res) => {
 					console.log("1111111111111")
 					/* uni.setStorageSync("account", this.account);
 					uni.setStorageSync("token", res.access_token); */

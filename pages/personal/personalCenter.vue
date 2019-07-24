@@ -128,7 +128,7 @@
 						img: '../../static/mingxi.png'
 					},
 					{
-						url: '',
+						url: './tools/myBankCard',
 						text: '我的银行卡',
 						img: '../../static/mingxi.png'
 					},
@@ -137,9 +137,8 @@
 						text: '我的团队',
 						img: '../../static/mingxi.png'
 					},
-
 					{
-						url: '../../user/address/address',
+						url: './tools/inviteFriends',
 						text: '邀请好友',
 						img: '../../static/mingxi.png'
 					},
@@ -234,7 +233,7 @@
 					url: toUrl
 				})
 			},
-			toRecerd(index){
+			toRecerd(index) {
 				console.log(index)
 				var toUrl = ""
 				switch (index) {

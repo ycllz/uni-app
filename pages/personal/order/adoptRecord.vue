@@ -24,7 +24,7 @@
 				<view>
 					<text>转让时间:</text><text>2019-07-22 22:22:22</text>
 				</view>
-				<view>
+				<view style="margin-top: 6px;">
 					<view class="view-btn">
 						<button type="primary">操作</button>
 					</view>
@@ -34,8 +34,6 @@
 
 				</view>
 			</view>
-
-
 		</view>
 	</view>
 </template>
@@ -126,15 +124,25 @@
 		font-size: 15px;
 	}
 
-	.view-btn uni-button {
-		width: 120px;
-		height: 35px;
-		line-height: 35px;
+	.view-btn {
+		width: 50px;
+		float: left;
+		margin-left: 20px;
 	}
-	
+
+	.view-btn1 {
+		margin-left: 100px;
+	}
+
+	.view-btn uni-button {
+		width: 100px;
+		height: 30px;
+		line-height: 30px;
+	}
+
 	.view-btn1 uni-button {
-		width: 120px;
-		height: 35px;
-		line-height: 35px;
+		width: 100px;
+		height: 30px;
+		line-height: 30px;
 	}
 </style>

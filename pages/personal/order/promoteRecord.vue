@@ -1,4 +1,5 @@
 <template>
+	<!-- 推广累计 -->
 	<view>
 		<view class="main">
 
@@ -34,6 +35,7 @@
 <script>
 	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
 	import uniCard from "@/components/uni-card/uni-card"
+	import http from '@/common/vmeitime-http/interface.js'
 
 	export default {
 		components: {
@@ -42,12 +44,28 @@
 		},
 		data() {
 			return {
-
+				page: 1,
+				rowCount: 10
 			}
 		},
 
 		methods: {
+			getPageList() {
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token"),
+					'Content-Type': 'application/json'
+				}
 
+				http.get('api/ReferInCome/GetPageListByUserIdAndType?type=1&page=' + this.page + '&rowCount=' + this.rowCount).then(
+					(res) => {
+						console.log("11111111111")
+					}).catch((err) => {
+					console.log("222222222222")
+				})
+			}
+		},
+		mounted() {
+			this.getPageList()
 		}
 	}
 </script>
@@ -71,7 +89,7 @@
 		flex-direction: row;
 		padding: 0upx 20upx;
 	}
-	
+
 	.top-card .uni-card {
 		border-radius: 10px;
 		text-align: center;

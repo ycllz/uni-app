@@ -34,15 +34,16 @@
 				"backgroundTextStyle": "light",
 				"navigationBarBackgroundColor": "#f06c7a",
 				"backgroundColorTop": "#f06c7a",
-				"navigationBarTextStyle": "white",
-				"app-plus": {
+				"navigationBarTextStyle": "white"
+				/* "app-plus": {
 					"titleNView": false, //禁用原生导航栏
 					"subNVues": [{
 						"id": "userTitleNvue", // 唯一标识  
 						"path": "pages/personal/subNvue/userTitleNvue", // 页面路径  
-						"type": "navigationBar"
+						"type": "navigationBar",
+						"background":"#f06c7a"
 					}]
-				}
+				} */
 			}
 		},
 		{
@@ -101,6 +102,23 @@
             "path" : "pages/personal/order/promoteRecord",
              "style": {
             	"navigationBarTitleText": "推广收益",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/personal/tools/myBankCard",
+             "style": {
+            	"navigationBarTitleText": "我的银行卡",
+            	"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": false //禁用原生导航栏
+				}
+            }
+        }
+        ,{
+            "path" : "pages/personal/tools/inviteFriends",
+             "style": {
+            	"navigationBarTitleText": "邀请好友",
             	"enablePullDownRefresh": false
             }
         }

@@ -126,7 +126,7 @@
 			},
 
 			diffSubscribe(item) {
-				/* http.config.header = {
+				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
 
@@ -136,9 +136,9 @@
 					console.log("111111111111111111")
 				}).catch((err) => {
 					console.log("222222222222")
-				}) */
+				})
 
-				http.config.header = {
+				/* http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
 
@@ -150,7 +150,7 @@
 					);
 				}).catch((err) => {
 					console.log("222222222222")
-				})
+				}) */
 			},
 			processResult(msgId) {
 
