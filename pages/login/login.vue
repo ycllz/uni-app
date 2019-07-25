@@ -13,14 +13,16 @@
 				<text>忘记密码</text> <text class="register">点此注册</text>
 			</view>
 		</view>
-
+		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
+		<!-- click:  	true 点击空白无法关闭加载状态   |     false 点击空白可关闭加载状态 -->
+		<w-loading text="加载中.." mask="true" click="false" ref="loading"></w-loading>
 		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
 
 <script>
-	import http from '../../common/vmeitime-http/interface.js'
+	import http from '@/common/vmeitime-http/interface.js'
 	import service from '../../service.js'
 	import md5 from 'js-md5'
 	import yuToast from '@/components/yu-toast/yu-toast'
@@ -54,7 +56,7 @@
 				if (!this.isVerify) {
 					return
 				}
-
+				this.$refs.loading.open()
 				let p1 = md5(this.password.toString())
 				let p2 = md5(p1)
 
@@ -71,8 +73,10 @@
 					console.log(res.data.access_token)
 					uni.setStorageSync("account", this.account);
 					uni.setStorageSync("token", 'bearer ' + res.data.access_token);
+					this.$refs.loading.close()
 					this.toMain("18510011002");
 				}).catch((err) => {
+					this.$refs.loading.close()
 					this.message = '失败' + err
 					this.$refs.toast.show()
 				})
