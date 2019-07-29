@@ -10,7 +10,7 @@
 			</view>
 			<button class="zai-btn" @click="bindLogin">立即登录</button>
 			<view class="zai-label">
-				<text>忘记密码</text> <text class="register">点此注册</text>
+				<text @click="forgetPassword">忘记密码</text> <text class="register">点此注册</text>
 			</view>
 		</view>
 		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
@@ -25,7 +25,7 @@
 	import http from '@/common/vmeitime-http/interface.js'
 	import service from '../../service.js'
 	import md5 from 'js-md5'
-	import yuToast from '@/components/yu-toast/yu-toast'
+	
 	import moveVerify from "@/components/helang-moveVerify/helang-moveVerify.vue"
 
 
@@ -38,7 +38,7 @@
 			return {
 				providerList: [],
 				hasProvider: false,
-				account: '18510011002',
+				account: '15810258807',
 				password: '123456',
 				message: '',
 				isVerify: false,
@@ -46,7 +46,6 @@
 			}
 		},
 		components: {
-			yuToast,
 			"move-verify": moveVerify
 		},
 		computed: mapState(['forcedLogin']),
@@ -54,6 +53,8 @@
 			...mapMutations(['login']),
 			bindLogin() {
 				if (!this.isVerify) {
+					this.message = '请先验证'
+					this.$refs.toast.show()
 					return
 				}
 				this.$refs.loading.open()
@@ -76,20 +77,11 @@
 					this.$refs.loading.close()
 					this.toMain("18510011002");
 				}).catch((err) => {
+					console.log('------------' + JSON.stringify(err))
 					this.$refs.loading.close()
-					this.message = '失败' + err
+					this.message = '服务异常'
 					this.$refs.toast.show()
 				})
-
-
-				/* if (validUser) {
-				    this.toMain(this.account);
-				} else {
-				    uni.showToast({
-				        icon: 'none',
-				        title: '用户账号或密码不正确',
-				    });
-				} */
 			},
 			verifyResult() {
 				this.isVerify = true
@@ -125,7 +117,12 @@
 					url: '../market/market',
 				});
 
-			}
+			},
+			forgetPassword() {
+				uni.reLaunch({
+					url: '../register/forgetPassword',
+				});
+			},
 		},
 		onReady() {
 

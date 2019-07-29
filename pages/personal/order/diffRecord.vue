@@ -2,32 +2,17 @@
 	<!-- 微分 -->
 	<view>
 		<view class="main">
-
 			<view class="top-card" style="margin-top: 20upx;">
 				<uni-card>
-					当前剩余 20
+					当前剩余微分 {{currentDiff}}
 				</uni-card>
 			</view>
-
 			<view class="main-list" style="margin-top: 30upx;">
-				<cmd-cell-item title="-12" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="+6" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="-12" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="+6" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="-12" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="+6" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="-12" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="+6" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="-12" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="+6" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
-
-
+				<!-- <cmd-cell-item title="-12" brief="预约/领养扣除" addon="2019-07-22 22:22:12" /> -->
 			</view>
+			<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 		</view>
 	</view>
-
-
-
 </template>
 
 <script>
@@ -42,23 +27,34 @@
 		},
 		data() {
 			return {
+				currentDiff: 0,
+				message: '',
 				body: {
-					"page": 1,
-					"rowCount": 10
+					account: '',
+					page: 1,
+					rowCount: 10
 				}
 			}
 		},
-
+		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
+			this.currentDiff = option.value
+		},
 		methods: {
 			getPageList() {
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
+				this.body.account = uni.getStorageSync("account")
+				http.post('api/DigitalCoin/GetValidPageListByAccount', this.body).then((res) => {
+					if (res.data.StatusCode == 1) {
 
-				http.post('api/DigitalCoin/GetPageList', this.body).then((res) => {
-					console.log("11111111111")
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
+					}
 				}).catch((err) => {
-					console.log("222222222222")
+					this.message = '请求失败'
+					this.$refs.toast.show()
 				})
 			}
 		},
@@ -72,6 +68,8 @@
 	.main {
 		flex-direction: column;
 		min-height: 100vh;
+		padding-top: 15upx;
+		background: #efefef;
 	}
 
 	.main-list {

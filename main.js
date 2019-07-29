@@ -6,6 +6,11 @@ Vue.config.productionTip = false
 //全局注入w-loading组件
 import wLoading from "@/common/w-loading.vue";
 Vue.component('w-loading',wLoading)
+
+import yuToast from '@/components/yu-toast/yu-toast'
+Vue.component('yu-toast',yuToast)
+
+
 Vue.prototype.$serverUrl = 'https://unidemo.dcloud.net.cn';
 
 App.mpType = 'app'

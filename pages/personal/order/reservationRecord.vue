@@ -5,17 +5,6 @@
 			<view class="main-list">
 				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
 				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
 
 
 			</view>
@@ -26,7 +15,7 @@
 		<view class="load-more-view">
 			<text class="loadMore">加载中...</text>
 		</view>
-
+		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -41,11 +30,14 @@
 		},
 		data() {
 			return {
+				value: 0,
+				message: '',
 				recordList: [],
 				refreshing: false,
 				body: {
-					"page": 1,
-					"rowCount": 10
+					account: '',
+					page: 1,
+					rowCount: 10
 				}
 			}
 		},
@@ -63,24 +55,21 @@
 		},
 		methods: {
 			getData() {
-				let params = {
-					"page": 1,
-					"rowCount": 10
-				}
-
 
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				http.post('api/DigitalCoin/GetPageList', this.body).then((res) => {
-					console.log("1111111111111")
-					/* uni.setStorageSync("account", this.account);
-					uni.setStorageSync("token", res.access_token); */
+				http.post('api/DigitalCoin/GetSubscribePageListByAccount', this.body).then((res) => {
+					if (res.data.StatusCode == 1) {
+
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
+					}
 
 				}).catch((err) => {
-					console.log("222222222222")
-					/* this.message = '失败' + err
-					this.$refs.toast.show() */
+					this.message = '请求失败'
+					this.$refs.toast.show()
 				})
 
 				for (var i = 0; i < 35; i++) {

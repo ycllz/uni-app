@@ -1,7 +1,7 @@
 <template>
 	<!-- 我的银行卡 -->
 	<view class="main">
-		<cmd-nav-bar :fixed="false" back title="我的银行卡" iconTwo="add" @iconTwo="addbank()" font-color="#fff" background-color="#249873"></cmd-nav-bar>
+		<cmd-nav-bar :fixed="false" back title="我的银行卡" iconTwo="add" @iconTwo="addbank()" font-color="#000" background-color="#fff"></cmd-nav-bar>
 		<view class="main-list">
 			<view class="main-list-item">
 				<div class="div-image">
@@ -77,7 +77,9 @@
 		},
 		methods: {
 			addbank() {
-				console.log("111111111")
+				uni.navigateTo({
+					url: 'addBankCard'
+				})
 			},
 		}
 	}
@@ -97,6 +99,7 @@
 	}
 
 	.main-list {
+		margin-top: 15upx;
 		background-color: #FFFFFF;
 		width: 750upx;
 		flex-direction: column;

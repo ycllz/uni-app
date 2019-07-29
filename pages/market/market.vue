@@ -27,37 +27,39 @@
 					</view>
 					<view class="card-bottm row">
 						<view class="car-title-view row">
-							<text class="card-title card-list2-title">智能合约收益:{{item.f_TimeLimit}}天/{{item.f_TimeLimit}}% </text>
+							<text class="card-title card-list2-title">智能合约收益:{{item.f_TimeLimit}}天/{{item.f_RateOfRateStr}} </text>
 						</view>
 					</view>
 					<view class="card-bottm row">
 						<view class="car-title-view row">
-							<text class="card-title card-list2-title">可挖WIA:{{item.f_RateOfRate}}枚 </text>
+							<text class="card-title card-list2-title">可挖WIA:{{item.f_CoinNum}}枚 </text>
 						</view>
 					</view>
-					<view class="card-bottm row">
+					<!-- <view class="card-bottm row">
 						<view class="car-title-view row">
 							<text class="card-title card-list2-title">可挖DOGE:收益{{item.f_TimeLimit}}% </text>
 						</view>
-					</view>
+					</view> -->
 					<view class="card-bottm row">
-						<button type="primary" @click="diffSubscribe(item)" plain="true">预约</button>
+						<button type="primary" @click="diffSubscribe(item)" plain="true">{{item.f_StatusStr}}</button>
 					</view>
 
 				</view>
 			</view>
 		</block>
-		<!-- <text class="loadMore">加载中...</text> -->
+		<w-loading text="加载中.." mask="true" click="false" ref="loading"></w-loading>
+		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
 <script>
-	import http from '../../common/vmeitime-http/interface.js'
+	import http from '@/common/vmeitime-http/interface.js'
 
 	let keys = 0;
 	export default {
 		data() {
 			return {
+				message:'',
 				refreshing: false,
 				lists: [],
 				msgId: '',
@@ -81,30 +83,59 @@
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				http.get('api/TemplateInfo/GetCanSelledTemplateList').then((res) => {
-					this.lists = []
-					for (let i = 0; i < res.data.length; i++) {
-
-						res.data[i].f_LevelStr = this.getLevelStr(res.data[i].f_Level)
-						console.log(res.data[i].f_LevelStr)
-						if (i % 2 == 0) {
-							let row = {}
-							row.list = []
-							row.id = i
-							row.list.push(res.data[i])
-							this.lists.push(row)
-						} else {
-							this.lists[this.lists.length - 1].id = i
-							this.lists[this.lists.length - 1].list.push(res.data[i])
+				http.post('api/TemplateInfo/GetCanSelledTemplateList').then((res) => {
+					if (res.data.StatusCode == 1) {
+						this.lists = []
+						let resData = res.data.Data
+						for (let i = 0; i < resData.length; i++) {
+							resData[i].f_LevelStr = this.getLevelStr(resData[i].f_Level)
+							resData[i].f_StatusStr = this.getStatusStr(resData[i].f_Status)
+							resData[i].f_RateOfRateStr = resData[i].f_RateOfRate * 100 + '%'
+							if (i % 2 == 0) {
+								let row = {}
+								row.list = []
+								row.id = i
+								row.list.push(resData[i])
+								this.lists.push(row)
+							} else {
+								this.lists[this.lists.length - 1].id = i
+								this.lists[this.lists.length - 1].list.push(resData[i])
+							}
 						}
+						this.refreshing = false;
+						uni.stopPullDownRefresh();
+					} else {
+						console.log(res.data.Message)
+						this.message = res.data.Message
+						this.$refs.toast.show()
 					}
-					this.refreshing = false;
-					uni.stopPullDownRefresh();
+
+
 				}).catch((err) => {
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
-					console.log("222222222222")
+					this.message = '请求失败'
+					this.$refs.toast.show()
 				})
+			},
+			getStatusStr(value) {
+				let res = "可预约"
+				switch (value) {
+					//(1：停止抢购，2：可以抢购，3：已预约 4：可预约)
+					case 1:
+						res = "繁殖中"
+						break;
+					case 2:
+						res = "抢购"
+						break;
+					case 3:
+						res = "已预约"
+						break;
+					case 4:
+						res = "待预约"
+						break;
+				}
+				return res
 			},
 			getLevelStr(value) {
 				let res = "其他"
@@ -126,17 +157,48 @@
 			},
 
 			diffSubscribe(item) {
+				//(1：停止抢购，2：可以抢购，3：已预约 4：可预约)
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
 
-				let account = uni.getStorageSync("account")
-				let diff = item.f_ReserveValue
-				http.post('api/UserInfo/DiffSubscribe?account=' + account + "&diff=" + diff).then((res) => {
-					console.log("111111111111111111")
-				}).catch((err) => {
-					console.log("222222222222")
-				})
+				if (item.f_Status == 4) {
+					//预约
+					let account = uni.getStorageSync("account")
+					let diff = item.f_ReserveValue
+					http.post('api/UserInfo/DiffSubscribe?account=' + account + "&diff=" + diff).then((res) => {
+						if (res.data.StatusCode == 1) {
+							this.getData();
+						} else {
+							this.message = res.data.Message
+							this.$refs.toast.show()
+						}
+					}).catch((err) => {
+						this.message = '请求失败'
+						this.$refs.toast.show()
+					})
+				} else if (item.f_Status == 1) {
+					//抢购
+					this.$refs.loading.open()
+					let templateId = item.f_ID
+					http.post('api/Order/PlaceOrder?templateId=' + templateId).then((res) => {
+						if (res.data.StatusCode == 1) {
+							this.msgId = res.data
+							this.timer = setInterval(
+								this.processResult, 1000
+							);
+						} else {
+							this.$refs.loading.close()
+							this.message = res.data.Message
+							this.$refs.toast.show()
+						}
+					}).catch((err) => {
+						this.$refs.loading.close()
+						this.message = '请求失败'
+						this.$refs.toast.show()
+					})
+				}
+
 
 				/* http.config.header = {
 					'Authorization': uni.getStorageSync("token")
@@ -159,13 +221,22 @@
 				}
 
 				http.post('api/Order/ProcessResult?msgId=' + this.msgId).then((res) => {
-					this.fetchPageNum++
-					if (this.fetchPageNum == 5) {
-						window.clearInterval(this.timer); // 清除定时器
-						this.timer = null;
+					if (res.data.StatusCode == 1) {
+						this.fetchPageNum++
+						if (this.fetchPageNum == 5) {
+							this.$refs.loading.close()
+							window.clearInterval(this.timer); // 清除定时器
+							this.timer = null;
+						}
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
 					}
+
 				}).catch((err) => {
-					console.log("222222222222")
+					this.$refs.loading.close()
+					this.message = '请求失败'
+					this.$refs.toast.show()
 				})
 			}
 		}
@@ -194,21 +265,15 @@
 	.card-bottm uni-button[type=primary][plain] {
 		color: #249873 !important;
 		border: 1px solid #249873 !important;
-		;
 		background-color: rgba(0, 0, 0, 0);
 	}
 
 	.card-bottm uni-button {
 		margin-bottom: 10px !important;
-		;
 		margin-top: 10px !important;
-		;
 		width: 95px !important;
-		;
 		height: 30px !important;
-		;
 		line-height: 30px !important;
-		;
 		text-align: center;
 		font-size: 20px;
 	}

@@ -21,7 +21,7 @@
 			</view>
 			<!-- 昵称,个性签名 -->
 			<view class="right">
-				<view class="username" @tap="toLogin">{{user.username}}</view>
+				<view class="username" @tap="toLogin">{{userDetail.f_name}}</view>
 				<view class="signature" @tap="toSetting">{{user.signature}}</view>
 			</view>
 			<!-- 二维码按钮 -->
@@ -43,15 +43,15 @@
 			<view class="balance-info">
 				<view class="left">
 					<view class="box" @tap="toRecerd(1)">
-						<view class="num">1000</view>
+						<view class="num">{{userDetail.f_digcoinvalue}}</view>
 						<view class="text">微分</view>
 					</view>
 					<view class="box" @tap="toRecerd(2)">
-						<view class="num">20000</view>
+						<view class="num">{{userDetail.f_totalincomevalue}}</view>
 						<view class="text">累计收益</view>
 					</view>
 					<view class="box" @tap="toRecerd(3)">
-						<view class="num">3000</view>
+						<view class="num">{{userDetail.f_refervalue}}</view>
 						<view class="text">推广收益</view>
 					</view>
 				</view>
@@ -82,17 +82,27 @@
 		</view>
 		<!-- 占位 -->
 		<view class="place-bottom"></view>
+		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
+		<!-- click:  	true 点击空白无法关闭加载状态   |     false 点击空白可关闭加载状态 -->
+		<w-loading text="加载中.." mask="true" click="false" ref="loading"></w-loading>
+		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
+
+<!-- 未审核,审核中, 审核通过, 审核未通过,冻结, 禁用, 删除, 未激活 -->
 <script>
+	import http from '@/common/vmeitime-http/interface.js'
+
 	export default {
 		data() {
 			return {
+				message: '',
 				isfirst: true,
 				headerPosition: "fixed",
 				headerTop: null,
 				statusTop: null,
 				showHeader: true,
+				userDetail: {},
 				//个人信息,
 				user: {
 					username: '游客1002',
@@ -181,7 +191,18 @@
 			this.showHeader = false;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
+			this.getUserDetail();
 		},
+		// #ifndef MP
+		onNavigationBarButtonTap(e) {
+			const index = e.index;
+			if (index === 0) {
+				uni.navigateTo({
+					url: './setting/setting'
+				})
+			}
+		},
+		// #endif
 		onReady() {
 			//此处，演示,每次页面初次渲染都把登录状态重置
 			uni.setStorage({
@@ -236,15 +257,19 @@
 			toRecerd(index) {
 				console.log(index)
 				var toUrl = ""
+				let value = ""
 				switch (index) {
 					case 1:
-						toUrl = './order/diffRecord'
+						value = this.userDetail.f_digcoinvalue
+						toUrl = './order/diffRecord?value=' + value
 						break;
 					case 2:
-						toUrl = './order/profitRecord'
+						value = this.userDetail.f_totalincomevalue
+						toUrl = './order/profitRecord?value=' + value
 						break;
 					case 3:
-						toUrl = './order/promoteRecord'
+						value = this.userDetail.f_refervalue
+						toUrl = './order/promoteRecord?value=' + value
 						break;
 				}
 				uni.navigateTo({
@@ -288,10 +313,26 @@
 				uni.navigateTo({
 					url: url
 				})
+			},
+			//详情
+			getUserDetail() {
+				let account = uni.getStorageSync("account")
+				http.post('api/UserInfo/GetUserModelByAccount?account=' + account).then((res) => {
+					if (res.data.StatusCode == 1) {
+						this.userDetail = res.data.Data
+						this.user.username = this.userDetail.f_name
+
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
+					}
+				}).catch((err) => {
+					this.message = '请求失败'
+					this.$refs.toast.show()
+				})
 			}
 		},
 		mounted() {
-			this.user.username = 'zhaocd'
 			this.user.signature = uni.getStorageSync("account")
 		}
 	}

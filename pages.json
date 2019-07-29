@@ -3,7 +3,7 @@
 		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationBarTitleText": ""
 			}
 		},
 		{
@@ -23,28 +23,27 @@
 		{
 			"path": "pages/personal/personalCenter",
 			"style": {
-				"navigationBarTitleText": "个人中心",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/personal/personalCenter",
-			"style": {
-				"enablePullDownRefresh": true,
-				"backgroundTextStyle": "light",
-				"navigationBarBackgroundColor": "#f06c7a",
-				"backgroundColorTop": "#f06c7a",
-				"navigationBarTextStyle": "white"
-				/* "app-plus": {
-					"titleNView": false, //禁用原生导航栏
-					"subNVues": [{
-						"id": "userTitleNvue", // 唯一标识  
-						"path": "pages/personal/subNvue/userTitleNvue", // 页面路径  
-						"type": "navigationBar",
-						"background":"#f06c7a"
-					}]
-				} */
-			}
+				"navigationBarTitleText": "",
+				// #ifdef MP
+				//"navigationStyle": "custom"
+				// #endif
+ 				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"backgroundColor":"#f06c7a",
+						"buttons": [
+							{
+								"fontSrc": "/static/yticon.ttf",
+								"text": "\ue60f",
+								"fontSize": "28",
+								"color": "#fff",
+								"background": "rgba(0,0,0,0)",
+								"redDot": false
+							}
+						]
+					}
+				}
+ 			}
 		},
 		{
 			"path": "pages/personal/order/reservationRecord",
@@ -122,12 +121,40 @@
             	"enablePullDownRefresh": false
             }
         }
+        ,{
+            "path" : "pages/personal/setting/setting",
+            "style": {
+            	"navigationBarTitleText": "设置",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/personal/tools/addBankCard",
+            "style": {
+            	"navigationBarTitleText": "添加银行卡",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/register/register",
+            "style": {
+            	"navigationBarTitleText": "注册",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/register/forgetPassword",
+            "style": {
+            	"navigationBarTitleText": "找回密码",
+            	"enablePullDownRefresh": false
+            }
+        }
     ],
 	"globalStyle": {
-		"navigationBarTextStyle": "white",
+		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "看图",
-		"navigationBarBackgroundColor": "#249873",
-		"backgroundColor": "#249873"
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#fff"
 	},
 	"tabBar": {
 		"color": "#444444",
