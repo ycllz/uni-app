@@ -2,10 +2,7 @@
 	<view>
 		<view v-if="showHeader" class="status" :style="{position:headerPosition,top:statusTop}"></view>
 		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop}">
-			<!-- <view class="addr"></view>
-			<view class="input-box">
-
-			</view> -->
+			
 			<view class="icon-btn">
 				<view class="icon tongzhi" @tap="toMsg"></view>
 				<view class="icon setting" @tap="toSetting"></view>
@@ -143,7 +140,7 @@
 						img: '../../static/mingxi.png'
 					},
 					{
-						url: '',
+						url: './tools/myTeam',
 						text: '我的团队',
 						img: '../../static/mingxi.png'
 					},

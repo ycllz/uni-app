@@ -59,7 +59,7 @@
 	export default {
 		data() {
 			return {
-				message:'',
+				message: '',
 				refreshing: false,
 				lists: [],
 				msgId: '',
@@ -168,6 +168,8 @@
 					let diff = item.f_ReserveValue
 					http.post('api/UserInfo/DiffSubscribe?account=' + account + "&diff=" + diff).then((res) => {
 						if (res.data.StatusCode == 1) {
+							this.message = '预约成功'
+							this.$refs.toast.show()
 							this.getData();
 						} else {
 							this.message = res.data.Message
@@ -177,7 +179,7 @@
 						this.message = '请求失败'
 						this.$refs.toast.show()
 					})
-				} else if (item.f_Status == 1) {
+				} else if (item.f_Status == 2 || item.f_Status == 3) {
 					//抢购
 					this.$refs.loading.open()
 					let templateId = item.f_ID
@@ -222,12 +224,9 @@
 
 				http.post('api/Order/ProcessResult?msgId=' + this.msgId).then((res) => {
 					if (res.data.StatusCode == 1) {
-						this.fetchPageNum++
-						if (this.fetchPageNum == 5) {
-							this.$refs.loading.close()
-							window.clearInterval(this.timer); // 清除定时器
-							this.timer = null;
-						}
+						this.$refs.loading.close()
+						window.clearInterval(this.timer); // 清除定时器
+						this.timer = null;
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

@@ -59,20 +59,23 @@
 			</view>
 			<br />
 		</view>
-
+		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 
 	</view>
 </template>
 
 <script>
 	import cmdNavBar from "@/components/cmd-nav-bar/cmd-nav-bar.vue"
+	import http from '@/common/vmeitime-http/interface.js'
+	
+	
 	export default {
 		components: {
 			cmdNavBar
 		},
 		data() {
 			return {
-
+				message: '',
 			}
 		},
 		methods: {
@@ -81,6 +84,26 @@
 					url: 'addBankCard'
 				})
 			},
+			queryBankList() {
+				
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+				http.post('api/PayModel/GetNoDisableListByAccount?account=' + uni.getStorageSync("account")).then((res) => {
+					if (res.data.StatusCode == 1) {
+						
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
+					}
+				}).catch((err) => {
+					this.message = '请求失败'
+					this.$refs.toast.show()
+				})
+			},
+		},
+		mounted() {
+			this.queryBankList()
 		}
 	}
 </script>
