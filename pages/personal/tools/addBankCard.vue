@@ -1,7 +1,6 @@
 <template>
 	<view class="main">
 
-
 		<view class="uni-list">
 			<view class="uni-list-cell">
 				<view class="uni-list-cell-left">
@@ -16,18 +15,31 @@
 		</view>
 		<view class="main-list">
 
-
 			<input-box v-model="body.accountName" placeholder="账户名称" leftText="账户名称:"></input-box>
 			<input-box v-model="body.account" placeholder="账号" leftText="账号:"></input-box>
 			<input-box v-model="body.f_SubBranchName" placeholder="开户行地址" leftText="开户行地址:"></input-box>
 
-			<sunui-upbasic :upImgConfig="upImgBasic" @onUpImg="upBasicData" @onImgDel="delImgInfo" ref="uImage"></sunui-upbasic>
+			<view class="choose-code">请选择收款码:
+				<view class="uni-uploader__files">
+					<block v-for="(image,index) in imageList" :key="index">
+						<view class="uni-uploader__file" style="position: relative;">
+							<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage"></image>
+							<view class="close-view" @click="close(index)">×</view>
+						</view>
+					</block>
+					<view class="uni-uploader__input-box" v-show="imageList.length < 1">
+						<view class="uni-uploader__input" @tap="chooseImage"></view>
+					</view>
+				</view>
+
+			</view>
+
 
 			<input-box v-model="body.code" placeholder="请输入验证码" @rightClick="countDown" :rightText="content"></input-box>
 		</view>
 
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
-			<button type="primary" @tap="submitAdd">确认</button>
+			<button type="primary" @tap="uploadImage">确认</button>
 		</view>
 		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 
@@ -37,62 +49,47 @@
 <script>
 	import inputBox from '@/components/input-box/input-box'
 	import http from '@/common/vmeitime-http/interface.js'
+	import image from '@/common/image.js';
+
+	var sourceType = [
+		['camera'],
+		['album'],
+		['camera', 'album']
+	]
+	var sizeType = [
+		['compressed'],
+		['original'],
+		['compressed', 'original']
+	]
 
 	export default {
 		data() {
 			return {
+				baseUrl: '',
 				message: '',
 				content: '发送验证码',
 				totalTime: 120,
 				canClick: true, //添加canClick
 				body: {
-					type: 0,
-					typeName: "",
-					userId: "",
+					type: 1,
+					typeName: "支付宝",
 					account: "",
+					userAccount: '',
 					accountName: "",
 					filePath: "",
 					f_SubBranchName: "",
 					code: ""
 				},
 				basicArr: [],
-				// 基础版配置
-				upImgBasic: {
-					// 后端图片接口地址
-					basicConfig: {
-						url: 'http://39.100.76.224:8081/api/Upload/UploadImage'
-					},
-					// 是否开启提示(提醒上传图片的数量)
-					// tips: false,
-					// 是否开启notli(开启的话就是选择完直接上传，关闭的话当count满足数量时才上传)
-					notli: false,
-					// 图片数量
-					count: 2,
-					// 相机来源(相机->camera,相册->album,两者都有->all,默认all)
-					sourceType: 'all',
-					// 是否压缩上传照片(仅小程序生效)
-					sizeType: true,
-					// 上传图片背景修改 
-					upBgColor: '#E8A400',
-					// 上传icon图标颜色修改(仅限于iconfont)
-					upIconColor: '#fff',
-					// 上传svg图标名称
-					// upSvgIconName: 'icon-card',
-					// 上传文字描述(仅限四个字)
-					// upTextDesc: '上传证书',
-					// 删除按钮位置(left,right,bleft,bright),默认右上角
-					delBtnLocation: '',
-					// 是否隐藏添加图片
-					isAddImage: false,
-					// 是否隐藏删除图标
-					// isDelIcon: false,
-					// 删除图标定义背景颜色
-					// delIconColor: '',
-					// 删除图标字体颜色
-					// delIconText: '',
-					// 上传图标替换(+),是个http,https图片地址(https://www.playsort.cn/right.png)
-					iconReplace: ''
-				},
+
+				imageList: [],
+				sourceTypeIndex: 2,
+				sourceType: ['拍照', '相册', '拍照或相册'],
+				sizeTypeIndex: 2,
+				sizeType: ['压缩', '原图', '压缩或原图'],
+				countIndex: 8,
+				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+
 				array: [{
 					id: 1,
 					name: '支付宝'
@@ -129,7 +126,7 @@
 				this.index = e.target.value
 			},
 			//新增
-			submitAdd() {
+			uploadImage() {
 
 				if (this.body.accountName == '') {
 					this.message = '请输入账户名称'
@@ -147,13 +144,59 @@
 					return
 				}
 
-				this.body.filePath = '/upload/images/thum_5bbcd94d18774e1faa2e2ab4168dafad.png'
+				if (this.body.code == '') {
+					this.message = '请输入验证码'
+					this.$refs.toast.show()
+					return
+				}
+				this.body.userAccount = uni.getStorageSync("account")
+				var images = [];
+
+				for (var i = 0, len = this.imageList.length; i < len; i++) {
+					var image_obj = {
+						name: 'image-' + i,
+						uri: this.imageList[i]
+					};
+					images.push(image_obj);
+				}
+
+				uni.uploadFile({
+					url: this.baseUrl + 'api/Upload/UploadImage',
+					files: images,
+					filePath: images[0].uri,
+					name: 'file',
+					success: (uploadFileRes) => {
+						console.log(uploadFileRes)
+						let res = JSON.parse(uploadFileRes.data)
+						console.log(res)
+						if (res.StatusCode == 1) {
+							console.log(res.Data.isSuccess)
+							if (res.Data.isSuccess) {
+								this.body.filePath = res.Data.filePath
+								this.submitAdd()
+							} else {
+								this.message = res.Data.msg
+								this.$refs.toast.show()
+							}
+						} else {
+
+						}
+					},
+					fail: (e) => {
+						this.message = '请求失败'
+						this.$refs.toast.show()
+					}
+				});
+			},
+			submitAdd() {
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
 				http.post('api/PayModel/AddPayModel', this.body).then((res) => {
 					if (res.data.StatusCode == 1) {
-
+						this.message = '添加成功'
+						this.$refs.toast.show()
+						uni.navigateBack()
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()
@@ -162,7 +205,6 @@
 					this.message = '请求失败'
 					this.$refs.toast.show()
 				})
-
 			},
 			//倒计时
 			countDown() {
@@ -182,12 +224,10 @@
 			},
 			//发送验证码
 			sendCodeMessage() {
-
-
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				http.get('api/NoAuthorize/SendCodeMessage?account=15882039655').then((res) => {
+				http.get(this.baseUrl + 'api/NoAuthorize/SendCodeMessage?account=15882039655').then((res) => {
 					if (res.data.StatusCode == 1) {
 						this.message = '验证码发送成功'
 						this.$refs.toast.show()
@@ -200,40 +240,54 @@
 					this.$refs.toast.show()
 				})
 			},
-			// 删除图片 -2019/05/12(本地图片进行删除)
-			async delImgInfo(e) {
-				console.log('你删除的图片地址为:', e, this.basicArr.splice(e.index, 1));
+
+
+			previewImage: function(e) {
+				var current = e.target.dataset.src
+				uni.previewImage({
+					current: current,
+					urls: this.imageList
+				})
 			},
-			// 基础版
-			async upBasicData(e) {
-				console.log('===>', e);
-				// 上传图片数组
-				let arrImg = [];
-				let res = ''
-				for (let i = 0, len = e.length; i < len; i++) {
-					try {
-						if (e[i].path_server != "") {
-							res = await arrImg.push(e[i].path_server.split(','));
-						}
-					} catch (err) {
-						console.log('上传失败...');
+			close(e) {
+				this.imageList.splice(e, 1);
+			},
+			chooseImage: async function() {
+				if (this.imageList.length === 9) {
+					let isContinue = await this.isFullImg();
+					console.log("是否继续?", isContinue);
+					if (!isContinue) {
+						return;
 					}
 				}
-				// 图片信息保存到data数组
-				this.basicArr = arrImg;
-				console.log('-----------------------');
-				console.log(arrImg);
-				console.log(res)
+				uni.chooseImage({
+					sourceType: sourceType[this.sourceTypeIndex],
+					sizeType: sizeType[this.sizeTypeIndex],
+					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
+					success: (res) => {
 
-				// 可以根据长度来判断图片是否上传成功. 2019/4/11新增
-				if (arrImg.length == this.upImgBasic.count) {
-					uni.showToast({
-						title: `上传成功`,
-						icon: 'none'
-					});
-				}
+						// #ifdef APP-PLUS
+						//提交压缩,因为使用了H5+ Api,所以自定义压缩目前仅支持APP平台
+						var compressd = cp_images => {
+							this.imageList = this.imageList.concat(cp_images) //压缩后的图片路径
+						}
+						image.compress(res.tempFilePaths, compressd);
+						// #endif
+
+						// #ifndef APP-PLUS
+						this.imageList = this.imageList.concat(res.tempFilePaths) //非APP平台不支持自定义压缩,暂时没有处理,可通过uni-app上传组件的sizeType属性压缩
+						// #endif
+
+					}
+				})
 			},
+		},
+
+		mounted() {
+			this.baseUrl = 'http://39.100.76.224:8081/'
 		}
+
+
 	}
 </script>
 
@@ -309,5 +363,92 @@
 	.uni-input-placeholder {
 		color: black;
 		font-size: 15px;
+	}
+
+
+
+	.uni-uploader__files {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.uni-uploader__file {
+		margin: 10upx;
+		width: 210upx;
+		height: 210upx;
+	}
+
+	.uni-uploader__img {
+		display: block;
+		width: 210upx;
+		height: 210upx;
+	}
+
+	.close-view {
+		text-align: center;
+		line-height: 30upx;
+		height: 35upx;
+		width: 35upx;
+		background: #ef5350;
+		color: #FFFFFF;
+		position: absolute;
+		top: 1upx;
+		right: 1upx;
+		font-size: 35upx;
+		border-radius: 8upx;
+	}
+
+	.uni-uploader__input-box {
+		position: relative;
+		margin: 10upx;
+		width: 208upx;
+		height: 208upx;
+		border: 2upx solid #D9D9D9;
+	}
+
+	.uni-uploader__input-box:before,
+	.uni-uploader__input-box:after {
+		content: " ";
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		background-color: #D9D9D9;
+	}
+
+	.uni-uploader__input-box:before {
+		width: 4upx;
+		height: 79upx;
+	}
+
+	.uni-uploader__input-box:after {
+		width: 79upx;
+		height: 4upx;
+	}
+
+	.uni-uploader__input-box:active {
+		border-color: #999999;
+	}
+
+	.uni-uploader__input-box:active:before,
+	.uni-uploader__input-box:active:after {
+		background-color: #999999;
+	}
+
+	.uni-uploader__input {
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+
+	.choose-code {
+		margin: 15px;
+		font-size: 14px;
 	}
 </style>

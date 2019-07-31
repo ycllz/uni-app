@@ -10,7 +10,7 @@
 			</view>
 			<button class="zai-btn" @click="bindLogin">立即登录</button>
 			<view class="zai-label">
-				<text @click="forgetPassword">忘记密码</text> <text class="register">点此注册</text>
+				<text @click="forgetPassword">忘记密码</text> <text @click="registerUser" class="register">点此注册</text>
 			</view>
 		</view>
 		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
@@ -123,6 +123,11 @@
 					url: '../register/forgetPassword',
 				});
 			},
+			registerUser(){
+				uni.reLaunch({
+					url: '../register/register',
+				});
+			}
 		},
 		onReady() {
 

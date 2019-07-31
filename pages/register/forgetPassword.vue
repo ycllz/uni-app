@@ -45,6 +45,10 @@
 				}, 500);
 			},
 			next() {
+				
+				uni.navigateTo({
+					url: 'forgetPasswordScondStep'
+				})
 
 			},
 		}
@@ -52,5 +56,16 @@
 </script>
 
 <style>
+	.main {
+		flex-direction: column;
+		min-height: 100vh;
+		background-color: #EFEFEF;
+		padding-top: 15upx;
+	}
 
+	.main-list {
+		background-color: #FFFFFF;
+		width: 750upx;
+		flex-direction: column;
+	}
 </style>

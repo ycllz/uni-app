@@ -27,23 +27,21 @@
 				// #ifdef MP
 				//"navigationStyle": "custom"
 				// #endif
- 				"app-plus": {
+				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
-						"backgroundColor":"#f06c7a",
-						"buttons": [
-							{
-								"fontSrc": "/static/yticon.ttf",
-								"text": "\ue60f",
-								"fontSize": "28",
-								"color": "#fff",
-								"background": "rgba(0,0,0,0)",
-								"redDot": false
-							}
-						]
+						"backgroundColor": "#f06c7a",
+						"buttons": [{
+							"fontSrc": "/static/yticon.ttf",
+							"text": "\ue60f",
+							"fontSize": "28",
+							"color": "#fff",
+							"background": "rgba(0,0,0,0)",
+							"redDot": false
+						}]
 					}
 				}
- 			}
+			}
 		},
 		{
 			"path": "pages/personal/order/reservationRecord",
@@ -63,100 +61,95 @@
 				"navigationBarTitleText": "转让记录",
 				"enablePullDownRefresh": true
 			}
-		}
-	    ,{
-            "path" : "pages/personal/tools/salfCenter",
-            "style": {
-            	"navigationBarTitleText": "安全中心",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/personal/tools/modifyPassword",
-            "style": {
-            	"navigationBarTitleText": "修改密码",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/personal/tools/realNameAuthentication",
-             "style": {
-            	"navigationBarTitleText": "实名认证",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/personal/order/profitRecord",
-             "style": {
-            	"navigationBarTitleText": "收益记录",
-            	"enablePullDownRefresh": false
-            }
-        },{
-            "path" : "pages/personal/order/diffRecord",
-             "style": {
-            	"navigationBarTitleText": "微分",
-            	"enablePullDownRefresh": false
-            }
-        },{
-            "path" : "pages/personal/order/promoteRecord",
-             "style": {
-            	"navigationBarTitleText": "推广收益",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/personal/tools/myBankCard",
-             "style": {
-            	"navigationBarTitleText": "我的银行卡",
-            	"enablePullDownRefresh": false,
+		}, {
+			"path": "pages/personal/tools/salfCenter",
+			"style": {
+				"navigationBarTitleText": "安全中心",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/tools/modifyPassword",
+			"style": {
+				"navigationBarTitleText": "修改密码",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/tools/realNameAuthentication",
+			"style": {
+				"navigationBarTitleText": "实名认证",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/order/profitRecord",
+			"style": {
+				"navigationBarTitleText": "收益记录",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/order/diffRecord",
+			"style": {
+				"navigationBarTitleText": "微分",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/order/promoteRecord",
+			"style": {
+				"navigationBarTitleText": "推广收益",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/tools/myBankCard",
+			"style": {
+				"navigationBarTitleText": "我的银行卡",
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": false //禁用原生导航栏
 				}
-            }
-        }
-        ,{
-            "path" : "pages/personal/tools/inviteFriends",
-             "style": {
-            	"navigationBarTitleText": "邀请好友",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/personal/setting/setting",
-            "style": {
-            	"navigationBarTitleText": "设置",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/personal/tools/addBankCard",
-            "style": {
-            	"navigationBarTitleText": "添加银行卡",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/register/register",
-            "style": {
-            	"navigationBarTitleText": "注册",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/register/forgetPassword",
-            "style": {
-            	"navigationBarTitleText": "找回密码",
-            	"enablePullDownRefresh": false
-            }
-        }
-        ,{
-            "path" : "pages/personal/tools/myTeam",
-             "style": {
-            	"navigationBarTitleText": "我的团队",
-            	"enablePullDownRefresh": false
-            }
-        }
-    ],
+			}
+		}, {
+			"path": "pages/personal/tools/inviteFriends",
+			"style": {
+				"navigationBarTitleText": "邀请好友",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/setting/setting",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/tools/addBankCard",
+			"style": {
+				"navigationBarTitleText": "添加银行卡",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/register/register",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/register/forgetPassword",
+			"style": {
+				"navigationBarTitleText": "找回密码",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/personal/tools/myTeam",
+			"style": {
+				"navigationBarTitleText": "我的团队",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/register/forgetPasswordScondStep",
+			"style": {
+				"navigationBarTitleText": "找回密码",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "看图",

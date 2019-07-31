@@ -1,7 +1,7 @@
 <template>
 	<!-- 注册 -->
 	<view>
-		
+		11111
 	</view>
 </template>
 
