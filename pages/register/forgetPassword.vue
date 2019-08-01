@@ -6,10 +6,9 @@
 			<view class="cus_yan" @click="refresh">
 				<imgcode ref="imgcode"></imgcode>
 			</view>
-			{{show()}}
-			<input-box v-model="imageCode" placeholder="请输入上图中的验证码" leftText="验证码:"></input-box>
-
-
+			<view style="border-top: 1px solid #F5F5F5;">
+				<input-box v-model="imageCode" placeholder="请输入上图中的验证码" leftText="验证码:"></input-box>
+			</view>
 			<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 				<button type="primary" @tap="next">下一步</button>
 			</view>
@@ -35,23 +34,26 @@
 			}
 		},
 		methods: {
-			refresh: function() {
+			refresh() {
 				this.$refs.imgcode.refresh();
 			},
-			show: function() {
+			show() {
 				var _self = this;
 				setTimeout(function() {
 					_self.refresh();
 				}, 500);
 			},
 			next() {
-				
 				uni.navigateTo({
-					url: 'forgetPasswordScondStep'
+					url: 'forgetPasswordScondStep?value=' + this.phone
 				})
 
 			},
+		},
+		mounted() {
+			this.show()
 		}
+
 	}
 </script>
 
@@ -67,5 +69,10 @@
 		background-color: #FFFFFF;
 		width: 750upx;
 		flex-direction: column;
+		padding-bottom: 20px;
+	}
+
+	.cus_yan {
+		margin: 30upx;
 	}
 </style>

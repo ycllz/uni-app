@@ -7,22 +7,22 @@
 
 			<view class="main-list-item" v-for="item in recordList" :key="item.id">
 				<view>
-					<text>区块编号:</text><text>3444534524356752</text>
+					<text>区块编号:</text><text>{{item.f_code}}</text>
 				</view>
 				<view>
-					<text>区块狗:</text><text>勇登</text>
+					<text>区块狗:</text><text>{{item.f_name}}</text>
 				</view>
 				<view>
-					<text>价值:</text><text>2384≈1280.3437 WIN</text>
+					<text>价值:</text><text>{{item.f_price}}</text>
 				</view>
 				<view>
-					<text>智能合约收益:</text><text>12天/21%</text>
+					<text>智能合约收益:</text><text>{{item.f_timelimit}}/{{item.f_rateofrateStr}}%</text>
 				</view>
 				<view>
-					<text>获得收益:</text><text>75.87</text>
+					<text>获得收益:</text><text></text>
 				</view>
 				<view>
-					<text>转让时间:</text><text>2019-07-22 22:22:22</text>
+					<text>转让时间:</text><text>{{item.f_transfertime}}</text>
 				</view>
 				<view style="margin-top: 6px;">
 					<view class="view-btn">
@@ -35,6 +35,7 @@
 				</view>
 			</view>
 		</view>
+		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -49,6 +50,7 @@
 		},
 		data() {
 			return {
+				message: '',
 				tabCur: 0,
 				tabList: [{
 						name: '待转让'
@@ -76,12 +78,24 @@
 				}
 				let type = this.tabCur + 1
 				http.post('api/Order/GetTransferList?type=' + type).then((res) => {
-					for (var i = 0; i < 10; i++) {
-						this.recordList.push("aasdffasdf")
+					if (res.data.StatusCode == 1) {
+						if(res.data.Data){
+							let resData = res.data.Data
+							for (let i = 0; i < resData.length; i++) {
+								resData[i].f_rateofrateStr = resData[i].f_rateofrate * 100
+							}
+							this.recordList = res.data.Data
+						}else{
+							this.recordList = []
+						}
+						
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
 					}
-					console.log("111111111111")
 				}).catch((err) => {
-					console.log("222222222222")
+					this.message = '请求失败'
+					this.$refs.toast.show()
 				})
 			}
 		},

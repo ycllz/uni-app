@@ -2,7 +2,7 @@
 	<view>
 		<view v-if="showHeader" class="status" :style="{position:headerPosition,top:statusTop}"></view>
 		<view v-if="showHeader" class="header" :style="{position:headerPosition,top:headerTop}">
-			
+
 			<view class="icon-btn">
 				<view class="icon tongzhi" @tap="toMsg"></view>
 				<view class="icon setting" @tap="toSetting"></view>
@@ -265,8 +265,13 @@
 						toUrl = './order/profitRecord?value=' + value
 						break;
 					case 3:
+						//推广收益
 						value = this.userDetail.f_refervalue
-						toUrl = './order/promoteRecord?value=' + value
+						//团对收益
+						let vaue1 = this.userDetail.f_teamvalue
+						//转存收益
+						let value2 = this.userDetail.f_revincomevalue
+						toUrl = './order/promoteRecord?value=' + value + '&value1=' + vaue1 + '&value2=' + value2
 						break;
 				}
 				uni.navigateTo({

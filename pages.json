@@ -95,7 +95,10 @@
 			"path": "pages/personal/order/promoteRecord",
 			"style": {
 				"navigationBarTitleText": "推广收益",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": false //禁用原生导航栏
+				}
 			}
 		}, {
 			"path": "pages/personal/tools/myBankCard",
@@ -149,7 +152,21 @@
 				"enablePullDownRefresh": false
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/personal/order/sell",
+            "style": {
+            	"navigationBarTitleText": "出售",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/personal/tools/payMoney",
+            "style": {
+            	"navigationBarTitleText": "付款",
+            	"enablePullDownRefresh": false
+            }
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "看图",

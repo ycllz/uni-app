@@ -2,7 +2,7 @@
 	<!-- 推广累计 -->
 	<view>
 		<view class="main">
-
+			<cmd-nav-bar :fixed="false" right-color="#2196f3" right-text="出售" back title="推广收益" @rightText="goSell()"></cmd-nav-bar>
 			<view class="top-card" style="margin-top: 20upx;">
 				<uni-card>
 					推广累计 {{value}}
@@ -20,16 +20,20 @@
 <script>
 	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
 	import uniCard from "@/components/uni-card/uni-card"
+	import cmdNavBar from "@/components/cmd-nav-bar/cmd-nav-bar.vue"
 	import http from '@/common/vmeitime-http/interface.js'
 
 	export default {
 		components: {
 			cmdCellItem,
-			uniCard
+			uniCard,
+			cmdNavBar
 		},
 		data() {
 			return {
 				value: 0,
+				value1: 0,
+				value2: 0,
 				message: '',
 				body: {
 					page: 1,
@@ -40,7 +44,14 @@
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
+			//推广收益
 			this.value = option.value
+			console.log(option.value1)
+			console.log(option.value2)
+			//团队收益
+			this.value1 = option.value1
+			//转存收益
+			this.value2 = option.value2
 		},
 		methods: {
 			getPageList() {
@@ -48,10 +59,10 @@
 					'Authorization': uni.getStorageSync("token"),
 					'Content-Type': 'application/json'
 				}
-				
+
 				http.post('api/ReferInCome/GetPageListByUserIdAndType', this.body).then((res) => {
 					if (res.data.StatusCode == 1) {
-				
+
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()
@@ -60,7 +71,12 @@
 					this.message = '请求失败'
 					this.$refs.toast.show()
 				})
-			}
+			},
+			goSell() {
+				uni.navigateTo({
+					url: 'sell?value=' + this.value + '&value1=' + this.value1 + '&value2=' + this.value2
+				})
+			},
 		},
 		mounted() {
 			this.getPageList()
