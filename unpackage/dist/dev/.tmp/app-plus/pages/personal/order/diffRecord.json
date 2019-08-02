@@ -2,6 +2,7 @@
   "navigationBarTitleText": "微分",
   "enablePullDownRefresh": false,
   "usingComponents": {
+    "yu-toast": "/components/yu-toast/yu-toast",
     "cmd-cell-item": "/components/cmd-cell-item/cmd-cell-item",
     "uni-card": "/components/uni-card/uni-card"
   }

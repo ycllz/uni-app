@@ -39,8 +39,8 @@
     },
     "statusbar": {
       "immersed": "supportedDevice",
-      "style": "light",
-      "background": "#249873"
+      "style": "dark",
+      "background": "#fff"
     },
     "usingComponents": true,
     "distribute": {
@@ -68,7 +68,7 @@
       }
     },
     "uni-app": {
-      "compilerVersion": "2.1.1",
+      "compilerVersion": "2.1.3",
       "control": "v8",
       "nvueCompiler": "weex"
     },

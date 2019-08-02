@@ -1,8 +1,11 @@
 {
   "navigationBarTitleText": "推广收益",
   "enablePullDownRefresh": false,
+  "titleNView": false,
   "usingComponents": {
+    "yu-toast": "/components/yu-toast/yu-toast",
     "cmd-cell-item": "/components/cmd-cell-item/cmd-cell-item",
-    "uni-card": "/components/uni-card/uni-card"
+    "uni-card": "/components/uni-card/uni-card",
+    "cmd-nav-bar": "/components/cmd-nav-bar/cmd-nav-bar"
   }
 }

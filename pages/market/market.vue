@@ -90,7 +90,7 @@
 						for (let i = 0; i < resData.length; i++) {
 							resData[i].f_LevelStr = this.getLevelStr(resData[i].f_Level)
 							resData[i].f_StatusStr = this.getStatusStr(resData[i].f_Status)
-							resData[i].f_RateOfRateStr = resData[i].f_RateOfRate * 100 + '%'
+							resData[i].f_RateOfRateStr = (resData[i].f_RateOfRate * 100).toString().substr(0,2) + '%'
 							if (i % 2 == 0) {
 								let row = {}
 								row.list = []

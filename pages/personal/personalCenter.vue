@@ -408,7 +408,7 @@
 		padding: 0 4%;
 		display: flex;
 		align-items: center;
-		// position: relative;
+		margin-top: -1px;
 		background-color: #f06c7a;
 		padding-bottom: 120upx;
 

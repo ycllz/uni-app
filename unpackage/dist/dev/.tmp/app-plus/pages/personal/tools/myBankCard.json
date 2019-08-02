@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "我的银行卡",
+  "enablePullDownRefresh": false,
+  "titleNView": false,
+  "usingComponents": {
+    "yu-toast": "/components/yu-toast/yu-toast",
+    "cmd-nav-bar": "/components/cmd-nav-bar/cmd-nav-bar"
+  }
+}

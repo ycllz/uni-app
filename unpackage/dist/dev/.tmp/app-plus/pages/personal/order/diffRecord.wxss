@@ -6,6 +6,8 @@
 	    -ms-flex-direction: column;
 	        flex-direction: column;
 	min-height: 100vh;
+	padding-top: 15rpx;
+	background: #efefef;
 }
 .main-list {
 	background-color: #FFFFFF;
@@ -27,5 +29,11 @@
 	    -ms-flex-direction: row;
 	        flex-direction: row;
 	padding: 0rpx 20rpx;
+}
+.top-card .uni-card {
+	border-radius: 10px;
+	text-align: center;
+	padding-top: 15px;
+	padding-bottom: 15px;
 }
 

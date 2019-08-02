@@ -9,6 +9,10 @@
 	height: 250rpx;
 	margin-top: 80rpx;
 }
+.zai-verify {
+	margin-top: 30rpx;
+	margin-bottom: 30rpx;
+}
 .zai-title {
 	position: absolute;
 	top: 0;
@@ -20,7 +24,7 @@
 	margin-left: -100rpx;
 }
 .zai-form {
-	margin-top: 150rpx;
+	margin-top: 110rpx;
 }
 .zai-input {
 	background: #e2f5fc;
@@ -29,18 +33,21 @@
 	padding: 20rpx 40rpx;
 	font-size: 36rpx;
 }
+.zai-label .register {
+	margin: 40rpx;
+}
 .input-placeholder,
 .zai-input {
 	color: #94afce;
 }
 .zai-label {
-	padding: 60rpx 0;
+	padding: 12rpx 0;
 	text-align: center;
 	font-size: 30rpx;
 	color: #a7b6d0;
 }
 .zai-btn {
-	background: #ff65a3;
+	background: #249873;
 	color: #fff;
 	border: 0;
 	border-radius: 100rpx;

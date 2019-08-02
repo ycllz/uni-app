@@ -1,0 +1,60 @@
+
+.text-orange {
+	color: #f37b1d
+}
+.text-black {
+	color: #333333;
+}
+.bg-white {
+	background-color: #ffffff;
+}
+.main {
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	min-height: 100vh;
+	background-color: #EFEFEF;
+}
+.main-list {
+	background-color: #FFFFFF;
+	width: 750rpx;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.main-list-item {
+	width: 750rpx;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	padding: 15rpx 20rpx;
+	border-bottom: 1px solid #c8c7cc;
+	font-size: 15px;
+}
+.view-btn {
+	width: 50px;
+	float: left;
+	margin-left: 20px;
+}
+.view-btn1 {
+	margin-left: 100px;
+}
+.view-btn uni-button {
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+}
+.view-btn1 uni-button {
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+}
+

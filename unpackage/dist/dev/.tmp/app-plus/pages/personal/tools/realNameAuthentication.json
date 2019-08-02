@@ -2,6 +2,7 @@
   "navigationBarTitleText": "实名认证",
   "enablePullDownRefresh": false,
   "usingComponents": {
+    "yu-toast": "/components/yu-toast/yu-toast",
     "input-box": "/components/input-box/input-box"
   }
 }

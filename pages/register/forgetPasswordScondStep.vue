@@ -23,9 +23,11 @@
 		},
 		data() {
 			return {
-				message:'',
+				message: '',
 				account: '',
 				content: '发送验证码',
+				totalTime: 120,
+				canClick: true, //添加canClick
 				newPassword: '',
 				confimNewPassword: '',
 				code: '',
@@ -57,7 +59,10 @@
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				http.get('api/NoAuthorize/SendCodeMessage?account=15882039655').then((res) => {
+				let body = {
+					'Account': '15882039655'
+				}
+				http.post('api/NoAuthorize/SendCodeMessage',body).then((res) => {
 					if (res.data.StatusCode == 1) {
 						this.message = '验证码发送成功'
 						this.$refs.toast.show()
@@ -70,14 +75,19 @@
 					this.$refs.toast.show()
 				})
 			},
-			submit(){
+			submit() {
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
 				this.account = uni.getStorageSync("account")
-				http.get('api/NoAuthorize/RetrievePassword?account='+account+'&password='+this.newPassword+'&msg='+this.code).then((res) => {
+				let body = {
+					account: this.account,
+					password: this.newPassword,
+					msg: this.code
+				}
+				http.post('api/NoAuthorize/RetrievePassword', body).then((res) => {
 					if (res.data.StatusCode == 1) {
-						
+
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

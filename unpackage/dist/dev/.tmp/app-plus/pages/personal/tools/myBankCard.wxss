@@ -1,0 +1,68 @@
+
+.body {
+	/*距离顶部范围应该在88-95范围内*/
+	padding-top: 90rpx;
+	top: var(--status-bar-height);
+}
+.main {
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	min-height: 100vh;
+	background-color: #EFEFEF;
+}
+.main-list {
+	margin-top: 15rpx;
+	background-color: #FFFFFF;
+	width: 750rpx;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+}
+.main-list-item {
+	width: 750rpx;
+	height: 195rpx;
+	-webkit-box-sizing: border-box;
+	        box-sizing: border-box;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: row;
+	    -ms-flex-direction: row;
+	        flex-direction: row;
+	padding: 15rpx 20rpx;
+	border-bottom: 1px solid #c8c7cc;
+	font-size: 15px;
+}
+.div-image {
+	float: left;
+}
+.div-image uni-image {
+	width: 80px;
+	height: 80px;
+}
+.div-card {
+	width: 320rpx;
+	margin-left: 15rpx;
+	margin-top: 22rpx;
+	float: left;
+}
+.div-btn {
+	margin-top: 45rpx;
+}
+.div-btn uni-button {
+	width: 60px;
+	height: 30px;
+	font-size: 14px;
+}
+.div-tip {
+	padding: 24rpx;
+	font-size: 20rpx;
+}
+.div-tip .red-tip {
+	color: #D53A33;
+}
+

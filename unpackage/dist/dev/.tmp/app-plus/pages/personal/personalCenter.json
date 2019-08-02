@@ -1,16 +1,21 @@
 {
-  "enablePullDownRefresh": true,
-  "backgroundTextStyle": "light",
-  "navigationBarBackgroundColor": "#f06c7a",
-  "backgroundColorTop": "#f06c7a",
-  "navigationBarTextStyle": "white",
-  "titleNView": false,
-  "subNVues": [
-    {
-      "id": "userTitleNvue",
-      "path": "pages/personal/subNvue/userTitleNvue",
-      "type": "navigationBar"
-    }
-  ],
-  "usingComponents": {}
+  "navigationBarTitleText": "",
+  "bounce": "none",
+  "titleNView": {
+    "backgroundColor": "#f06c7a",
+    "buttons": [
+      {
+        "fontSrc": "/static/yticon.ttf",
+        "text": "",
+        "fontSize": "28",
+        "color": "#fff",
+        "background": "rgba(0,0,0,0)",
+        "redDot": false
+      }
+    ]
+  },
+  "usingComponents": {
+    "w-loading": "/common/w-loading",
+    "yu-toast": "/components/yu-toast/yu-toast"
+  }
 }
