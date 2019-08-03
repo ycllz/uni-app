@@ -5,7 +5,7 @@
 			<input-box :inputValue="account" disabled="true" :clearShow="false" leftText="账号:"></input-box>
 			<input-box v-model="newPassword" placeholder="新密码" leftText="新密码:"></input-box>
 			<input-box v-model="confimNewPassword" placeholder="确认新密码" leftText="新密码:"></input-box>
-			<input-box v-model="code" placeholder="请输入验证码" @rightClick="countDown" :rightText="content"></input-box>
+			<input-box v-model="code" placeholder="请输入验证码" @rightClick="sendCodeMessage" :rightText="content"></input-box>
 		</view>
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 			<button type="primary" @tap="submit">确认</button>
@@ -24,13 +24,13 @@
 		data() {
 			return {
 				message: '',
-				account: '',
 				content: '发送验证码',
 				totalTime: 120,
 				canClick: true, //添加canClick
 				newPassword: '',
 				confimNewPassword: '',
 				code: '',
+				account: '',
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
@@ -42,7 +42,6 @@
 			countDown() {
 				if (!this.canClick) return //改动的是这两行代码
 				this.canClick = false
-				this.sendCodeMessage()
 				let clock = window.setInterval(() => {
 					this.totalTime--
 					this.content = this.totalTime + 's后重新发送'
@@ -62,8 +61,9 @@
 				let body = {
 					'Account': '15882039655'
 				}
-				http.post('api/NoAuthorize/SendCodeMessage',body).then((res) => {
+				http.post('api/NoAuthorize/SendCodeMessage', body).then((res) => {
 					if (res.data.StatusCode == 1) {
+						this.countDown()
 						this.message = '验证码发送成功'
 						this.$refs.toast.show()
 					} else {
@@ -87,7 +87,12 @@
 				}
 				http.post('api/NoAuthorize/RetrievePassword', body).then((res) => {
 					if (res.data.StatusCode == 1) {
-
+						this.message = '密码重置成功'
+						this.$refs.toast.show()
+						//返回2个页面
+						uni.navigateBack({
+							delta: 2
+						});
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

@@ -54,6 +54,9 @@
 
 <script>
 	import http from '@/common/vmeitime-http/interface.js'
+	import regExpUtil from '@/common/regExpUtil.js'
+
+
 
 	let keys = 0;
 	export default {
@@ -90,7 +93,7 @@
 						for (let i = 0; i < resData.length; i++) {
 							resData[i].f_LevelStr = this.getLevelStr(resData[i].f_Level)
 							resData[i].f_StatusStr = this.getStatusStr(resData[i].f_Status)
-							resData[i].f_RateOfRateStr = (resData[i].f_RateOfRate * 100).toString().substr(0,2) + '%'
+							resData[i].f_RateOfRateStr = (resData[i].f_RateOfRate * 100).toString().substr(0, 2) + '%'
 							if (i % 2 == 0) {
 								let row = {}
 								row.list = []
@@ -179,6 +182,7 @@
 						this.message = '请求失败'
 						this.$refs.toast.show()
 					})
+					//} else {
 				} else if (item.f_Status == 2 || item.f_Status == 3) {
 					//抢购
 					this.$refs.loading.open()
@@ -186,9 +190,15 @@
 					http.post('api/Order/PlaceOrder?templateId=' + templateId).then((res) => {
 						if (res.data.StatusCode == 1) {
 							this.msgId = res.data.Data
-							this.timer = setInterval(
-								this.processResult, 3000
-							);
+							if (regExpUtil.isNullOrEmpty(this.msgId)) {
+								this.$refs.loading.close()
+								this.message = '预约失败'
+								this.$refs.toast.show()
+							} else {
+								this.timer = setInterval(
+									this.processResult, 3000
+								);
+							}
 						} else {
 							this.$refs.loading.close()
 							this.message = res.data.Message

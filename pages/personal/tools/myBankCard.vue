@@ -3,19 +3,26 @@
 	<view class="main">
 		<cmd-nav-bar :fixed="false" back title="我的银行卡" iconTwo="add" @iconTwo="addbank()" font-color="#000" background-color="#fff"></cmd-nav-bar>
 		<view class="main-list">
-			<view class="main-list-item">
-				<div class="div-image">
-					<image src="../../../static/face.jpg"></image>
-				</div>
+			<view class="main-list-item" v-for="item in cardList" :key="item.f_id">
+				<view v-if="item.f_type == 1" class="div-image">
+					<image src="../../../static/pay_bao.png"></image>
+				</view>
+				<view v-else-if="item.f_type == 2" class="div-image">
+					<image src="../../../static/wei_chat.png"></image>
+				</view>
+				<view v-else class="div-image">
+					<image src="../../../static/bank_card.png"></image>
+				</view>
+
 				<div class="div-card">
 					<div>
-						<text>账户名称：赵长东</text>
+						<text>账户名称：</text>
 					</div>
 					<div>
-						<text>账户：15882039655</text>
+						<text>账户：{{item.f_account}}</text>
 					</div>
 					<div>
-						<text>账户类型：支付宝支付</text>
+						<text>账户类型：{{item.f_name}}</text>
 					</div>
 				</div>
 				<div class="div-btn">
@@ -23,7 +30,7 @@
 				</div>
 			</view>
 
-			<view class="main-list-item">
+			<!-- <view class="main-list-item">
 				<div class="div-image">
 					<image src="../../../static/face.jpg"></image>
 				</div>
@@ -41,7 +48,7 @@
 				<div class="div-btn">
 					<button type="warn">操作</button>
 				</div>
-			</view>
+			</view> -->
 
 			<view class="div-tip">
 				<text>
@@ -67,8 +74,8 @@
 <script>
 	import cmdNavBar from "@/components/cmd-nav-bar/cmd-nav-bar.vue"
 	import http from '@/common/vmeitime-http/interface.js'
-	
-	
+
+
 	export default {
 		components: {
 			cmdNavBar
@@ -76,6 +83,7 @@
 		data() {
 			return {
 				message: '',
+				cardList: [],
 			}
 		},
 		methods: {
@@ -85,13 +93,13 @@
 				})
 			},
 			queryBankList() {
-				
+
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
 				http.post('api/PayModel/GetNoDisableListByAccount?account=' + uni.getStorageSync("account")).then((res) => {
 					if (res.data.StatusCode == 1) {
-						
+						this.cardList = res.data.Data
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

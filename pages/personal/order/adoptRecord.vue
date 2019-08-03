@@ -19,7 +19,7 @@
 					<text>智能合约收益:</text><text>{{item.f_timelimit}}/{{item.f_rateofrateStr}}%</text>
 				</view>
 				<view>
-					<text>获得收益:</text><text></text>
+					<text>获得收益:{{item.f_income}}</text><text></text>
 				</view>
 				<view>
 					<text>转让时间:</text><text>{{item.f_transfertime}}</text>
@@ -27,10 +27,10 @@
 				<view style="margin-top: 6px;">
 					<template v-if="tabCur == 0">
 						<view class="view-btn">
-							<button type="primary" @click="goPay()">付款</button>
+							<button type="primary" @click="goPay(item._id)">付款</button>
 						</view>
 						<view class="view-btn1">
-							<button type="default"></button>
+							<button type="default">取消</button>
 						</view>
 					</template>
 					<template v-else-if="tabCur == 1">
@@ -56,6 +56,7 @@
 <script>
 	import WucTab from '@/components/wuc-tab/wuc-tab.vue'
 	import uniCard from "@/components/uni-card/uni-card"
+	import regExpUtil from '@/common/regExpUtil.js'
 	import http from '@/common/vmeitime-http/interface.js'
 
 	export default {
@@ -111,10 +112,13 @@
 					this.$refs.toast.show()
 				})
 			},
-			goPay() {
-				uni.navigateTo({
-					url: 'addBankCard'
-				})
+			goPay(order) {
+				if(!regExpUtil.isNullOrEmpty(order)){
+					uni.navigateTo({
+						url: 'payMoney?value=' + order
+					})
+				}
+				
 			}
 		},
 		mounted() {

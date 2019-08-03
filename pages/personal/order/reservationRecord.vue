@@ -35,7 +35,6 @@
 				recordList: [],
 				refreshing: false,
 				body: {
-					account: '',
 					page: 1,
 					rowCount: 10
 				}
@@ -54,20 +53,30 @@
 			this.getData();
 		},
 		methods: {
+			onPullDownRefresh() {
+				console.log('下拉刷新');
+				this.refreshing = true;
+				this.getData();
+			},
 			getData() {
 
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				http.post('api/DigitalCoin/GetSubscribePageListByAccount', this.body).then((res) => {
+				http.post('api/DigitalCoin/GetSubscribePageList', this.body).then((res) => {
 					if (res.data.StatusCode == 1) {
-
+						this.refreshing = false;
+						uni.stopPullDownRefresh();
 					} else {
+						this.refreshing = false;
+						uni.stopPullDownRefresh();
 						this.message = res.data.Message
 						this.$refs.toast.show()
 					}
 
 				}).catch((err) => {
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
 					this.message = '请求失败'
 					this.$refs.toast.show()
 				})

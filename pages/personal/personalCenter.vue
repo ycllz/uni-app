@@ -93,6 +93,7 @@
 	export default {
 		data() {
 			return {
+				refreshing: false,
 				message: '',
 				isfirst: true,
 				headerPosition: "fixed",
@@ -172,9 +173,8 @@
 		},
 		//下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
 		onPullDownRefresh() {
-			setTimeout(function() {
-				uni.stopPullDownRefresh();
-			}, 1000);
+			this.refreshing = true
+			this.getUserDetail()
 		},
 		onPageScroll(e) {
 			//兼容iOS端下拉时顶部漂移
@@ -227,6 +227,7 @@
 			});
 		},
 		methods: {
+
 			//消息列表
 			toMsg() {
 				uni.navigateTo({
@@ -312,23 +313,37 @@
 				})
 			},
 			toPage(url) {
+				if (url == './tools/realNameAuthentication') {
+					//实名认证
+					url = './tools/realNameAuthentication?value=' + this.userDetail.f_status
+
+				}
 				uni.navigateTo({
 					url: url
 				})
 			},
 			//详情
 			getUserDetail() {
-				let account = uni.getStorageSync("account")
-				http.post('api/UserInfo/GetUserModelByAccount?account=' + account).then((res) => {
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+				
+				http.post('api/UserInfo/GetUserModel').then((res) => {
 					if (res.data.StatusCode == 1) {
+						this.refreshing = false;
+						uni.stopPullDownRefresh();
 						this.userDetail = res.data.Data
 						this.user.username = this.userDetail.f_name
 
 					} else {
+						this.refreshing = false;
+						uni.stopPullDownRefresh();
 						this.message = res.data.Message
 						this.$refs.toast.show()
 					}
 				}).catch((err) => {
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
 					this.message = '请求失败'
 					this.$refs.toast.show()
 				})

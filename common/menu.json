@@ -1,0 +1,344 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace mhxk.blockchain.models.Emun
+{
+    /// <summary>
+    /// 枚举类
+    /// </summary>
+    public static class EnumClass
+    {
+        /// <summary>
+        /// 用户状态
+        /// </summary>
+        public enum UserStatus
+        {
+            /// <summary>
+            /// 未审核
+            /// </summary>
+            NotAudit = 1,
+            /// <summary>
+            /// 审核中
+            /// </summary>
+            AuditIng,
+            /// <summary>
+            /// 审核通过
+            /// </summary>
+            AuditApproval,
+            /// <summary>
+            /// 审核未通过
+            /// </summary>
+            AuditNotApproval,
+            /// <summary>
+            /// 冻结
+            /// </summary>
+            Frozen,
+            /// <summary>
+            /// 禁用
+            /// </summary>
+            Prohibit
+        }
+        /// <summary>
+        /// 微分类型
+        /// </summary>
+        public enum DiffType
+        {
+            /// <summary>
+            /// 转出
+            /// </summary>
+            TurnOut = 1,
+            /// <summary>
+            /// 转入
+            /// </summary>
+            TurnIn,
+            /// <summary>
+            /// 预约
+            /// </summary>
+            Subscribe,
+            /// <summary>
+            /// 预约退回
+            /// </summary>
+            SubscribeBack,
+            /// <summary>
+            /// 扣除
+            /// </summary>
+            Deduction
+        }
+        /// <summary>
+        /// 是或否
+        /// </summary>
+        public enum YesOrNo
+        {
+            /// <summary>
+            /// 是
+            /// </summary>
+            Yes = 1,
+            /// <summary>
+            /// 否
+            /// </summary>
+            No = 0,
+        }
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        public enum OrderStatus
+        {
+            /// <summary>
+            /// 待支付
+            /// </summary>
+            PrePay = 0,
+            /// <summary>
+            /// 收益中
+            /// </summary>
+            Sucess = 1,
+            /// <summary>
+            /// 支付超时
+            /// </summary>
+            TimeOut = 2,
+            /// <summary>
+            /// 待确认
+            /// </summary>
+            PreConfirm = 3,
+            /// <summary>
+            /// 取消
+            /// </summary>
+            Cancel = 4,
+            /// <summary>
+            /// 申诉
+            /// </summary>
+            Appeal = 5,
+            /// <summary>
+            /// 订单结束
+            /// </summary>
+            End = 6,
+            /// <summary>
+            /// 待售出
+            /// </summary>
+            PreSell,
+            /// <summary>
+            /// 收益结束
+            /// </summary>
+            EndIncome
+        }
+        /// <summary>
+        /// mongodb表
+        /// </summary>
+        public enum MongoTable
+        {
+            /// <summary>
+            /// 订单
+            /// </summary>
+            orderlist,
+            /// <summary>
+            /// 用户
+            /// </summary>
+            userlist,
+            /// <summary>
+            /// 基础数据
+            /// </summary>
+            basicdatalist,
+            /// <summary>
+            /// 区块
+            /// </summary>
+            blocklist,
+            /// <summary>
+            /// 模板
+            /// </summary>
+            templatelist,
+            /// <summary>
+            /// 支付方式
+            /// </summary>
+            paymodellist,
+            /// <summary>
+            /// 数字币
+            /// </summary>
+            digitalcoinlist,
+            /// <summary>
+            /// 文件
+            /// </summary>
+            fileslist,
+            /// <summary>
+            /// 分配记录
+            /// </summary>
+            placerecordlist
+        }
+        /// <summary>
+        /// 收款方式類型
+        /// </summary>
+        public enum PayModelType
+        {
+            ZhiFuBao = 1,
+            WeiXin,
+            YinHangKa,
+        }
+        /// <summary>
+        /// 区块产生方式
+        /// </summary>
+        public enum BlockSource
+        {
+            /// <summary>
+            /// 平台投放
+            /// </summary>
+            platform = 1,
+            /// <summary>
+            /// 转移投放
+            /// </summary>
+            transfer = 2,
+            /// <summary>
+            /// 推荐兑换
+            /// </summary>
+            tjexchange = 3,
+            /// <summary>
+            /// 团队兑换
+            /// </summary>
+            tdexchange = 4,
+            /// <summary>
+            /// 转存兑换
+            /// </summary>
+            zcexchange = 5
+        }
+        /// <summary>
+        /// 基础数据
+        /// </summary>
+        public enum BasicDataKey
+        {
+            /// <summary>
+            /// 模板分类
+            /// </summary>
+            TemplateLevel = 1,
+            /// <summary>
+            /// 用户等级
+            /// </summary>
+            UserRank = 2,
+            /// <summary>
+            /// 推荐收益
+            /// </summary>
+            TJLevel = 3,
+            /// <summary>
+            /// 团队收益
+            /// </summary>
+            TDLevel = 4,
+            /// <summary>
+            /// 兑换限制
+            /// </summary>
+            ExchangeLimit=5,
+            /// <summary>
+            /// 订单时间限制
+            /// </summary>
+            TimeLimit=6
+        }
+        /// <summary>
+        /// es索引
+        /// </summary>
+        public enum ESIndex
+        {
+            BlockChian
+        }
+        /// <summary>
+        /// 收益类型
+        /// </summary>
+        public enum ReferIncomeType
+        {
+            /// <summary>
+            /// 所有
+            /// </summary>
+            All=0,
+            /// <summary>
+            /// 合约收益
+            /// </summary>
+            HYInCome = 1,
+            /// <summary>
+            /// 推荐收益
+            /// </summary>
+            TJInCome,
+            /// <summary>
+            /// 团队收益
+            /// </summary>
+            TDInCome,
+            /// <summary>
+            /// 转存收益
+            /// </summary>
+            ZCInCome,
+            /// <summary>
+            /// 主流币分成
+            /// </summary>
+            MainStream,
+            /// <summary>
+            /// 空气币分成
+            /// </summary>
+            Air,
+        }
+
+        public enum QueueType
+        {
+            /// <summary>
+            /// 合约
+            /// </summary>
+            contractqueue,
+            /// <summary>
+            /// 合约收益
+            /// </summary>
+            contractincomequeue,
+            /// <summary>
+            /// 推荐团队收益
+            /// </summary>
+            incomequeue,
+            /// <summary>
+            /// 退回预约微分
+            /// </summary>
+            backdigitalcoinqueue,
+            /// <summary>
+            /// 日志
+            /// </summary>
+            logqueue,
+            /// <summary>
+            /// 短信队列
+            /// </summary>
+            smsqueue,
+            /// <summary>
+            /// 订单队列
+            /// </summary>
+            orderqueue
+        }
+
+        public enum BasicDataType
+        {
+            分类=1,
+            级别,
+            推荐,
+            团队,
+            最低兑换值,
+            每天兑换数
+        }
+
+        public enum TemplateStatus
+        {
+            停止抢购=1,
+            可以抢购,
+            已预约,
+            可预约
+        }
+        /// <summary>
+        ///  消息类型
+        /// </summary>
+        public enum MessageType
+        {
+            /// <summary>
+            /// 验证码
+            /// </summary>
+            VerCode = 1,
+            /// <summary>
+            /// 买入
+            /// </summary>
+            Buy,
+            /// <summary>
+            /// 卖出
+            /// </summary>
+            Sell,
+        }
+    }
+
+}

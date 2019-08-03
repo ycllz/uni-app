@@ -17,7 +17,10 @@
 
 			<input-box v-model="body.accountName" placeholder="账户名称" leftText="账户名称:"></input-box>
 			<input-box v-model="body.account" placeholder="账号" leftText="账号:"></input-box>
-			<input-box v-model="body.f_SubBranchName" placeholder="开户行地址" leftText="开户行地址:"></input-box>
+			<view v-if="body.type == 3">
+				<input-box  v-model="body.f_SubBranchName" placeholder="开户行地址" leftText="开户行地址:"></input-box>
+			</view>
+			
 
 			<view class="choose-code">请选择收款码:
 				<view class="uni-uploader__files">
@@ -31,11 +34,12 @@
 						<view class="uni-uploader__input" @tap="chooseImage"></view>
 					</view>
 				</view>
-
 			</view>
 
+			<view class="border-top-view">
+				<input-box v-model="body.code" placeholder="请输入验证码" @rightClick="sendCodeMessage" :rightText="content"></input-box>
+			</view>
 
-			<input-box v-model="body.code" placeholder="请输入验证码" @rightClick="countDown" :rightText="content"></input-box>
 		</view>
 
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
@@ -80,8 +84,6 @@
 					f_SubBranchName: "",
 					code: ""
 				},
-				basicArr: [],
-
 				imageList: [],
 				sourceTypeIndex: 2,
 				sourceType: ['拍照', '相册', '拍照或相册'],
@@ -138,7 +140,7 @@
 					this.$refs.toast.show()
 					return
 				}
-				if (this.body.f_SubBranchName == '') {
+				if (this.body.type == 3 && this.body.f_SubBranchName == '') {
 					this.message = '请输入开户行地址'
 					this.$refs.toast.show()
 					return
@@ -210,7 +212,6 @@
 			countDown() {
 				if (!this.canClick) return //改动的是这两行代码
 				this.canClick = false
-				this.sendCodeMessage()
 				let clock = window.setInterval(() => {
 					this.totalTime--
 					this.content = this.totalTime + 's后重新发送'
@@ -227,8 +228,12 @@
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				http.get(this.baseUrl + 'api/NoAuthorize/SendCodeMessage?account=15882039655').then((res) => {
+				let body = {
+					'Account': '15882039655'
+				}
+				http.post('api/NoAuthorize/SendCodeMessage', body).then((res) => {
 					if (res.data.StatusCode == 1) {
+						this.countDown()
 						this.message = '验证码发送成功'
 						this.$refs.toast.show()
 					} else {
@@ -364,9 +369,13 @@
 		color: black;
 		font-size: 15px;
 	}
+	
+	.border-top-view{
+		border-top: 1px solid #F5F5F5;
+	}
 
 
-/* 文件上传  satrt */
+	/* 文件上传  satrt */
 	.uni-uploader__files {
 		display: flex;
 		flex-direction: row;
@@ -451,5 +460,6 @@
 		margin: 15px;
 		font-size: 14px;
 	}
-/* 	文件上传 endw */
+
+	/* 	文件上传 endw */
 </style>

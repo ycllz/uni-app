@@ -24,6 +24,7 @@
 			"path": "pages/personal/personalCenter",
 			"style": {
 				"navigationBarTitleText": "",
+				"enablePullDownRefresh": true,
 				// #ifdef MP
 				//"navigationStyle": "custom"
 				// #endif
@@ -160,7 +161,7 @@
             }
         }
         ,{
-            "path" : "pages/personal/tools/payMoney",
+            "path" : "pages/personal/order/payMoney",
             "style": {
             	"navigationBarTitleText": "付款",
             	"enablePullDownRefresh": false
