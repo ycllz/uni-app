@@ -3,14 +3,10 @@
 	<view>
 		<view class="main">
 			<view class="main-list">
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-				<cmd-cell-item title="勇邓" brief="花费微分:7" addon="2019-07-22 22:22:12" />
-
-
+				<view v-for="item in reservationList" :key="item.id">
+					<cmd-cell-item :title="item.f_template_name" :brief="item.f_changevalueStr" :addon="item.f_createtime" />
+				</view>
 			</view>
-
-
-
 		</view>
 		<view class="load-more-view">
 			<text class="loadMore">加载中...</text>
@@ -30,6 +26,7 @@
 		},
 		data() {
 			return {
+				reservationList: '',
 				value: 0,
 				message: '',
 				recordList: [],
@@ -65,6 +62,16 @@
 				}
 				http.post('api/DigitalCoin/GetSubscribePageList', this.body).then((res) => {
 					if (res.data.StatusCode == 1) {
+						let resData = res.data.Data
+						if (resData) {
+							for (let i = 0; i < resData.length; i++) {
+								resData[i].id = 'r_' + i
+								resData[i].f_changevalueStr = '花费微分:' + resData[i].f_changevalue
+							}
+							this.reservationList = resData
+						} else {
+							this.reservationList = []
+						}
 						this.refreshing = false;
 						uni.stopPullDownRefresh();
 					} else {
@@ -80,14 +87,6 @@
 					this.message = '请求失败'
 					this.$refs.toast.show()
 				})
-
-				for (var i = 0; i < 35; i++) {
-					this.recordList.push({
-						"name": "测试数据-" + i,
-						"id": i
-					})
-				}
-				this.refreshing = false;
 			}
 		}
 	}
@@ -97,6 +96,8 @@
 	.main {
 		flex-direction: column;
 		min-height: 100vh;
+		background-color: #EFEFEF;
+		padding-top: 15upx;
 	}
 
 	.main-list {

@@ -19,19 +19,28 @@
 					<text>智能合约收益:</text><text>{{item.f_timelimit}}/{{item.f_rateofrateStr}}%</text>
 				</view>
 				<view>
-					<text>获得收益:</text><text></text>
+					<text>获得收益:{{item.f_income}}</text><text></text>
 				</view>
-				<view>
-					<text>转让时间:</text><text>{{item.f_transfertime}}</text>
-				</view>
-				<view style="margin-top: 6px;">
-					<view class="view-btn">
-						<button type="primary">操作</button>
+				<template v-if="tabCur == 0">
+					<view>
+						<text>创建时间:</text><text>{{item.f_createtime}}</text>
 					</view>
-					<view class="view-btn1">
-						<button type="default">次要</button>
+				</template>
+				<template v-else>
+					<view>
+						<text>转让时间:</text><text>{{item.f_transfertime}}</text>
 					</view>
+				</template>
 
+				<view style="margin-top: 6px;">
+					<template v-if="tabCur == 1">
+						<view class="view-btn">
+							<button type="primary" @click="goConfim(item._id)">确认</button>
+						</view>
+						<view class="view-btn1">
+							<button type="default" @click="goAppeal(item._id)">申诉</button>
+						</view>
+					</template>
 				</view>
 			</view>
 		</view>
@@ -50,6 +59,7 @@
 		},
 		data() {
 			return {
+				refreshing: false,
 				message: '',
 				tabCur: 0,
 				tabList: [{
@@ -67,6 +77,11 @@
 				recordList: []
 			}
 		},
+		onPullDownRefresh() {
+			console.log('下拉刷新');
+			this.refreshing = true;
+			this.getAdoptRecords();
+		},
 		methods: {
 			tabChange(index) {
 				this.TabCur = index;
@@ -79,16 +94,55 @@
 				let type = this.tabCur + 1
 				http.post('api/Order/GetTransferList?type=' + type).then((res) => {
 					if (res.data.StatusCode == 1) {
-						if(res.data.Data){
+						if (res.data.Data) {
 							let resData = res.data.Data
 							for (let i = 0; i < resData.length; i++) {
 								resData[i].f_rateofrateStr = resData[i].f_rateofrate * 100
 							}
 							this.recordList = res.data.Data
-						}else{
+						} else {
 							this.recordList = []
 						}
-						
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
+					}
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
+				}).catch((err) => {
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
+					this.message = '请求失败'
+					this.$refs.toast.show()
+				})
+			},
+			goConfim(orderId) {
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+				let body = {
+					orderId:orderId
+				}
+				http.post('api/Order/Confim',body).then((res) => {
+					if (res.data.StatusCode == 1) {
+						//确认订单(0：订单状态异常，1：成功，2：人员不匹配，3:二级密码不正确，4：提交失败)
+						if (res.data.Data == 1) {
+							this.message = '确认成功'
+							this.$refs.toast.show()
+							uni.navigateBack()
+						} else if (res.data.Data == 0) {
+							this.message = '订单状态异常'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 2) {
+							this.message = '人员不匹配'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 3) {
+							this.message = '二级密码不正确'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 4) {
+							this.message = '提交失败'
+							this.$refs.toast.show()
+						}
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

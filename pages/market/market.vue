@@ -1,5 +1,5 @@
 <template>
-	<view class="index">
+	<view class="index-left">
 		<block v-for="row in lists" :key="row.id">
 			<view class="row">
 				<view class="card card-list2" v-for="item in row.list" :key="item.f_ID">
@@ -291,4 +291,5 @@
 		text-align: center;
 		font-size: 20px;
 	}
+	
 </style>

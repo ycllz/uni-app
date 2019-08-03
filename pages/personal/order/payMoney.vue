@@ -29,12 +29,14 @@
 				</view>
 			</view>
 		</view>
-		
-		<view class="border-top-view">
-			<input-box v-model="securityPassword" placeholder="二级密码" leftText="二级密码:"></input-box>
-		</view>
-		
 
+		<view class="border-top-view">
+			<input-box v-model="safePwd" placeholder="二级密码" leftText="二级密码:"></input-box>
+		</view>
+		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
+			<button type="primary" @tap="uploadImage">确认</button>
+		</view>
+		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -42,6 +44,7 @@
 	import http from '@/common/vmeitime-http/interface.js'
 	import inputBox from '@/components/input-box/input-box'
 	import image from '@/common/image.js';
+	import md5 from 'js-md5'
 
 	var sourceType = [
 		['camera'],
@@ -60,10 +63,9 @@
 		},
 		data() {
 			return {
-				securityPassword:'',
-				orderId: '',
+				message: '',
 				orderDetail: {},
-
+				baseUrl: '',
 				imageList: [],
 				sourceTypeIndex: 2,
 				sourceType: ['拍照', '相册', '拍照或相册'],
@@ -71,12 +73,16 @@
 				sizeType: ['压缩', '原图', '压缩或原图'],
 				countIndex: 8,
 				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-
-
+				safePwd: '',
+				body: {
+					orderId: "",
+					safePwd: "",
+					payUrl: ""
+				}
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
-			this.orderId = option.value
+			this.body.orderId = option.value
 		},
 		methods: {
 			getOrderDetail() {
@@ -84,13 +90,105 @@
 					'Authorization': uni.getStorageSync("token")
 				}
 				let type = this.tabCur + 1
-				http.post('api/Order/GetOrderDetail?orderId=' + this.orderId).then((res) => {
+				http.post('api/Order/GetOrderDetail?orderId=' + this.body.orderId).then((res) => {
 					if (res.data.StatusCode == 1) {
 						if (res.data.Data) {
 							res.data.Data.f_statusStr = this.getStatusStr(res.data.Data.f_status)
 							this.orderDetail = res.data.Data
 						} else {
 							this.orderDetail = {}
+						}
+
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
+					}
+				}).catch((err) => {
+					this.message = '请求失败'
+					this.$refs.toast.show()
+				})
+			},
+			//上传图片
+			uploadImage() {
+
+				if (this.safePwd == '') {
+					this.message = '请输入二级密码'
+					this.$refs.toast.show()
+					return
+				}
+				if (this.imageList.length == 0) {
+					this.message = '请上传付款凭证'
+					this.$refs.toast.show()
+					return
+				}
+
+
+				this.body.userAccount = uni.getStorageSync("account")
+				var images = [];
+
+				for (var i = 0, len = this.imageList.length; i < len; i++) {
+					var image_obj = {
+						name: 'image-' + i,
+						uri: this.imageList[i]
+					};
+					images.push(image_obj);
+				}
+
+				uni.uploadFile({
+					url: this.baseUrl + 'api/Upload/UploadImage',
+					files: images,
+					filePath: images[0].uri,
+					header: {
+						'Authorization': uni.getStorageSync("token")
+					},
+					name: 'file',
+					success: (uploadFileRes) => {
+						console.log(uploadFileRes)
+						let res = JSON.parse(uploadFileRes.data)
+						console.log(res)
+						if (res.StatusCode == 1) {
+							if (res.Data.isSuccess) {
+								this.body.payUrl = res.Data.filePath
+								this.submitPay()
+							} else {
+								this.message = res.Data.msg
+								this.$refs.toast.show()
+							}
+						} else {
+
+						}
+					},
+					fail: (e) => {
+						this.message = '请求失败'
+						this.$refs.toast.show()
+					}
+				});
+			},
+			submitPay() {
+				let p1 = md5(this.safePwd.toString())
+				this.body.safePwd = md5(p1)
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+				http.post('api/Order/Pay', this.body).then((res) => {
+					if (res.data.StatusCode == 1) {
+						//支付订单(0：订单状态异常，1：成功，2：人员不匹配,3:二级密码不正确，4：提交失败)
+						if (res.data.Data == 1) {
+							this.message = '付款成功'
+							this.$refs.toast.show()
+							uni.navigateBack()
+						} else if (res.data.Data == 0) {
+							this.message = '订单状态异常'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 2) {
+							this.message = '人员不匹配'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 3) {
+							this.message = '二级密码不正确'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 4) {
+							this.message = '提交失败'
+							this.$refs.toast.show()
 						}
 
 					} else {
@@ -170,17 +268,34 @@
 			}
 		},
 		mounted() {
+			this.baseUrl = 'http://39.100.76.224:8081/'
 			this.getOrderDetail()
 		}
+
 	}
 </script>
 
 <style>
-	.border-top-view{
+	.main {
+		flex-direction: column;
+		min-height: 100vh;
+		background-color: #EFEFEF;
+		padding-top: 15upx;
+	}
+
+	.main-list {
+		background-color: #FFFFFF;
+		width: 750upx;
+		flex-direction: column;
+		font-size: 15px;
+		padding: 15px;
+	}
+
+	.border-top-view {
 		border-top: 1px solid #F5F5F5;
 	}
-	
-	
+
+
 	/* 文件上传  satrt */
 	.uni-uploader__files {
 		display: flex;

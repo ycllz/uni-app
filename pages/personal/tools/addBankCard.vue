@@ -18,9 +18,9 @@
 			<input-box v-model="body.accountName" placeholder="账户名称" leftText="账户名称:"></input-box>
 			<input-box v-model="body.account" placeholder="账号" leftText="账号:"></input-box>
 			<view v-if="body.type == 3">
-				<input-box  v-model="body.f_SubBranchName" placeholder="开户行地址" leftText="开户行地址:"></input-box>
+				<input-box v-model="body.f_SubBranchName" placeholder="开户行地址" leftText="开户行地址:"></input-box>
 			</view>
-			
+
 
 			<view class="choose-code">请选择收款码:
 				<view class="uni-uploader__files">
@@ -166,6 +166,9 @@
 					url: this.baseUrl + 'api/Upload/UploadImage',
 					files: images,
 					filePath: images[0].uri,
+					header: {
+						'Authorization': uni.getStorageSync("token")
+					},
 					name: 'file',
 					success: (uploadFileRes) => {
 						console.log(uploadFileRes)
@@ -369,8 +372,8 @@
 		color: black;
 		font-size: 15px;
 	}
-	
-	.border-top-view{
+
+	.border-top-view {
 		border-top: 1px solid #F5F5F5;
 	}
 
