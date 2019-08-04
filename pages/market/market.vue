@@ -40,13 +40,21 @@
 							<text class="card-title card-list2-title">可挖DOGE:收益{{item.f_TimeLimit}}% </text>
 						</view>
 					</view> -->
-					<view class="card-bottm row">
-						<button type="primary" @click="diffSubscribe(item)" plain="true">{{item.f_StatusStr}}</button>
-					</view>
-
+					<template v-if="item.f_Status !=1">
+						<view class="card-bottm row card-tag">
+							<uni-tag :text="item.f_StatusStr" type="success" @click="diffSubscribe(item)"></uni-tag>
+						</view>
+					</template>
+					<template v-else>
+						<view class="card-bottm row card-tag">
+							<uni-tag :text="item.f_StatusStr" type="default" ></uni-tag>
+						</view>
+					</template>
 				</view>
 			</view>
 		</block>
+		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
+		<!-- click:  	true 点击空白无法关闭加载状态   |     false 点击空白可关闭加载状态 -->
 		<w-loading text="加载中.." mask="true" click="false" ref="loading"></w-loading>
 		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
@@ -55,11 +63,13 @@
 <script>
 	import http from '@/common/vmeitime-http/interface.js'
 	import regExpUtil from '@/common/regExpUtil.js'
-
-
+	import uniTag from "@/components/uni-tag/uni-tag.vue"
 
 	let keys = 0;
 	export default {
+		components: {
+			uniTag,
+		},
 		data() {
 			return {
 				message: '',
@@ -71,6 +81,9 @@
 			}
 		},
 		onLoad() {
+
+		},
+		onShow() {
 			this.getData();
 		},
 		onPullDownRefresh() {
@@ -112,8 +125,6 @@
 						this.message = res.data.Message
 						this.$refs.toast.show()
 					}
-
-
 				}).catch((err) => {
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
@@ -158,7 +169,7 @@
 				}
 				return res
 			},
-
+   
 			diffSubscribe(item) {
 				//(1：停止抢购，2：可以抢购，3：已预约 4：可预约)
 				http.config.header = {
@@ -166,14 +177,25 @@
 				}
 				let templateId = item.f_ID
 				if (item.f_Status == 4) {
+
 					//预约
 					let account = uni.getStorageSync("account")
 					let diff = item.f_ReserveValue
 					http.post('api/UserInfo/DiffSubscribe?templateId=' + templateId).then((res) => {
+						this.message = '-------------' + res.data.StatusCode
+						this.$refs.toast.show()
+
 						if (res.data.StatusCode == 1) {
-							this.message = '预约成功'
-							this.$refs.toast.show()
-							this.getData();
+							//微分预约（0：预约失败，1：预约成功）
+							if (res.data.Data == 1) {
+								this.message = '预约成功'
+								this.$refs.toast.show()
+								//this.getData();
+							} else {
+								this.message = '预约失败'
+								this.$refs.toast.show()
+							}
+
 						} else {
 							this.message = res.data.Message
 							this.$refs.toast.show()
@@ -196,7 +218,7 @@
 								this.$refs.toast.show()
 							} else {
 								this.timer = setInterval(
-									this.processResult, 3000
+									this.processResult, 5000
 								);
 							}
 						} else {
@@ -210,21 +232,6 @@
 						this.$refs.toast.show()
 					})
 				}
-
-
-				/* http.config.header = {
-					'Authorization': uni.getStorageSync("token")
-				}
-
-				let templateId = item.f_ID
-				http.post('api/Order/PlaceOrder?templateId=' + templateId).then((res) => {
-					this.msgId = res.data
-					this.timer = setInterval(
-						this.processResult, 1000
-					);
-				}).catch((err) => {
-					console.log("222222222222")
-				}) */
 			},
 			processResult(msgId) {
 
@@ -234,9 +241,28 @@
 
 				http.post('api/Order/ProcessResult?msgId=' + this.msgId).then((res) => {
 					if (res.data.StatusCode == 1) {
-						this.$refs.loading.close()
-						window.clearInterval(this.timer); // 清除定时器
-						this.timer = null;
+						//获取订单抢购处理结果(1:抢购成功，0:抢购失败,-1代表处理中，其余代表失败)
+						if (res.data.Data == 1) {
+							this.$refs.loading.close()
+							window.clearInterval(this.timer); // 清除定时器
+							this.timer = null;
+							this.message = '领养成功'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 0) {
+							this.$refs.loading.close()
+							window.clearInterval(this.timer); // 清除定时器
+							this.timer = null;
+							this.message = '领养失败'
+							this.$refs.toast.show()
+						} else if (res.data.Data == -1) {
+
+						} else {
+							this.$refs.loading.close()
+							window.clearInterval(this.timer); // 清除定时器
+							this.timer = null;
+							this.message = '领养失败'
+							this.$refs.toast.show()
+						}
 					} else {
 						window.clearInterval(this.timer); // 清除定时器
 						this.timer = null;
@@ -276,20 +302,8 @@
 		flex: 1;
 	}
 
-	.card-bottm uni-button[type=primary][plain] {
-		color: #249873 !important;
-		border: 1px solid #249873 !important;
-		background-color: rgba(0, 0, 0, 0);
+	.card-tag {
+		margin-top: 10upx;
+		margin-bottom: 10upx;
 	}
-
-	.card-bottm uni-button {
-		margin-bottom: 10px !important;
-		margin-top: 10px !important;
-		width: 95px !important;
-		height: 30px !important;
-		line-height: 30px !important;
-		text-align: center;
-		font-size: 20px;
-	}
-	
 </style>

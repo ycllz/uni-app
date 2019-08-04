@@ -232,7 +232,7 @@
 					'Authorization': uni.getStorageSync("token")
 				}
 				let body = {
-					'Account': '15882039655'
+					'Account': uni.getStorageSync("account")
 				}
 				http.post('api/NoAuthorize/SendCodeMessage', body).then((res) => {
 					if (res.data.StatusCode == 1) {

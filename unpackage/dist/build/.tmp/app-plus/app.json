@@ -1,20 +1,34 @@
 {
   "pages": [
-    "pages/new/new",
-    "pages/hot/hot",
-    "pages/detail/detail",
-    "pages/tag/tag",
-    "pages/list/list",
-    "pages/center/center",
     "pages/login/login",
-    "pages/about/about"
+    "pages/service/service",
+    "pages/market/market",
+    "pages/personal/personalCenter",
+    "pages/personal/order/reservationRecord",
+    "pages/personal/order/adoptRecord",
+    "pages/personal/order/transferRecord",
+    "pages/personal/tools/salfCenter",
+    "pages/personal/tools/modifyPassword",
+    "pages/personal/tools/realNameAuthentication",
+    "pages/personal/order/profitRecord",
+    "pages/personal/order/diffRecord",
+    "pages/personal/order/promoteRecord",
+    "pages/personal/tools/myBankCard",
+    "pages/personal/tools/inviteFriends",
+    "pages/personal/setting/setting",
+    "pages/personal/tools/addBankCard",
+    "pages/register/register",
+    "pages/register/forgetPassword",
+    "pages/personal/tools/myTeam",
+    "pages/register/forgetPasswordScondStep",
+    "pages/personal/order/sell",
+    "pages/personal/order/payMoney"
   ],
-  "subPackages": [],
   "window": {
-    "navigationBarTextStyle": "white",
+    "navigationBarTextStyle": "black",
     "navigationBarTitleText": "看图",
-    "navigationBarBackgroundColor": "#249873",
-    "backgroundColor": "#249873"
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#fff"
   },
   "tabBar": {
     "color": "#444444",
@@ -23,22 +37,22 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/new/new",
-        "iconPath": "static/index-0.png",
-        "selectedIconPath": "static/index-1.png",
-        "text": "最新"
-      },
-      {
-        "pagePath": "pages/hot/hot",
+        "pagePath": "pages/market/market",
         "iconPath": "static/hot-0.png",
         "selectedIconPath": "static/hot-1.png",
-        "text": "推荐"
+        "text": "世界集市"
       },
       {
-        "pagePath": "pages/center/center",
+        "pagePath": "pages/service/service",
+        "iconPath": "static/index-0.png",
+        "selectedIconPath": "static/index-1.png",
+        "text": "服务中心"
+      },
+      {
+        "pagePath": "pages/personal/personalCenter",
         "iconPath": "static/center-0.png",
         "selectedIconPath": "static/center-1.png",
-        "text": "我的"
+        "text": "个人中心"
       }
     ]
   },
@@ -47,7 +61,11 @@
     "alwaysShowBeforeRender": true,
     "autoclose": false
   },
-  "appname": "myDemo1",
-  "compilerVersion": "2.0.1",
-  "usingComponents": {}
+  "appname": "QKH",
+  "compilerVersion": "2.1.3",
+  "usingComponents": {
+    "w-loading": "/common/w-loading",
+    "sunui-upbasic": "/components/sunui-upimg/sunui-upimg-basic",
+    "yu-toast": "/components/yu-toast/yu-toast"
+  }
 }

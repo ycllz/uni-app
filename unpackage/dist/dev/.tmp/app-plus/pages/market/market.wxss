@@ -5,6 +5,27 @@
 	font-style: normal;
 	src: url('https://at.alicdn.com/t/font_702773_g9f89om4v3j.ttf') format('truetype');
 }
+.index-left {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+    width: 750rpx;
+    /* min-height: 100vh; */
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-pack: left;
+	-webkit-justify-content: left;
+	    -ms-flex-pack: left;
+	        justify-content: left;
+	-webkit-box-align: left;
+	-webkit-align-items: left;
+	    -ms-flex-align: left;
+	        align-items: left;
+}
 .index {
 	-webkit-box-flex: 1;
 	-webkit-flex: 1;
@@ -140,7 +161,7 @@
 /*双列表*/
 .card-list2 {
 	width: 345rpx;
-	height: 545rpx;
+	height: 580rpx;
 	margin: 20rpx 0 20rpx 20rpx;
 }
 .card-list2-img {
@@ -522,18 +543,8 @@ template {
 	    -ms-flex: 1;
 	        flex: 1;
 }
-.card-bottm uni-button[type=primary][plain] {
-	color: #249873 !important;
-	border: 1px solid #249873 !important;
-	background-color: rgba(0, 0, 0, 0);
-}
-.card-bottm uni-button {
-	margin-bottom: 10px !important;
-	margin-top: 10px !important;
-	width: 95px !important;
-	height: 30px !important;
-	line-height: 30px !important;
-	text-align: center;
-	font-size: 20px;
+.card-tag {
+	margin-top: 10rpx;
+	margin-bottom: 10rpx;
 }
 

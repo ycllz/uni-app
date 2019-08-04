@@ -8,7 +8,7 @@
 				</uni-card>
 			</view>
 			<view class="main-list" style="margin-top: 30upx;">
-				<!-- <cmd-cell-item title="-12" brief="预约/领养扣除" addon="2019-07-22 22:22:12" /> -->
+				<cmd-cell-item v-for="item in list" :key="item.id" :title="item.f_changevalue" brief="预约/领养扣除" :addon="item.f_createtime" />
 			</view>
 			<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 		</view>
@@ -29,8 +29,8 @@
 			return {
 				currentDiff: 0,
 				message: '',
+				list: [],
 				body: {
-					account: '',
 					page: 1,
 					rowCount: 10
 				}
@@ -44,10 +44,15 @@
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				this.body.account = uni.getStorageSync("account")
-				http.post('api/DigitalCoin/GetValidPageListByAccount', this.body).then((res) => {
-					if (res.data.StatusCode == 1) {
+				this.list = []
+				http.post('api/DigitalCoin/GetValidPageList', this.body).then((res) => {
 
+					if (res.data.StatusCode == 1) {
+						let resData = res.data.Data
+						for (var i = 0; i < resData.length; i++) {
+							resData[i].id = 'd_'+i
+						}
+						this.list = resData
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

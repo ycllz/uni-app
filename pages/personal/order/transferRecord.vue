@@ -32,13 +32,15 @@
 					</view>
 				</template>
 
-				<view style="margin-top: 6px;">
+				<view style="margin-top: 10px;">
 					<template v-if="tabCur == 1">
 						<view class="view-btn">
-							<button type="primary" @click="goConfim(item._id)">确认</button>
+							<!-- <button type="primary" @click="goConfim(item._id)">确认</button> -->
+							<uni-tag text="确认" type="success" @click="goConfim(item._id)"></uni-tag>
 						</view>
 						<view class="view-btn1">
-							<button type="default" @click="goAppeal(item._id)">申诉</button>
+							<uni-tag text="申诉" type="warning" @click="goAppeal(item._id)"></uni-tag>
+							<!-- <button type="default" @click="goAppeal(item._id)">申诉</button> -->
 						</view>
 					</template>
 				</view>
@@ -52,10 +54,15 @@
 	import WucTab from '@/components/wuc-tab/wuc-tab.vue'
 	import uniCard from "@/components/uni-card/uni-card"
 	import http from '@/common/vmeitime-http/interface.js'
+	import uniTag from "@/components/uni-tag/uni-tag.vue"
+	
+	
+	
 	export default {
 		components: {
 			WucTab,
-			uniCard
+			uniCard,
+			uniTag
 		},
 		data() {
 			return {
@@ -116,6 +123,7 @@
 					this.$refs.toast.show()
 				})
 			},
+			//确认
 			goConfim(orderId) {
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
@@ -141,6 +149,45 @@
 							this.$refs.toast.show()
 						} else if (res.data.Data == 4) {
 							this.message = '提交失败'
+							this.$refs.toast.show()
+						}
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
+					}
+				}).catch((err) => {
+					this.message = '请求失败'
+					this.$refs.toast.show()
+				})
+			},
+			//申诉
+			goAppeal(orderId) {
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+				
+				http.post('api/Order/Appeal?orderId='+orderId).then((res) => {
+					if (res.data.StatusCode == 1) {
+						//申诉（待付款到期，待确认时可以点击，状态如下：0：用户不匹配，1：处理成功，2：订单状态不匹配，
+						//3：已经申诉过了，4：没有到申诉时间，5：处理失败）
+						if (res.data.Data == 1) {
+							this.message = '处理成功'
+							this.$refs.toast.show()
+							//uni.navigateBack()
+						} else if (res.data.Data == 0) {
+							this.message = '用户不匹配'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 2) {
+							this.message = '订单状态不匹配'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 3) {
+							this.message = '请不要重复申诉'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 4) {
+							this.message = '该时间暂不支持申诉'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 5) {
+							this.message = '处理失败'
 							this.$refs.toast.show()
 						}
 					} else {
@@ -194,24 +241,8 @@
 	}
 
 	.view-btn {
-		width: 50px;
 		float: left;
-		margin-left: 20px;
-	}
-
-	.view-btn1 {
-		margin-left: 100px;
-	}
-
-	.view-btn uni-button {
-		width: 100px;
-		height: 30px;
-		line-height: 30px;
-	}
-
-	.view-btn1 uni-button {
-		width: 100px;
-		height: 30px;
-		line-height: 30px;
+		margin-left: 20%;
+		margin-right: 20%;
 	}
 </style>

@@ -22,7 +22,7 @@
     "pages/personal/tools/myTeam",
     "pages/register/forgetPasswordScondStep",
     "pages/personal/order/sell",
-    "pages/personal/tools/payMoney"
+    "pages/personal/order/payMoney"
   ],
   "window": {
     "navigationBarTextStyle": "black",

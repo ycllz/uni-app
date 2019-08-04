@@ -97,7 +97,7 @@
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				http.post('api/PayModel/GetListByAccount?account=' + uni.getStorageSync("account")).then((res) => {
+				http.post('api/PayModel/GetList').then((res) => {
 					if (res.data.StatusCode == 1) {
 						this.cardList = res.data.Data
 					} else {

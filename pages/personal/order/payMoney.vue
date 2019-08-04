@@ -2,40 +2,48 @@
 	<!-- 付款 -->
 	<view class="main">
 		<view class="main-list">
-			<view>区块编号:{{orderDetail.f_code}}</view>
-			<view>区块狗:{{orderDetail.f_name}}</view>
-			<view>区块金额:{{orderDetail._id}}</view>
-			<view>智能合约收益:{{orderDetail._id}}</view>
-			<view>转让时间:{{orderDetail.f_transfertime}}</view>
-			<view>转让方:{{orderDetail.f_selluserid}}</view>
-			<view>转让方联系电话:{{orderDetail.f_buyphone}}</view>
-			<view>区块狗状态:{{orderDetail.f_statusStr}}</view>
-			<view>收益状态:{{orderDetail._id}}</view>
-		</view>
+			<view class="item">区块编号:{{orderDetail.f_code}}</view>
+			<view class="item">区块狗:{{orderDetail.f_name}}</view>
+			<view class="item">区块金额:{{orderDetail._id}}</view>
+			<view class="item">智能合约收益:{{orderDetail._id}}</view>
+			<view class="item">转让时间:{{orderDetail.f_transfertime}}</view>
+			<view class="item">转让方:{{orderDetail.f_selluserid}}</view>
+			<view class="item">转让方联系电话:{{orderDetail.f_buyphone}}</view>
+			<view class="item">区块狗状态:{{orderDetail.f_statusStr}}</view>
+			<view class="item">收益状态:{{orderDetail._id}}</view>
 
-		<view>转让方收款账号</view>
-
-
-		<view class="choose-code">请选上传付款码
-			<view class="uni-uploader__files">
-				<block v-for="(image,index) in imageList" :key="index">
-					<view class="uni-uploader__file" style="position: relative;">
-						<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage"></image>
-						<view class="close-view" @click="close(index)">×</view>
+			<view>转让方收款账号</view>
+			
+			
+			
+			
+			<view class="choose-code">请选上传付款码
+				<view class="uni-uploader__files">
+					<block v-for="(image,index) in imageList" :key="index">
+						<view class="uni-uploader__file" style="position: relative;">
+							<image class="uni-uploader__img" mode="aspectFill" :src="image" :data-src="image" @tap="previewImage"></image>
+							<view class="close-view" @click="close(index)">×</view>
+						</view>
+					</block>
+					<view class="uni-uploader__input-box" v-show="imageList.length < 1">
+						<view class="uni-uploader__input" @tap="chooseImage"></view>
 					</view>
-				</block>
-				<view class="uni-uploader__input-box" v-show="imageList.length < 1">
-					<view class="uni-uploader__input" @tap="chooseImage"></view>
 				</view>
 			</view>
+
+			<view class="border-top-view">
+				<input-box v-model="safePwd" placeholder="二级密码" leftText="二级密码:"></input-box>
+			</view>
+			<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
+				<button type="primary" @tap="uploadImage">确认</button>
+			</view>
+
 		</view>
 
-		<view class="border-top-view">
-			<input-box v-model="safePwd" placeholder="二级密码" leftText="二级密码:"></input-box>
-		</view>
-		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
-			<button type="primary" @tap="uploadImage">确认</button>
-		</view>
+
+
+
+
 		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
@@ -293,6 +301,10 @@
 
 	.border-top-view {
 		border-top: 1px solid #F5F5F5;
+	}
+
+	.main-list .item {
+		margin-top: 12upx;
 	}
 
 

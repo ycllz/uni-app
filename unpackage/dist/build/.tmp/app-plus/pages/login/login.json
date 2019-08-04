@@ -1,4 +1,8 @@
 {
-  "navigationBarTitleText": "登录",
-  "usingComponents": {}
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "w-loading": "/common/w-loading",
+    "yu-toast": "/components/yu-toast/yu-toast",
+    "move-verify": "/components/helang-moveVerify/helang-moveVerify"
+  }
 }

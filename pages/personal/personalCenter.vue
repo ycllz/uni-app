@@ -327,7 +327,7 @@
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
-				
+
 				http.post('api/UserInfo/GetUserModel').then((res) => {
 					if (res.data.StatusCode == 1) {
 						this.refreshing = false;
@@ -614,9 +614,9 @@
 	}
 
 	.toolbar {
-		width: 92%;
-		margin: 0 4% 0 4%;
-		padding: 0 0 20upx 0;
+		width: 84%;
+		margin: 15px 4% 15px 4%;
+		padding: 15px 4% 10px 4%;
 		background-color: #fff;
 		box-shadow: 0upx 0upx 25upx rgba(0, 0, 0, 0.1);
 		border-radius: 15upx;
@@ -636,26 +636,26 @@
 			padding-top: 30upx;
 
 			.box {
-				width: 33.33333333%;
-				margin-bottom: 30upx;
-
+				width: 33.333333%;
+				margin-bottom: 50upx;
+			
 				.img {
-					width: 31vw;
+					width: 28vw;
 					height: 10.5vw;
 					display: flex;
 					justify-content: center;
-
+			
 					image {
 						width: 9vw;
 						height: 9vw;
 					}
 				}
-
+			
 				.text {
 					width: 100%;
 					display: flex;
 					justify-content: center;
-					font-size: 26upx;
+					font-size: 28upx;
 					color: #3d3d3d;
 				}
 			}

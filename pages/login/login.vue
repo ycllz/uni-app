@@ -3,7 +3,7 @@
 		<image src="../../static/face.jpg" mode='aspectFit' class="zai-logo"></image>
 		<view class="zai-title"></view>
 		<view class="zai-form">
-			<input class="zai-input" placeholder-class v-model="account" placeholder="请输入用户名" />
+			<input class="zai-input" placeholder-class v-model="account" placeholder="请输入账号" />
 			<input class="zai-input" placeholder-class v-model="password" password placeholder="请输入密码" />
 			<view class="zai-verify">
 				<move-verify @result='verifyResult'></move-verify>
@@ -12,6 +12,7 @@
 			<view class="zai-label">
 				<text @click="forgetPassword">忘记密码</text> <text @click="registerUser" class="register">点此注册</text>
 			</view>
+			<view class="version">当前版本:0.1 beta</view>
 		</view>
 		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
 		<!-- click:  	true 点击空白无法关闭加载状态   |     false 点击空白可关闭加载状态 -->
@@ -25,9 +26,7 @@
 	import http from '@/common/vmeitime-http/interface.js'
 	import service from '../../service.js'
 	import md5 from 'js-md5'
-	
 	import moveVerify from "@/components/helang-moveVerify/helang-moveVerify.vue"
-
 
 	import {
 		mapState,
@@ -46,17 +45,30 @@
 			}
 		},
 		components: {
-			"move-verify": moveVerify
+			"move-verify": moveVerify,
 		},
-		computed: mapState(['forcedLogin']),
 		methods: {
-			...mapMutations(['login']),
 			bindLogin() {
+
+
+				if (this.account == '') {
+					this.message = '请输入账号'
+					this.$refs.toast.show()
+					return
+				}
+
+				if (this.password == '') {
+					this.message = '请输入密码'
+					this.$refs.toast.show()
+					return
+				}
+
 				if (!this.isVerify) {
 					this.message = '请先验证'
 					this.$refs.toast.show()
 					return
 				}
+
 				this.$refs.loading.open()
 				let p1 = md5(this.password.toString())
 				let p2 = md5(p1)
@@ -70,41 +82,18 @@
 					'Content-Type': 'application/x-www-form-urlencoded'
 				}
 				http.post('oauth2/token', body).then((res) => {
-					console.log("---------------------------------------------------------------")
-					console.log(res.data.access_token)
 					uni.setStorageSync("account", this.account);
 					uni.setStorageSync("token", 'bearer ' + res.data.access_token);
 					this.$refs.loading.close()
 					this.toMain("18510011002");
 				}).catch((err) => {
-					console.log('------------' + JSON.stringify(err))
 					this.$refs.loading.close()
-					this.message = '服务异常'
+					this.message = err.data.error_description
 					this.$refs.toast.show()
 				})
 			},
 			verifyResult() {
 				this.isVerify = true
-			},
-			oauth(value) {
-				uni.login({
-					provider: value,
-					success: (res) => {
-						uni.getUserInfo({
-							provider: value,
-							success: (infoRes) => {
-								/**
-								 * 实际开发中，获取用户信息后，需要将信息上报至服务端。
-								 * 服务端可以用 userInfo.openId 作为用户的唯一标识新增或绑定用户信息。
-								 */
-								this.toMain(infoRes.userInfo.nickName);
-							}
-						});
-					},
-					fail: (err) => {
-						console.error('授权登录失败：' + JSON.stringify(err));
-					}
-				});
 			},
 			toMain(userName) {
 				//this.login(userName);
@@ -123,15 +112,12 @@
 					url: '../register/forgetPassword',
 				});
 			},
-			registerUser(){
+			registerUser() {
 				uni.reLaunch({
 					url: '../register/register',
 				});
 			}
 		},
-		onReady() {
-
-		}
 	}
 </script>
 
@@ -177,7 +163,7 @@
 	}
 
 	.zai-label .register {
-		margin: 40upx;
+		margin: 50upx;
 	}
 
 	.input-placeholder,
@@ -207,5 +193,12 @@
 	/*按钮点击效果*/
 	.zai-btn.button-hover {
 		transform: translate(1upx, 1upx);
+	}
+
+	.version {
+		margin-top: 140upx;
+		text-align: center;
+		font-size: 14px;
+		color: #a7b6d0;
 	}
 </style>

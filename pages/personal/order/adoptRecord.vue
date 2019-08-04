@@ -24,22 +24,25 @@
 				<view>
 					<text>转让时间:</text><text>{{item.f_transfertime}}</text>
 				</view>
-				<view style="margin-top: 6px;">
+				<view style="margin-top: 10px;">
 					<template v-if="tabCur == 0">
 						<view class="view-btn">
-							<button type="primary" @click="goPay(item._id)">付款</button>
+							<uni-tag text="付款" type="success" @click="goPay(item._id)"></uni-tag>
+							<!-- <button type="primary" @click="goPay(item._id)">付款</button> -->
 						</view>
 						<view class="view-btn1">
-							<button type="default">取消</button>
+							<uni-tag text="取消" type="warning" @click="goCancel(item._id)"></uni-tag>
+							<!-- <button type="default">取消</button> -->
 						</view>
 					</template>
 					<template v-else-if="tabCur == 1">
-						<view class="view-btn">
+						<!-- <view class="view-btn">
+							<uni-tag text="付款" type="success" @click="goPay(item._id)"></uni-tag>
 							<button type="primary">已完成(收益中)</button>
 						</view>
 						<view class="view-btn1">
 							<button type="default">锁仓</button>
-						</view>
+						</view> -->
 					</template>
 					<template v-else>
 
@@ -58,14 +61,17 @@
 	import uniCard from "@/components/uni-card/uni-card"
 	import regExpUtil from '@/common/regExpUtil.js'
 	import http from '@/common/vmeitime-http/interface.js'
+	import uniTag from "@/components/uni-tag/uni-tag.vue"
 
 	export default {
 		components: {
 			WucTab,
-			uniCard
+			uniCard,
+			uniTag
 		},
 		data() {
 			return {
+				refreshing: false,
 				message: '',
 				tabCur: 0,
 				tabList: [{
@@ -81,6 +87,11 @@
 				recordList: []
 			}
 		},
+		onPullDownRefresh() {
+			console.log('下拉刷新');
+			this.refreshing = true;
+			this.getAdoptRecords();
+		},
 		methods: {
 			tabChange(index) {
 				this.TabCur = index;
@@ -92,6 +103,7 @@
 				}
 				let type = this.tabCur + 1
 				http.post('api/Order/GetAdoptList?type=' + type).then((res) => {
+					this.recordList = []
 					if (res.data.StatusCode == 1) {
 						if (res.data.Data) {
 							let resData = res.data.Data
@@ -99,26 +111,32 @@
 								resData[i].f_rateofrateStr = resData[i].f_rateofrate * 100
 							}
 							this.recordList = res.data.Data
-						} else {
-							this.recordList = []
 						}
 
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()
 					}
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
 				}).catch((err) => {
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
 					this.message = '请求失败'
 					this.$refs.toast.show()
 				})
 			},
 			goPay(order) {
-				if(!regExpUtil.isNullOrEmpty(order)){
+				if (!regExpUtil.isNullOrEmpty(order)) {
 					uni.navigateTo({
 						url: 'payMoney?value=' + order
 					})
 				}
-				
+
+			},
+			goCancel(order){
+				this.message = '请求失败'
+				this.$refs.toast.show()
 			}
 		},
 		mounted() {
@@ -162,24 +180,8 @@
 	}
 
 	.view-btn {
-		width: 50px;
 		float: left;
-		margin-left: 20px;
-	}
-
-	.view-btn1 {
-		margin-left: 100px;
-	}
-
-	.view-btn uni-button {
-		width: 100px;
-		height: 30px;
-		line-height: 30px;
-	}
-
-	.view-btn1 uni-button {
-		width: 100px;
-		height: 30px;
-		line-height: 30px;
+		margin-left: 20%;
+		margin-right: 20%;
 	}
 </style>
