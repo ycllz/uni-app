@@ -9,14 +9,14 @@
 		{
 			"path": "pages/service/service",
 			"style": {
-				"navigationBarTitleText": "服务中心",
+				"navigationBarTitleText": "军情汇报",
 				"enablePullDownRefresh": true
 			}
 		},
 		{
 			"path": "pages/market/market",
 			"style": {
-				"navigationBarTitleText": "世界集市",
+				"navigationBarTitleText": "战略地图",
 				"enablePullDownRefresh": true
 			}
 		},
@@ -89,7 +89,7 @@
 		}, {
 			"path": "pages/personal/order/diffRecord",
 			"style": {
-				"navigationBarTitleText": "微分",
+				"navigationBarTitleText": "军粮",
 				"enablePullDownRefresh": false
 			}
 		}, {
@@ -105,7 +105,7 @@
 			"path": "pages/personal/tools/myBankCard",
 			"style": {
 				"navigationBarTitleText": "我的银行卡",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": false //禁用原生导航栏
 				}
@@ -144,7 +144,7 @@
 			"path": "pages/personal/tools/myTeam",
 			"style": {
 				"navigationBarTitleText": "我的团队",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": true
 			}
 		}, {
 			"path": "pages/register/forgetPasswordScondStep",
@@ -183,19 +183,19 @@
 				"pagePath": "pages/market/market",
 				"iconPath": "static/hot-0.png",
 				"selectedIconPath": "static/hot-1.png",
-				"text": "世界集市"
+				"text": "战略地图"
 			},
 			{
 				"pagePath": "pages/service/service",
 				"iconPath": "static/index-0.png",
 				"selectedIconPath": "static/index-1.png",
-				"text": "服务中心"
+				"text": "军情汇报"
 			},
 			{
 				"pagePath": "pages/personal/personalCenter",
 				"iconPath": "static/center-0.png",
 				"selectedIconPath": "static/center-1.png",
-				"text": "个人中心"
+				"text": "我的基地"
 			}
 		]
 	}

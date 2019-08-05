@@ -1,7 +1,7 @@
 {
-    "name" : "QKH",
+    "name" : "欧皇争霸",
     "appid" : "__UNI__417A1A7",
-    "description" : "图片App模版",
+    "description" : "游戏类购物",
     "transformPx" : false,
     "icons" : [
         {
@@ -9,8 +9,8 @@
             "src" : "图片路径"
         }
     ],
-    "versionName" : "1.0.0",
-    "versionCode" : 100,
+    "versionName" : "0.2 beta",
+    "versionCode" : 2,
     "app-plus" : {
         "usingComponents" : true,
         "distribute" : {

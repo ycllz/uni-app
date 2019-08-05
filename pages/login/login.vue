@@ -12,7 +12,7 @@
 			<view class="zai-label">
 				<text @click="forgetPassword">忘记密码</text> <text @click="registerUser" class="register">点此注册</text>
 			</view>
-			<view class="version">当前版本:0.1 beta</view>
+			<view class="version">当前版本:{{version}}</view>
 		</view>
 		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
 		<!-- click:  	true 点击空白无法关闭加载状态   |     false 点击空白可关闭加载状态 -->
@@ -35,6 +35,7 @@
 	export default {
 		data() {
 			return {
+				version:'',
 				providerList: [],
 				hasProvider: false,
 				account: '15882039655',
@@ -43,6 +44,9 @@
 				isVerify: false,
 				positionTop: 0
 			}
+		},
+		onLoad() {
+			this.version = plus.runtime.version
 		},
 		components: {
 			"move-verify": moveVerify,
@@ -108,12 +112,12 @@
 
 			},
 			forgetPassword() {
-				uni.reLaunch({
+				uni.navigateTo({
 					url: '../register/forgetPassword',
 				});
 			},
 			registerUser() {
-				uni.reLaunch({
+				uni.navigateTo({
 					url: '../register/register',
 				});
 			}

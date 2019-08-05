@@ -66,7 +66,7 @@
 						if (resData) {
 							for (let i = 0; i < resData.length; i++) {
 								resData[i].id = 'r_' + i
-								resData[i].f_changevalueStr = '花费微分:' + resData[i].f_changevalue
+								resData[i].f_changevalueStr = '花费军粮:' + resData[i].f_changevalue
 							}
 							this.reservationList = resData
 						} else {

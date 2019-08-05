@@ -543,7 +543,7 @@ template {
 	    -ms-flex: 1;
 	        flex: 1;
 }
-.card-tag{
+.card-tag {
 	margin-top: 10rpx;
 	margin-bottom: 10rpx;
 }

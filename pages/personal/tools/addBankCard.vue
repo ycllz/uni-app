@@ -146,6 +146,12 @@
 					return
 				}
 
+				if (this.imageList.length == 0) {
+					this.message = '请选择收款码'
+					this.$refs.toast.show()
+					return
+				}
+
 				if (this.body.code == '') {
 					this.message = '请输入验证码'
 					this.$refs.toast.show()
@@ -175,7 +181,6 @@
 						let res = JSON.parse(uploadFileRes.data)
 						console.log(res)
 						if (res.StatusCode == 1) {
-							console.log(res.Data.isSuccess)
 							if (res.Data.isSuccess) {
 								this.body.filePath = res.Data.filePath
 								this.submitAdd()

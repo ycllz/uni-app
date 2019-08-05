@@ -40,19 +40,19 @@
         "pagePath": "pages/market/market",
         "iconPath": "static/hot-0.png",
         "selectedIconPath": "static/hot-1.png",
-        "text": "世界集市"
+        "text": "战略地图"
       },
       {
         "pagePath": "pages/service/service",
         "iconPath": "static/index-0.png",
         "selectedIconPath": "static/index-1.png",
-        "text": "服务中心"
+        "text": "军情汇报"
       },
       {
         "pagePath": "pages/personal/personalCenter",
         "iconPath": "static/center-0.png",
         "selectedIconPath": "static/center-1.png",
-        "text": "个人中心"
+        "text": "我的基地"
       }
     ]
   },
@@ -61,7 +61,7 @@
     "alwaysShowBeforeRender": true,
     "autoclose": false
   },
-  "appname": "QKH",
+  "appname": "欧皇争霸",
   "compilerVersion": "2.1.3",
   "usingComponents": {
     "w-loading": "/common/w-loading",

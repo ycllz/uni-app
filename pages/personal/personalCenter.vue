@@ -36,12 +36,12 @@
 		</view> -->
 		<!-- 订单-余额 -->
 		<view class="order">
-			<!-- 微分 -->
+			<!-- 军粮 -->
 			<view class="balance-info">
 				<view class="left">
 					<view class="box" @tap="toRecerd(1)">
 						<view class="num">{{userDetail.f_digcoinvalue}}</view>
-						<view class="text">微分</view>
+						<view class="text">军粮</view>
 					</view>
 					<view class="box" @tap="toRecerd(2)">
 						<view class="num">{{userDetail.f_totalincomevalue}}</view>

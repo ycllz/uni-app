@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "微分",
+  "navigationBarTitleText": "军粮",
   "enablePullDownRefresh": false,
   "usingComponents": {
     "yu-toast": "/components/yu-toast/yu-toast",

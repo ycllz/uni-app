@@ -22,7 +22,7 @@
 					</view>
 					<view class="card-bottm row">
 						<view class="car-title-view row">
-							<text class="card-title card-list2-title">预约/领养微分:{{item.f_ReserveValue}}/{{item.f_RealtimeValue}} </text>
+							<text class="card-title card-list2-title">预约/领养军粮:{{item.f_ReserveValue}}/{{item.f_RealtimeValue}} </text>
 						</view>
 					</view>
 					<view class="card-bottm row">

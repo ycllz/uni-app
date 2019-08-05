@@ -57,6 +57,16 @@
 				}
 			}
 		},
+		/* onBackPress(options) {
+			if (options.from === 'navigateBack') {
+				uni.redirectTo({
+					url: '../login/login'
+				});
+				return false;
+			}
+			this.back();
+			return true;
+		}, */
 		methods: {
 			//倒计时
 			countDown() {
@@ -97,17 +107,17 @@
 				})
 			},
 			submit() {
-			
-				
+
+
 				let p1 = md5(this.loginPassword.toString())
 				this.body.loginPassword = md5(p1)
-				
+
 				let p2 = md5(this.secondaryLoginPassword.toString())
 				this.body.secondaryLoginPassword = md5(p2)
-				
+
 				let p3 = md5(this.securityPassword.toString())
 				this.body.securityPassword = md5(p3)
-				
+
 				let p4 = md5(this.secondarySecurityPassword.toString())
 				this.body.secondarySecurityPassword = md5(p4)
 
@@ -117,9 +127,8 @@
 					if (res.data.StatusCode == 1) {
 						this.message = '注册成功，请登录'
 						this.$refs.toast.show()
-						//返回2个页面
-						uni.navigateBack({
-							delta: 1
+						uni.redirectTo({
+							url: '../login/login'
 						});
 					} else {
 						this.message = res.data.Message

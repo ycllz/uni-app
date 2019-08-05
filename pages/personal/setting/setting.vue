@@ -28,9 +28,11 @@
 		},
 		methods: {
 			safeQuit() {
-				uni.reLaunch({
-					url: '../../login/login'
-				});
+				// 退出当前应用，改方法只在App中生效  
+                plus.runtime.quit();  
+				// uni.reLaunch({
+				// 	url: '../../login/login'
+				// });
 			}
 		}
 	}

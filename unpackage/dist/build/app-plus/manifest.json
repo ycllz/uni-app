@@ -5,12 +5,12 @@
     "iPad"
   ],
   "id": "__UNI__417A1A7",
-  "name": "QKH",
+  "name": "欧皇争霸",
   "version": {
-    "name": "1.0.0",
-    "code": 100
+    "name": "0.2 beta",
+    "code": 2
   },
-  "description": "图片App模版",
+  "description": "游戏类购物",
   "launch_path": "__uniapptabbar.html",
   "developer": {
     "name": "",

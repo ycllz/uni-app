@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "世界集市",
+  "navigationBarTitleText": "战略地图",
   "enablePullDownRefresh": true,
   "usingComponents": {
     "w-loading": "/common/w-loading",

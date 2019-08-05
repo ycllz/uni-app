@@ -3,28 +3,51 @@
 		<view class="main">
 
 			<view class="main-list">
-				<cmd-cell-item title="-12" brief="预约/领养扣除" addon="2019-07-22 22:22:12" />
+				<cmd-cell-item v-for="item in list" :key="item.id" :title="item.f_name" :brief="item.f_phone" :addon="item.f_createtime" />
 			</view>
 			<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
+			<uLi-load-more :status="loadMoreStatus"></uLi-load-more>
 		</view>
+
 	</view>
 </template>
 
 <script>
 	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
 	import http from '@/common/vmeitime-http/interface.js'
+	import uLiLoadMore from "@/components/uLi-load-more/uLi-load-more.vue"
+
 	export default {
 		components: {
-			cmdCellItem
+			cmdCellItem,
+			uLiLoadMore
 		},
 		data() {
 			return {
 				message: '',
+				loadMoreStatus: 'more',
+				list: [],
+				refreshing: false,
 				body: {
 					page: 1,
-					rowCount: 10
+					rowCount: 15
 				}
 			}
+		},
+		onPullDownRefresh() {
+			console.log('下拉刷新');
+			this.refreshing = true;
+			this.getPageList();
+		},
+		onReachBottom() {
+			if (this.list.length < this.body.rowCount) {
+				this.message = '没有更多了~'
+				this.$refs.toast.show()
+			} else {
+				this.body.page++;
+				this.getPageList();
+			}
+
 		},
 		methods: {
 			getPageList() {
@@ -33,13 +56,17 @@
 				}
 				this.body.account = uni.getStorageSync("account")
 				http.post('api/UserInfo/GetTeamPageList', this.body).then((res) => {
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
 					if (res.data.StatusCode == 1) {
-
+						this.list = res.data.Data
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()
 					}
 				}).catch((err) => {
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
 					this.message = '请求失败'
 					this.$refs.toast.show()
 				})

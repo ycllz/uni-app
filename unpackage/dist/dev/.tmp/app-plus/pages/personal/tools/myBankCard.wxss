@@ -40,7 +40,11 @@
 .div-image {
 	float: left;
 }
-.div-image uni-image {
+.div-image>uni-image {
+	width: 80px;
+	height: 80px;
+}
+.div-image>image {
 	width: 80px;
 	height: 80px;
 }
@@ -52,11 +56,6 @@
 }
 .div-btn {
 	margin-top: 45rpx;
-}
-.div-btn uni-button {
-	width: 60px;
-	height: 30px;
-	font-size: 14px;
 }
 .div-tip {
 	padding: 24rpx;

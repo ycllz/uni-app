@@ -26,7 +26,8 @@
 					</div>
 				</div>
 				<div class="div-btn">
-					<button type="warn">操作</button>
+					<button class="mini-btn" type="warn" size="mini">禁用</button>
+					<!-- 	<button type="warn">操作</button> -->
 				</div>
 			</view>
 
@@ -83,8 +84,14 @@
 		data() {
 			return {
 				message: '',
+				refreshing:false,
 				cardList: [],
 			}
+		},
+		onPullDownRefresh() {
+			console.log('下拉刷新');
+			this.refreshing = true;
+			this.queryBankList();
 		},
 		methods: {
 			addbank() {
@@ -93,7 +100,6 @@
 				})
 			},
 			queryBankList() {
-
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
@@ -104,9 +110,13 @@
 						this.message = res.data.Message
 						this.$refs.toast.show()
 					}
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
 				}).catch((err) => {
 					this.message = '请求失败'
 					this.$refs.toast.show()
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
 				})
 			},
 		},
@@ -150,10 +160,16 @@
 		float: left;
 	}
 
-	.div-image uni-image {
+	.div-image>uni-image {
 		width: 80px;
 		height: 80px;
 	}
+
+	.div-image>image {
+		width: 80px;
+		height: 80px;
+	}
+
 
 	.div-card {
 		width: 320upx;
@@ -164,12 +180,6 @@
 
 	.div-btn {
 		margin-top: 45upx;
-	}
-
-	.div-btn uni-button {
-		width: 60px;
-		height: 30px;
-		font-size: 14px;
 	}
 
 	.div-tip {

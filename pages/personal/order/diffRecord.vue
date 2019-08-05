@@ -1,10 +1,10 @@
 <template>
-	<!-- 微分 -->
+	<!-- 军粮 -->
 	<view>
 		<view class="main">
 			<view class="top-card" style="margin-top: 20upx;">
 				<uni-card>
-					当前剩余微分 {{currentDiff}}
+					当前剩余军粮 {{currentDiff}}
 				</uni-card>
 			</view>
 			<view class="main-list" style="margin-top: 30upx;">

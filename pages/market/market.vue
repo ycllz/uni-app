@@ -22,7 +22,7 @@
 					</view>
 					<view class="card-bottm row">
 						<view class="car-title-view row">
-							<text class="card-title card-list2-title">预约/领养微分:{{item.f_ReserveValue}}/{{item.f_RealtimeValue}} </text>
+							<text class="card-title card-list2-title">预约/领养军粮:{{item.f_ReserveValue}}/{{item.f_RealtimeValue}} </text>
 						</view>
 					</view>
 					<view class="card-bottm row">
@@ -45,7 +45,7 @@
 							<uni-tag :text="item.f_StatusStr" type="success" @click="diffSubscribe(item)"></uni-tag>
 						</view>
 					</template>
-					<template v-else>
+					<template v-else> 
 						<view class="card-bottm row card-tag">
 							<uni-tag :text="item.f_StatusStr" type="default" ></uni-tag>
 						</view>
@@ -121,15 +121,22 @@
 						this.refreshing = false;
 						uni.stopPullDownRefresh();
 					} else {
-						console.log(res.data.Message)
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title: res.data.Message,
+							icon: 'none'
+						});
+						/* this.message = res.data.Message
+						this.$refs.toast.show() */
 					}
 				}).catch((err) => {
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					});
+					/* this.message = '请求失败'
+					this.$refs.toast.show() */
 				})
 			},
 			getStatusStr(value) {
@@ -179,30 +186,45 @@
 				if (item.f_Status == 4) {
 
 					//预约
+					this.$refs.loading.open()
 					let account = uni.getStorageSync("account")
 					let diff = item.f_ReserveValue
 					http.post('api/UserInfo/DiffSubscribe?templateId=' + templateId).then((res) => {
-						this.message = '-------------' + res.data.StatusCode
-						this.$refs.toast.show()
-
+						this.$refs.loading.close()
 						if (res.data.StatusCode == 1) {
 							//微分预约（0：预约失败，1：预约成功）
 							if (res.data.Data == 1) {
-								this.message = '预约成功'
-								this.$refs.toast.show()
-								//this.getData();
+								uni.showToast({
+									title: '预约成功',
+									icon: 'none'
+								});
+								// this.message = '预约成功'
+								// this.$refs.toast.show()
+								this.getData();
 							} else {
-								this.message = '预约失败'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '预约失败',
+									icon: 'none'
+								});
+								// this.message = '预约失败'
+								// this.$refs.toast.show()
 							}
-
 						} else {
-							this.message = res.data.Message
-							this.$refs.toast.show()
+							uni.showToast({
+								title: res.data.Message,
+								icon: 'none'
+							});
+							// this.message = res.data.Message
+							// this.$refs.toast.show()
 						}
 					}).catch((err) => {
-						this.message = '请求失败'
-						this.$refs.toast.show()
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						});
+						this.$refs.loading.close()
+						/* this.message = '请求失败'
+						this.$refs.toast.show() */
 					})
 					//} else {
 				} else if (item.f_Status == 2 || item.f_Status == 3) {
@@ -214,8 +236,12 @@
 							this.msgId = res.data.Data
 							if (regExpUtil.isNullOrEmpty(this.msgId)) {
 								this.$refs.loading.close()
-								this.message = '预约失败'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '预约失败',
+									icon: 'none'
+								});
+								// this.message = '预约失败'
+								// this.$refs.toast.show()
 							} else {
 								this.timer = setInterval(
 									this.processResult, 5000
@@ -223,13 +249,22 @@
 							}
 						} else {
 							this.$refs.loading.close()
-							this.message = res.data.Message
-							this.$refs.toast.show()
+							uni.showToast({
+								title: res.data.Message,
+								icon: 'none'
+							});
+							
+							/* this.message = res.data.Message
+							this.$refs.toast.show() */
 						}
 					}).catch((err) => {
 						this.$refs.loading.close()
-						this.message = '请求失败'
-						this.$refs.toast.show()
+						uni.showToast({
+							title: '请求失败',
+							icon: 'none'
+						});
+						// this.message = '请求失败'
+						// this.$refs.toast.show()
 					})
 				}
 			},
@@ -246,35 +281,55 @@
 							this.$refs.loading.close()
 							window.clearInterval(this.timer); // 清除定时器
 							this.timer = null;
-							this.message = '领养成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title: '领养成功',
+								icon: 'none'
+							});
+							/* this.message = '领养成功'
+							this.$refs.toast.show() */
 						} else if (res.data.Data == 0) {
 							this.$refs.loading.close()
 							window.clearInterval(this.timer); // 清除定时器
 							this.timer = null;
-							this.message = '领养失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title: '领养失败',
+								icon: 'none'
+							});
+							/* this.message = '领养失败'
+							this.$refs.toast.show() */
 						} else if (res.data.Data == -1) {
 
 						} else {
 							this.$refs.loading.close()
 							window.clearInterval(this.timer); // 清除定时器
 							this.timer = null;
-							this.message = '领养失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title: '领养失败',
+								icon: 'none'
+							});
+							/* this.message = '领养失败'
+							this.$refs.toast.show() */
 						}
 					} else {
 						window.clearInterval(this.timer); // 清除定时器
 						this.timer = null;
 						this.$refs.loading.close()
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
+						/* this.message = res.data.Message
+						this.$refs.toast.show() */
 					}
 
 				}).catch((err) => {
 					window.clearInterval(this.timer); // 清除定时器
 					this.timer = null;
 					this.$refs.loading.close()
+					uni.showToast({
+						title:  '请求失败',
+						icon: 'none'
+					});
 					this.message = '请求失败'
 					this.$refs.toast.show()
 				})
