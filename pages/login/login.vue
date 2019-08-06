@@ -38,8 +38,8 @@
 				version:'',
 				providerList: [],
 				hasProvider: false,
-				account: '15882039655',
-				password: 'a111111',
+				account: '',
+				password: '',
 				message: '',
 				isVerify: false,
 				positionTop: 0
@@ -53,7 +53,6 @@
 		},
 		methods: {
 			bindLogin() {
-
 
 				if (this.account == '') {
 					this.message = '请输入账号'
@@ -89,7 +88,7 @@
 					uni.setStorageSync("account", this.account);
 					uni.setStorageSync("token", 'bearer ' + res.data.access_token);
 					this.$refs.loading.close()
-					this.toMain("18510011002");
+					this.toMain(this.account);
 				}).catch((err) => {
 					this.$refs.loading.close()
 					this.message = err.data.error_description

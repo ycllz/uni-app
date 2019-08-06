@@ -3,9 +3,12 @@
 	<view class="main">
 		<view class="main-list">
 			<input-box :inputValue="account" disabled="true" :clearShow="false" leftText="账号:"></input-box>
-			<input-box v-model="newPassword" placeholder="新密码" leftText="新密码:"></input-box>
-			<input-box v-model="confimNewPassword" placeholder="确认新密码" leftText="新密码:"></input-box>
-			<input-box v-model="code" placeholder="请输入验证码" @rightClick="sendCodeMessage" :rightText="content"></input-box>
+			<input-box v-model="newPassword" ref="input1" :verification="['isNull','isPassWord']" :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']"
+			 placeholder="新密码" leftText="新密码:"></input-box>
+			<input-box v-model="confimNewPassword" placeholder="确认新密码" ref="input2" :verification="['isNull','isPassWord']"
+			 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:"></input-box>
+			<input-box v-model="code" ref="input3" placeholder="请输入验证码" :verification="['isNull']" :verificationTip="['验证码不能为空']"
+			 @rightClick="sendCodeMessage" :rightText="content"></input-box>
 		</view>
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 			<button type="primary" @tap="submit">确认</button>
@@ -17,6 +20,9 @@
 <script>
 	import inputBox from '@/components/input-box/input-box'
 	import http from '@/common/vmeitime-http/interface.js'
+	import md5 from 'js-md5'
+
+
 	export default {
 		components: {
 			inputBox
@@ -59,13 +65,30 @@
 					'Authorization': uni.getStorageSync("token")
 				}
 				let body = {
-					'Account': uni.getStorageSync("account")
+					'Account': this.account
 				}
 				http.post('api/NoAuthorize/SendCodeMessage', body).then((res) => {
 					if (res.data.StatusCode == 1) {
-						this.countDown()
-						this.message = '验证码发送成功'
-						this.$refs.toast.show()
+						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
+						if (res.data.Data == 1) {
+							this.message = '发送成功'
+							this.$refs.toast.show()
+							this.countDown()
+							
+						} else if (res.data.Data == 0) {
+							this.message = '发送失败'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 2) {
+							this.message = '参数为空'
+							this.$refs.toast.show()
+						}else if (res.data.Data == 2) {
+							this.message = '重复发送短信'
+							this.$refs.toast.show()
+						}else{
+							this.message = '发送失败'
+							this.$refs.toast.show()
+						}
+						
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()
@@ -76,31 +99,69 @@
 				})
 			},
 			submit() {
-				http.config.header = {
-					'Authorization': uni.getStorageSync("token")
-				}
-				this.account = uni.getStorageSync("account")
-				let body = {
-					account: this.account,
-					password: this.newPassword,
-					msg: this.code
-				}
-				http.post('api/NoAuthorize/RetrievePassword', body).then((res) => {
-					if (res.data.StatusCode == 1) {
-						this.message = '密码重置成功'
+				if (this.$refs.input1.getValue() && this.$refs.input2.getValue() && this.$refs.input3.getValue()) {
+
+					if (this.newPassword != this.confimNewPassword) {
+						this.message = '两次新密码不一致'
 						this.$refs.toast.show()
-						//返回2个页面
-						uni.navigateBack({
-							delta: 2
-						});
-					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						return
 					}
-				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
-				})
+
+					http.config.header = {
+						'Authorization': uni.getStorageSync("token")
+					}
+
+					let p1 = md5(this.newPassword.toString())
+					let p2 = md5(p1)
+
+					this.account = uni.getStorageSync("account")
+					let body = {
+						account: this.account,
+						password: p2,
+						codeMsg: this.code
+					}
+					http.post('api/NoAuthorize/RetrievePassword', body).then((res) => {
+						if (res.data.StatusCode == 1) {
+							//找回密码(0：处理失败，1：处理成功，2：验证码失效，3：验证码不正确，4：参数为空，5：用户不存在
+							if (res.data.Data == 1) {
+								this.message = '处理成功'
+								this.$refs.toast.show()
+								//返回2个页面
+								uni.navigateBack({
+									delta: 2
+								});
+							} else if (res.data.Data == 0) {
+								this.message = '处理失败'
+								this.$refs.toast.show()
+							} else if (res.data.Data == 2) {
+								this.message = '验证码失效'
+								this.$refs.toast.show()
+							} else if (res.data.Data == 3) {
+								this.message = '验证码不正确'
+								this.$refs.toast.show()
+							} else if (res.data.Data == 4) {
+								this.message = '参数为空'
+								this.$refs.toast.show()
+							} else if (res.data.Data == 5) {
+								this.message = '用户不存在'
+								this.$refs.toast.show()
+							} else {
+								this.message = '处理失败'
+								this.$refs.toast.show()
+							}
+
+
+						} else {
+							this.message = res.data.Message
+							this.$refs.toast.show()
+						}
+					}).catch((err) => {
+						this.message = '请求失败'
+						this.$refs.toast.show()
+					})
+				}
+
+
 			},
 		}
 	}

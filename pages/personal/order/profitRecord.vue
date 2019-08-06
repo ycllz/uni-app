@@ -12,8 +12,10 @@
 			<view class="main-list" style="margin-top: 30upx;">
 				<!-- <cmd-cell-item title="+25.50" brief="收益" addon="2019-07-22 22:22:12" /> -->
 			</view>
+			<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
+			<uLi-load-more :status="loadMoreStatus"></uLi-load-more>
 		</view>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
+		
 	</view>
 
 
@@ -24,26 +26,40 @@
 	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
 	import uniCard from "@/components/uni-card/uni-card"
 	import http from '@/common/vmeitime-http/interface.js'
+	import uLiLoadMore from "@/components/uLi-load-more/uLi-load-more.vue"
 
 	export default {
 		components: {
 			cmdCellItem,
-			uniCard
+			uniCard,
+			uLiLoadMore
 		},
 		data() {
 			return {
 				value: 0,
 				message: '',
+				loadMoreStatus: 'more',
+				list: [],
+				refreshing: false,
 				body: {
 					page: 1,
-					rowCount: 10,
+					rowCount: 15,
 					type: 1,
-					userId: '11111',
+					userId: '',
 				}
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			this.value = option.value
+		},
+		onReachBottom() {
+			if (this.list.length < this.body.rowCount) {
+				this.message = '没有更多了~'
+				this.$refs.toast.show()
+			} else {
+				this.body.page++;
+				this.getPageList();
+			}
 		},
 		methods: {
 			getPageList() {

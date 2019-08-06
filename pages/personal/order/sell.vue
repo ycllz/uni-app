@@ -113,8 +113,15 @@
 							this.message = '兑换失败'
 							this.$refs.toast.show()
 						}else if(res.data.Data == 1){
-							this.message = '兑换成功~'
-							this.$refs.toast.show()
+							uni.showToast({
+								title: '兑换成功~',
+								icon: 'none'
+							});
+							/* this.message = '兑换成功~'
+							this.$refs.toast.show() */
+							uni.navigateBack({
+								delta: 2
+							});
 						}
 						else if(res.data.Data == 2){
 							this.message = '二级密码错误'

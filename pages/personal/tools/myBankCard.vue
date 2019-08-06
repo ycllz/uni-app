@@ -93,6 +93,9 @@
 			this.refreshing = true;
 			this.queryBankList();
 		},
+		onShow() {
+			this.queryBankList();
+		},
 		methods: {
 			addbank() {
 				uni.navigateTo({

@@ -9,8 +9,8 @@
             "src" : "图片路径"
         }
     ],
-    "versionName" : "0.2 beta",
-    "versionCode" : 2,
+    "versionName" : "0.3 beta",
+    "versionCode" : 4,
     "app-plus" : {
         "usingComponents" : true,
         "distribute" : {

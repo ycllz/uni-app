@@ -192,7 +192,7 @@
 					http.post('api/UserInfo/DiffSubscribe?templateId=' + templateId).then((res) => {
 						this.$refs.loading.close()
 						if (res.data.StatusCode == 1) {
-							//微分预约（0：预约失败，1：预约成功）
+							//微分预约(0:预约失败，1：预约成功，2：当前帐户未审核,3:当前帐户未激活,4:余额不足)
 							if (res.data.Data == 1) {
 								uni.showToast({
 									title: '预约成功',
@@ -201,13 +201,31 @@
 								// this.message = '预约成功'
 								// this.$refs.toast.show()
 								this.getData();
-							} else {
+							}else if(res.data.Data == 0){
 								uni.showToast({
 									title: '预约失败',
 									icon: 'none'
 								});
-								// this.message = '预约失败'
-								// this.$refs.toast.show()
+							} else if(res.data.Data == 2){
+								uni.showToast({
+									title: '当前帐户未审核',
+									icon: 'none'
+								});
+							}else if(res.data.Data == 3){
+								uni.showToast({
+									title: '当前帐户未激活',
+									icon: 'none'
+								});
+							}else if(res.data.Data == 4){
+								uni.showToast({
+									title: '余额不足',
+									icon: 'none'
+								});
+							}else {
+								uni.showToast({
+									title: '预约失败',
+									icon: 'none'
+								});
 							}
 						} else {
 							uni.showToast({

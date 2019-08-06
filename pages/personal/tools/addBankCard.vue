@@ -15,10 +15,13 @@
 		</view>
 		<view class="main-list">
 
-			<input-box v-model="body.accountName" placeholder="账户名称" leftText="账户名称:"></input-box>
-			<input-box v-model="body.account" placeholder="账号" leftText="账号:"></input-box>
+			<input-box v-model="body.accountName" ref="input1" :verification="['isNull']" :verificationTip="['账户名称不能为空']"
+			 placeholder="账户名称" leftText="账户名称:"></input-box>
+			<input-box v-model="body.account" ref="input2" :verification="['isNull']" :verificationTip="['账号不能为空']" placeholder="账号"
+			 leftText="账号:"></input-box>
 			<view v-if="body.type == 3">
-				<input-box v-model="body.f_SubBranchName" placeholder="开户行地址" leftText="开户行地址:"></input-box>
+				<input-box v-model="body.f_SubBranchName" ref="input4" :verification="['isNull']" :verificationTip="['开户行地址不能为空']"
+				 placeholder="开户行地址" leftText="开户行地址:"></input-box>
 			</view>
 
 
@@ -37,7 +40,8 @@
 			</view>
 
 			<view class="border-top-view">
-				<input-box v-model="body.code" placeholder="请输入验证码" @rightClick="sendCodeMessage" :rightText="content"></input-box>
+				<input-box v-model="body.code" ref="input3" placeholder="请输入验证码" :verification="['isNull']" :verificationTip="['验证码不能为空']"
+				 @rightClick="sendCodeMessage" :rightText="content"></input-box>
 			</view>
 
 		</view>
@@ -127,10 +131,26 @@
 				}
 				this.index = e.target.value
 			},
+			valitate() {
+				if (this.$refs.input1.getValue() && this.$refs.input2.getValue() && this.$refs.input3.getValue()) {
+					if (this.body.type == 3) {
+						if (this.$refs.input4.getValue()) {
+							return true
+						} else {
+							return false
+						}
+					} else {
+						return true
+					}
+
+				} else {
+					return false
+				}
+			},
 			//新增
 			uploadImage() {
 
-				if (this.body.accountName == '') {
+				/* if (this.body.accountName == '') {
 					this.message = '请输入账户名称'
 					this.$refs.toast.show()
 					return
@@ -144,59 +164,66 @@
 					this.message = '请输入开户行地址'
 					this.$refs.toast.show()
 					return
-				}
-
-				if (this.imageList.length == 0) {
-					this.message = '请选择收款码'
-					this.$refs.toast.show()
-					return
-				}
-
-				if (this.body.code == '') {
-					this.message = '请输入验证码'
-					this.$refs.toast.show()
-					return
-				}
-				this.body.userAccount = uni.getStorageSync("account")
-				var images = [];
-
-				for (var i = 0, len = this.imageList.length; i < len; i++) {
-					var image_obj = {
-						name: 'image-' + i,
-						uri: this.imageList[i]
-					};
-					images.push(image_obj);
-				}
-
-				uni.uploadFile({
-					url: this.baseUrl + 'api/Upload/UploadImage',
-					files: images,
-					filePath: images[0].uri,
-					header: {
-						'Authorization': uni.getStorageSync("token")
-					},
-					name: 'file',
-					success: (uploadFileRes) => {
-						console.log(uploadFileRes)
-						let res = JSON.parse(uploadFileRes.data)
-						console.log(res)
-						if (res.StatusCode == 1) {
-							if (res.Data.isSuccess) {
-								this.body.filePath = res.Data.filePath
-								this.submitAdd()
-							} else {
-								this.message = res.Data.msg
-								this.$refs.toast.show()
-							}
-						} else {
-
-						}
-					},
-					fail: (e) => {
-						this.message = '请求失败'
+				} */
+				if (this.valitate()) {
+					if (this.imageList.length == 0) {
+						this.message = '请选择收款码'
 						this.$refs.toast.show()
+						return
 					}
-				});
+					this.body.userAccount = uni.getStorageSync("account")
+					var images = [];
+
+					for (var i = 0, len = this.imageList.length; i < len; i++) {
+						var image_obj = {
+							name: 'image-' + i,
+							uri: this.imageList[i]
+						};
+						images.push(image_obj);
+					}
+
+					uni.uploadFile({
+						url: this.baseUrl + 'api/Upload/UploadImage',
+						files: images,
+						filePath: images[0].uri,
+						header: {
+							'Authorization': uni.getStorageSync("token")
+						},
+						name: 'file',
+						success: (uploadFileRes) => {
+							console.log(uploadFileRes)
+							let res = JSON.parse(uploadFileRes.data)
+							console.log(res)
+							if (res.StatusCode == 1) {
+								if (res.Data.isSuccess) {
+									this.body.filePath = res.Data.filePath
+									this.submitAdd()
+								} else {
+									this.message = res.Data.msg
+									this.$refs.toast.show()
+								}
+							} else {
+
+							}
+						},
+						fail: (e) => {
+							this.message = '请求失败'
+							this.$refs.toast.show()
+						}
+					});
+
+				}
+
+
+
+				// if (this.body.code == '') {
+				// 	this.message = '请输入验证码'
+				// 	this.$refs.toast.show()
+				// 	return
+				// }
+
+
+
 			},
 			submitAdd() {
 				http.config.header = {
@@ -204,9 +231,25 @@
 				}
 				http.post('api/PayModel/AddPayModel', this.body).then((res) => {
 					if (res.data.StatusCode == 1) {
-						this.message = '添加成功'
-						this.$refs.toast.show()
-						uni.navigateBack()
+						//新增收款方式 （0：新增失败，1：新增成功，2：用户不存在，3：账号已存在）
+						if (res.data.Data == 1) {
+							this.message = '添加成功'
+							this.$refs.toast.show()
+							uni.navigateBack()
+						} else if (res.data.Data == 0) {
+							this.message = '新增失败'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 2) {
+							this.message = '用户不存在'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 3) {
+							this.message = '账号已存在'
+							this.$refs.toast.show()
+						} else {
+							this.message = '新增失败'
+							this.$refs.toast.show()
+						}
+
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()
@@ -241,9 +284,25 @@
 				}
 				http.post('api/NoAuthorize/SendCodeMessage', body).then((res) => {
 					if (res.data.StatusCode == 1) {
-						this.countDown()
-						this.message = '验证码发送成功'
-						this.$refs.toast.show()
+						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
+						if (res.data.Data == 1) {
+							this.message = '发送成功'
+							this.$refs.toast.show()
+							this.countDown()
+							
+						} else if (res.data.Data == 0) {
+							this.message = '发送失败'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 2) {
+							this.message = '参数为空'
+							this.$refs.toast.show()
+						}else if (res.data.Data == 2) {
+							this.message = '重复发送短信'
+							this.$refs.toast.show()
+						}else{
+							this.message = '发送失败'
+							this.$refs.toast.show()
+						}
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

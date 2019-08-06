@@ -13,13 +13,10 @@
 				<input-box v-model="cardNumber" placeholder="银行卡号:" leftText="请输入您的银行卡号"></input-box>
 			</view>
 
-
 			<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 				<button type="primary" @tap="authertication">确认</button>
 			</view>
 		</template>
-
-
 		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
@@ -69,12 +66,32 @@
 					'Authorization': uni.getStorageSync("token")
 				}
 
-				http.post('api/Account/RealName?account=' + uni.getStorageSync("account") + "&realname=" + this.realName +
+				http.post('api/Account/RealName?realname=' + this.realName +
 					"&cardId=" + this.idCard).then((res) => {
 
 					if (res.data.StatusCode == 1) {
-						this.message = '信息已提交'
-						this.$refs.toast.show()
+						//实名认证(0：提交失败，1：提交成功，2：身份证号码格式不正确,3:至少添加两种收款方式 4 身份信息已存在
+						if (res.data.Data == 1) {
+							this.message = '信息已提交'
+							this.$refs.toast.show()
+							uni.navigateBack()
+						}else if(res.data.Data == 0){
+							this.message = '提交失败'
+							this.$refs.toast.show()
+						}else if(res.data.Data == 2){
+							this.message = '身份证号码格式不正确'
+							this.$refs.toast.show()
+						}else if(res.data.Data == 3){
+							this.message = '至少添加两种收款方式'
+							this.$refs.toast.show()
+						}else if(res.data.Data == 4){
+							this.message = '身份信息已存在'
+							this.$refs.toast.show()
+						}else{
+							this.message = '提交失败'
+							this.$refs.toast.show()
+						}
+						
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

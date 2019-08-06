@@ -5,15 +5,28 @@
 		</view> -->
 
 		<view class="center-list" style="margin-top: 20upx;">
-			<input-box v-model="newPassword" placeholder="新密码" leftText="新密码:"></input-box>
-			<input-box v-model="confimNewPassword" placeholder="确认新密码" leftText="新密码:"></input-box>
-			<input-box v-model="codemsg" placeholder="请输入验证码" @rightClick="sendCodeMessage" :rightText="content"></input-box>
+			<template v-if="type == 1">
+				<input-box v-model="newPassword" placeholder="新密码" ref="input1" :verification="['isNull','isPassWord']"
+				 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:"></input-box>
+				<input-box v-model="confimNewPassword" placeholder="确认新密码" ref="input2" :verification="['isNull','isPassWord']"
+				 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:"></input-box>
+				<input-box v-model="codemsg" placeholder="请输入验证码" ref="input3" :verification="['isNull']" :verificationTip="['验证码不能为空']"
+				 @rightClick="sendCodeMessage" :rightText="content"></input-box>
+			</template>
+			<template v-else-if="type == 2">
+				<input-box v-model="newPassword" placeholder="新密码" ref="input4" :verification="['isNull','isInt']" :verificationTip="['二级密码不能为空','二级密码必须是数字']"
+				 leftText="新密码:"></input-box>
+				<input-box v-model="confimNewPassword" placeholder="确认新密码" ref="input5" :verification="['isNull','isInt']"
+				 :verificationTip="['二级密码不能为空','二级密码必须是数字']" leftText="新密码:"></input-box>
+				<input-box v-model="codemsg" placeholder="请输入验证码" ref="input6" :verification="['isNull']" :verificationTip="['验证码不能为空']"
+				 @rightClick="sendCodeMessage" :rightText="content"></input-box>
+			</template>
+
 
 		</view>
 
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 			<button type="primary" @tap="submitModify">确认修改</button>
-
 		</view>
 		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
@@ -46,57 +59,69 @@
 			this.type = option.type
 		},
 		methods: {
-			submitModify() {
-				uni.showToast({
-					title: '标题',
-					icon: 'none'
-				});
 
-
-				// if (this.oldPassword == '') {
-				// 	this.message = '请输入旧密码'
-				// 	this.$refs.toast.show()
-				// 	return
-				// }
-
-				if (this.newPassword == '' || this.confimNewPassword == '') {
-					this.message = '请输入新密码'
-					this.$refs.toast.show()
-					return
-				}
-
-				if (this.newPassword != this.confimNewPassword) {
-					this.message = '两次输入密码不一致'
-					this.$refs.toast.show()
-					return
-				}
-
-				if (this.codemsg == '') {
-					this.message = '请输入验证码'
-					this.$refs.toast.show()
-					return
-				}
-
-				let p2 = md5(this.confimNewPassword.toString())
-				let newPwd = md5(p2)
-
-				http.config.header = {
-					'Authorization': uni.getStorageSync("token")
-				}
-
-				http.post('api/Account/UpdatePassword?account=' + uni.getStorageSync("account") + "&psd=" + newPwd + "&type=" +
-					this.type + "&codemsg=" + this.codemsg).then((res) => {
-					if (res.data.StatusCode == 1) {
-						this.message = '修改成功'
-						this.$refs.toast.show()
+			validate() {
+				//登录密码
+				if (this.type == 1) {
+					if (this.$refs.input1.getValue() && this.$refs.input2.getValue() && this.$refs.input3.getValue()) {
+						return true
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						return false
 					}
-				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
-				})
+
+				} else if (this.type == 2) {
+					//二级支付密码
+					if (this.$refs.input4.getValue() && this.$refs.input5.getValue() && this.$refs.input6.getValue()) {
+						if(this.newPassword.length != 6 || this.confimNewPassword.length != 6){
+							this.message = '二级密码必须是6位'
+							this.$refs.toast.show()
+							return false
+						}else{
+							return true
+						}
+					} else {
+						return false
+					}
+				} else {
+					return false
+				}
+			},
+			//确认修改
+			submitModify() {
+				console.log(11111111)
+				if (this.validate()) { 
+console.log(2222222222)
+					if (this.newPassword != this.confimNewPassword) {
+						this.message = '两次输入密码不一致'
+						this.$refs.toast.show()
+						return
+					}
+
+					let p2 = md5(this.confimNewPassword.toString())
+					let newPwd = md5(p2)
+
+					http.config.header = {
+						'Authorization': uni.getStorageSync("token")
+					}
+
+					http.post('api/Account/UpdatePassword?psd=' + newPwd + "&type=" +
+						this.type + "&codemsg=" + this.codemsg).then((res) => {
+						if (res.data.StatusCode == 1) {
+							this.message = '修改成功'
+							this.$refs.toast.show()
+						} else {
+							this.message = res.data.Message
+							this.$refs.toast.show()
+						}
+					}).catch((err) => {
+						this.message = '请求失败'
+						this.$refs.toast.show()
+					})
+
+				}
+
+
+
 			},
 			//倒计时
 			countDown() {
@@ -123,9 +148,25 @@
 				}
 				http.post('api/NoAuthorize/SendCodeMessage', body).then((res) => {
 					if (res.data.StatusCode == 1) {
-						this.countDown()
-						this.message = '验证码发送成功'
-						this.$refs.toast.show()
+						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
+						if (res.data.Data == 1) {
+							this.message = '发送成功'
+							this.$refs.toast.show()
+							this.countDown()
+							
+						} else if (res.data.Data == 0) {
+							this.message = '发送失败'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 2) {
+							this.message = '参数为空'
+							this.$refs.toast.show()
+						}else if (res.data.Data == 2) {
+							this.message = '重复发送短信'
+							this.$refs.toast.show()
+						}else{
+							this.message = '发送失败'
+							this.$refs.toast.show()
+						}
 					} else {
 						this.message = res.data.Message
 						this.$refs.toast.show()

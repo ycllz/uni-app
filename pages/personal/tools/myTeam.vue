@@ -47,7 +47,6 @@
 				this.body.page++;
 				this.getPageList();
 			}
-
 		},
 		methods: {
 			getPageList() {
