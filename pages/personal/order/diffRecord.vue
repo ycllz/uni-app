@@ -10,7 +10,6 @@
 			<view class="main-list" style="margin-top: 30upx;">
 				<cmd-cell-item v-for="item in list" :key="item.id" :title="item.f_changevalue" brief="预约/领养扣除" :addon="item.f_createtime" />
 			</view>
-			<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 			<uLi-load-more :status="loadMoreStatus"></uLi-load-more>
 		</view>
 	</view>
@@ -51,8 +50,10 @@
 		},
 		onReachBottom() {
 			if (this.list.length < this.body.rowCount) {
-				this.message = '没有更多了~'
-				this.$refs.toast.show()
+				uni.showToast({
+					title:  '没有更多了',
+					icon: 'none'
+				});
 			} else {
 				this.body.page++;
 				this.getPageList();
@@ -74,12 +75,16 @@
 						}
 						this.list = resData
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			}
 		},

@@ -64,12 +64,16 @@
 					if (res.data.StatusCode == 1) {
 
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title: res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title: '请求失败',
+						icon: 'none'
+					});
 				})
 			},
 			goSell() {

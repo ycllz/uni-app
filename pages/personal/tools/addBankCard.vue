@@ -25,7 +25,7 @@
 			</view>
 
 
-			<view class="choose-code">请选择收款码:
+			<view class="choose-code" v-if="body.type != 3">请选择收款码:
 				<view class="uni-uploader__files">
 					<block v-for="(image,index) in imageList" :key="index">
 						<view class="uni-uploader__file" style="position: relative;">
@@ -150,80 +150,70 @@
 			//新增
 			uploadImage() {
 
-				/* if (this.body.accountName == '') {
-					this.message = '请输入账户名称'
-					this.$refs.toast.show()
-					return
-				}
-				if (this.body.account == '') {
-					this.message = '请输入账户'
-					this.$refs.toast.show()
-					return
-				}
-				if (this.body.type == 3 && this.body.f_SubBranchName == '') {
-					this.message = '请输入开户行地址'
-					this.$refs.toast.show()
-					return
-				} */
+				
 				if (this.valitate()) {
-					if (this.imageList.length == 0) {
-						this.message = '请选择收款码'
-						this.$refs.toast.show()
-						return
-					}
 					this.body.userAccount = uni.getStorageSync("account")
-					var images = [];
 
-					for (var i = 0, len = this.imageList.length; i < len; i++) {
-						var image_obj = {
-							name: 'image-' + i,
-							uri: this.imageList[i]
-						};
-						images.push(image_obj);
-					}
-
-					uni.uploadFile({
-						url: this.baseUrl + 'api/Upload/UploadImage',
-						files: images,
-						filePath: images[0].uri,
-						header: {
-							'Authorization': uni.getStorageSync("token")
-						},
-						name: 'file',
-						success: (uploadFileRes) => {
-							console.log(uploadFileRes)
-							let res = JSON.parse(uploadFileRes.data)
-							console.log(res)
-							if (res.StatusCode == 1) {
-								if (res.Data.isSuccess) {
-									this.body.filePath = res.Data.filePath
-									this.submitAdd()
-								} else {
-									this.message = res.Data.msg
-									this.$refs.toast.show()
-								}
-							} else {
-
-							}
-						},
-						fail: (e) => {
-							this.message = '请求失败'
-							this.$refs.toast.show()
+					if (this.body.type != 3) {
+						//银行卡
+						if (this.imageList.length == 0) {
+							uni.showToast({
+								title:  '请选择收款码',
+								icon: 'none'
+							});
+							return
 						}
-					});
 
+						var images = [];
+
+						for (var i = 0, len = this.imageList.length; i < len; i++) {
+							var image_obj = {
+								name: 'image-' + i,
+								uri: this.imageList[i]
+							};
+							images.push(image_obj);
+						}
+
+						//上传图片
+						uni.uploadFile({
+							url: this.baseUrl + 'api/Upload/UploadImage',
+							files: images,
+							filePath: images[0].uri,
+							header: {
+								'Authorization': uni.getStorageSync("token")
+							},
+							name: 'file',
+							success: (uploadFileRes) => {
+								console.log(uploadFileRes)
+								let res = JSON.parse(uploadFileRes.data)
+								console.log(res)
+								if (res.StatusCode == 1) {
+									if (res.Data.isSuccess) {
+										this.body.filePath = res.Data.filePath
+										this.submitAdd()
+									} else {
+										uni.showToast({
+											title:  res.Data.msg,
+											icon: 'none'
+										});
+									}
+								} else {
+
+								}
+							},
+							fail: (e) => {
+								uni.showToast({
+									title:  '网络繁忙，请稍后重试',
+									icon: 'none'
+								});
+							}
+						});
+					} else {
+						//微信 支付宝
+						this.body.filePath = ''
+						this.submitAdd()
+					}
 				}
-
-
-
-				// if (this.body.code == '') {
-				// 	this.message = '请输入验证码'
-				// 	this.$refs.toast.show()
-				// 	return
-				// }
-
-
-
 			},
 			submitAdd() {
 				http.config.header = {
@@ -233,30 +223,44 @@
 					if (res.data.StatusCode == 1) {
 						//新增收款方式 （0：新增失败，1：新增成功，2：用户不存在，3：账号已存在）
 						if (res.data.Data == 1) {
-							this.message = '添加成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '添加成功',
+								icon: 'none'
+							});
 							uni.navigateBack()
 						} else if (res.data.Data == 0) {
-							this.message = '新增失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '新增失败',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 2) {
-							this.message = '用户不存在'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '用户不存在',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 3) {
-							this.message = '账号已存在'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '账号已存在',
+								icon: 'none'
+							});
 						} else {
-							this.message = '新增失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '新增失败',
+								icon: 'none'
+							});
 						}
 
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 			//倒计时
@@ -286,30 +290,43 @@
 					if (res.data.StatusCode == 1) {
 						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
 						if (res.data.Data == 1) {
-							this.message = '发送成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '发送成功',
+								icon: 'none'
+							});
 							this.countDown()
-							
 						} else if (res.data.Data == 0) {
-							this.message = '发送失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '发送失败',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 2) {
-							this.message = '参数为空'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '参数为空',
+								icon: 'none'
+							});
 						}else if (res.data.Data == 3) {
-							this.message = '重复发送短信'
-							this.$refs.toast.show()
-						}else{
-							this.message = '发送失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '重复发送短信',
+								icon: 'none'
+							});
+						} else {
+							uni.showToast({
+								title:  '发送失败',
+								icon: 'none'
+							});
 						}
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 

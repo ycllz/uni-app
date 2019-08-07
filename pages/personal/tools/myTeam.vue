@@ -41,8 +41,11 @@
 		},
 		onReachBottom() {
 			if (this.list.length < this.body.rowCount) {
-				this.message = '没有更多了~'
-				this.$refs.toast.show()
+				uni.showToast({
+					title:  '没有更多了',
+					icon: 'none'
+				});
+				
 			} else {
 				this.body.page++;
 				this.getPageList();
@@ -60,14 +63,18 @@
 					if (res.data.StatusCode == 1) {
 						this.list = res.data.Data
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			}
 		},

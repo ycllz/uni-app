@@ -45,14 +45,10 @@
 						</view> -->
 					</template>
 					<template v-else>
-
 					</template>
-
-
 				</view>
 			</view>
 		</view>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -114,16 +110,21 @@
 						}
 
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
 				}).catch((err) => {
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
+				
 				})
 			},
 			goPay(order) {
@@ -135,8 +136,8 @@
 
 			},
 			goCancel(order){
-				this.message = '请求失败'
-				this.$refs.toast.show()
+				
+				
 			}
 		},
 		mounted() {

@@ -111,16 +111,20 @@
 							this.recordList = []
 						}
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
 				}).catch((err) => {
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 			//确认
@@ -135,29 +139,43 @@
 					if (res.data.StatusCode == 1) {
 						//确认订单(0：订单状态异常，1：成功，2：人员不匹配，3:二级密码不正确，4：提交失败)
 						if (res.data.Data == 1) {
-							this.message = '确认成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '确认成功',
+								icon: 'none'
+							});
 							uni.navigateBack()
 						} else if (res.data.Data == 0) {
-							this.message = '订单状态异常'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '订单状态异常',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 2) {
-							this.message = '人员不匹配'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '人员不匹配',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 3) {
-							this.message = '二级密码不正确'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '二级密码不正确',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 4) {
-							this.message = '提交失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '提交失败',
+								icon: 'none'
+							});
 						}
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title: res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 			//申诉
@@ -171,32 +189,47 @@
 						//申诉（待付款到期，待确认时可以点击，状态如下：0：用户不匹配，1：处理成功，2：订单状态不匹配，
 						//3：已经申诉过了，4：没有到申诉时间，5：处理失败）
 						if (res.data.Data == 1) {
-							this.message = '处理成功'
-							this.$refs.toast.show()
-							//uni.navigateBack()
+							uni.showToast({
+								title:  '处理成功',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 0) {
-							this.message = '用户不匹配'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '用户不匹配',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 2) {
-							this.message = '订单状态不匹配'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '订单状态不匹配',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 3) {
-							this.message = '请不要重复申诉'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '请不要重复申诉',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 4) {
-							this.message = '该时间暂不支持申诉'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '该时间暂不支持申诉',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 5) {
-							this.message = '处理失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '处理失败',
+								icon: 'none'
+							});
 						}
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			}
 		},

@@ -56,7 +56,6 @@
 		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
 		<!-- click:  	true 点击空白无法关闭加载状态   |     false 点击空白可关闭加载状态 -->
 		<w-loading text="加载中.." mask="true" click="false" ref="loading"></w-loading>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -125,8 +124,6 @@
 							title: res.data.Message,
 							icon: 'none'
 						});
-						/* this.message = res.data.Message
-						this.$refs.toast.show() */
 					}
 				}).catch((err) => {
 					this.refreshing = false;
@@ -135,8 +132,6 @@
 						title: '请求失败',
 						icon: 'none'
 					});
-					/* this.message = '请求失败'
-					this.$refs.toast.show() */
 				})
 			},
 			getStatusStr(value) {
@@ -198,8 +193,6 @@
 									title: '预约成功',
 									icon: 'none'
 								});
-								// this.message = '预约成功'
-								// this.$refs.toast.show()
 								this.getData();
 							}else if(res.data.Data == 0){
 								uni.showToast({
@@ -232,8 +225,6 @@
 								title: res.data.Message,
 								icon: 'none'
 							});
-							// this.message = res.data.Message
-							// this.$refs.toast.show()
 						}
 					}).catch((err) => {
 						uni.showToast({
@@ -241,8 +232,6 @@
 							icon: 'none'
 						});
 						this.$refs.loading.close()
-						/* this.message = '请求失败'
-						this.$refs.toast.show() */
 					})
 					//} else {
 				} else if (item.f_Status == 2 || item.f_Status == 3) {
@@ -258,8 +247,6 @@
 									title: '预约失败',
 									icon: 'none'
 								});
-								// this.message = '预约失败'
-								// this.$refs.toast.show()
 							} else {
 								this.timer = setInterval(
 									this.processResult, 5000
@@ -271,9 +258,6 @@
 								title: res.data.Message,
 								icon: 'none'
 							});
-							
-							/* this.message = res.data.Message
-							this.$refs.toast.show() */
 						}
 					}).catch((err) => {
 						this.$refs.loading.close()
@@ -281,8 +265,6 @@
 							title: '请求失败',
 							icon: 'none'
 						});
-						// this.message = '请求失败'
-						// this.$refs.toast.show()
 					})
 				}
 			},
@@ -303,8 +285,6 @@
 								title: '领养成功',
 								icon: 'none'
 							});
-							/* this.message = '领养成功'
-							this.$refs.toast.show() */
 						} else if (res.data.Data == 0) {
 							this.$refs.loading.close()
 							window.clearInterval(this.timer); // 清除定时器
@@ -313,8 +293,6 @@
 								title: '领养失败',
 								icon: 'none'
 							});
-							/* this.message = '领养失败'
-							this.$refs.toast.show() */
 						} else if (res.data.Data == -1) {
 
 						} else {
@@ -325,8 +303,6 @@
 								title: '领养失败',
 								icon: 'none'
 							});
-							/* this.message = '领养失败'
-							this.$refs.toast.show() */
 						}
 					} else {
 						window.clearInterval(this.timer); // 清除定时器
@@ -336,8 +312,6 @@
 							title:  res.data.Message,
 							icon: 'none'
 						});
-						/* this.message = res.data.Message
-						this.$refs.toast.show() */
 					}
 
 				}).catch((err) => {
@@ -345,11 +319,9 @@
 					this.timer = null;
 					this.$refs.loading.close()
 					uni.showToast({
-						title:  '请求失败',
+						title:  '网络繁忙，请稍后重试',
 						icon: 'none'
 					});
-					this.message = '请求失败'
-					this.$refs.toast.show()
 				})
 			}
 		}

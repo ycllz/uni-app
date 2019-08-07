@@ -188,7 +188,7 @@
 			this.showHeader = false;
 			this.statusHeight = plus.navigator.getStatusbarHeight();
 			// #endif
-			this.getUserDetail();
+			//this.getUserDetail();
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
@@ -210,7 +210,8 @@
 			});
 		},
 		onShow() {
-			uni.getStorage({
+			this.getUserDetail()
+			/* uni.getStorage({
 				key: 'UserInfo',
 				success: (res) => {
 					if (!res.data) {
@@ -224,7 +225,7 @@
 				fail: (e) => {
 					//this.toLogin(); 
 				}
-			});
+			}); */
 		},
 		methods: {
 
@@ -316,7 +317,6 @@
 				if (url == './tools/realNameAuthentication') {
 					//实名认证
 					url = './tools/realNameAuthentication?value=' + this.userDetail.f_status
-
 				}
 				uni.navigateTo({
 					url: url
@@ -338,14 +338,19 @@
 					} else {
 						this.refreshing = false;
 						uni.stopPullDownRefresh();
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:   res.data.Message,
+							icon: 'none'
+						});
+						
 					}
 				}).catch((err) => {
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '请求失败',
+						icon: 'none'
+					});
 				})
 			}
 		},

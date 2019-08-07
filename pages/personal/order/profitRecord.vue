@@ -12,7 +12,6 @@
 			<view class="main-list" style="margin-top: 30upx;">
 				<!-- <cmd-cell-item title="+25.50" brief="收益" addon="2019-07-22 22:22:12" /> -->
 			</view>
-			<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 			<uLi-load-more :status="loadMoreStatus"></uLi-load-more>
 		</view>
 		
@@ -54,8 +53,10 @@
 		},
 		onReachBottom() {
 			if (this.list.length < this.body.rowCount) {
-				this.message = '没有更多了~'
-				this.$refs.toast.show()
+				uni.showToast({
+					title:  '没有更多了~',
+					icon: 'none'
+				});
 			} else {
 				this.body.page++;
 				this.getPageList();
@@ -72,12 +73,16 @@
 					if (res.data.StatusCode == 1) {
 
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			}
 		},

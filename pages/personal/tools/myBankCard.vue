@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div class="div-btn">
-					<button class="mini-btn" type="warn" size="mini">禁用</button>
+					<button class="mini-btn" type="warn" @click="disPayModel(item.f_id)" size="mini">禁用</button>
 					<!-- 	<button type="warn">操作</button> -->
 				</div>
 			</view>
@@ -67,7 +67,6 @@
 			</view>
 			<br />
 		</view>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 
 	</view>
 </template>
@@ -84,7 +83,7 @@
 		data() {
 			return {
 				message: '',
-				refreshing:false,
+				refreshing: false,
 				cardList: [],
 			}
 		},
@@ -110,18 +109,72 @@
 					if (res.data.StatusCode == 1) {
 						this.cardList = res.data.Data
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
 				})
 			},
+			disPayModel(id) {
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+				http.post('api/PayModel/DisPayModel?id=' + id).then((res) => {
+					if (res.data.StatusCode == 1) {
+						//禁用收款码 0 失败 1 成功 2 未找到收款方式 3 至少保留两种收款方式
+						if (res.data.Data == 0) {
+							uni.showToast({
+								title: '处理失败',
+								icon: 'none'
+							});
+						} else if (res.data.Data == 0) {
+							uni.showToast({
+								title: '处理成功',
+								icon: 'none'
+							});
+							this.queryBankList()
+						} else if (res.data.Data == 0) {
+							uni.showToast({
+								title: '未找到收款方式',
+								icon: 'none'
+							});
+						} else if (res.data.Data == 0) {
+							uni.showToast({
+								title: '至少保留两种收款方式',
+								icon: 'none'
+							});
+						} else {
+							uni.showToast({
+								title: '处理失败',
+								icon: 'none'
+							});
+						}
+					} else {
+						uni.showToast({
+							title: res.data.Message,
+							icon: 'none'
+						});
+					}
+
+				}).catch((err) => {
+					uni.showToast({
+						title: res.data.Message,
+						icon: 'none'
+					});
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
+				})
+			}
 		},
 		mounted() {
 			this.queryBankList()

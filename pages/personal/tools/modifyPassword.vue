@@ -1,9 +1,5 @@
 <template>
 	<view class="center">
-		<!-- <view class="center-list">
-			<input-box v-model="oldPassword" placeholder="旧密码" leftText="旧密码:"></input-box>
-		</view> -->
-
 		<view class="center-list" style="margin-top: 20upx;">
 			<template v-if="type == 1">
 				<input-box v-model="newPassword" placeholder="新密码" ref="input1" :verification="['isNull','isPassWord']"
@@ -28,7 +24,6 @@
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 			<button type="primary" @tap="submitModify">确认修改</button>
 		</view>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -73,8 +68,10 @@
 					//二级支付密码
 					if (this.$refs.input4.getValue() && this.$refs.input5.getValue() && this.$refs.input6.getValue()) {
 						if(this.newPassword.length != 6 || this.confimNewPassword.length != 6){
-							this.message = '二级密码必须是6位'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '二级密码必须是6位',
+								icon: 'none'
+							});
 							return false
 						}else{
 							return true
@@ -88,12 +85,12 @@
 			},
 			//确认修改
 			submitModify() {
-				console.log(11111111)
 				if (this.validate()) { 
-console.log(2222222222)
 					if (this.newPassword != this.confimNewPassword) {
-						this.message = '两次输入密码不一致'
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  '两次输入密码不一致6位',
+							icon: 'none'
+						});
 						return
 					}
 
@@ -107,21 +104,23 @@ console.log(2222222222)
 					http.post('api/Account/UpdatePassword?psd=' + newPwd + "&type=" +
 						this.type + "&codemsg=" + this.codemsg).then((res) => {
 						if (res.data.StatusCode == 1) {
-							this.message = '修改成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '修改成功6位',
+								icon: 'none'
+							});
 						} else {
-							this.message = res.data.Message
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  res.data.Message,
+								icon: 'none'
+							});
 						}
 					}).catch((err) => {
-						this.message = '请求失败'
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  '网络繁忙，请稍后重试',
+							icon: 'none'
+						});
 					})
-
 				}
-
-
-
 			},
 			//倒计时
 			countDown() {
@@ -150,30 +149,43 @@ console.log(2222222222)
 					if (res.data.StatusCode == 1) {
 						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
 						if (res.data.Data == 1) {
-							this.message = '发送成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '发送成功',
+								icon: 'none'
+							});
 							this.countDown()
-							
 						} else if (res.data.Data == 0) {
-							this.message = '发送失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '发送失败',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 2) {
-							this.message = '参数为空'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '参数为空',
+								icon: 'none'
+							});
 						}else if (res.data.Data == 3) {
-							this.message = '重复发送短信'
-							this.$refs.toast.show()
-						}else{
-							this.message = '发送失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '重复发送短信',
+								icon: 'none'
+							});
+						} else {
+							uni.showToast({
+								title:  '发送失败',
+								icon: 'none'
+							});
 						}
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 		}

@@ -6,7 +6,7 @@
 			<input class="zai-input" placeholder-class v-model="account" placeholder="请输入账号" />
 			<input class="zai-input" placeholder-class v-model="password" password placeholder="请输入密码" />
 			<view class="zai-verify">
-				<move-verify @result='verifyResult'></move-verify>
+				<move-verify :key="verifyKey" @result='verifyResult'></move-verify>
 			</view>
 			<button class="zai-btn" @click="bindLogin">立即登录</button>
 			<view class="zai-label">
@@ -17,7 +17,6 @@
 		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
 		<!-- click:  	true 点击空白无法关闭加载状态   |     false 点击空白可关闭加载状态 -->
 		<w-loading text="加载中.." mask="true" click="false" ref="loading"></w-loading>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -35,14 +34,15 @@
 	export default {
 		data() {
 			return {
-				version:'',
+				version: '',
 				providerList: [],
 				hasProvider: false,
-				account: '',
-				password: '',
+				account: '17378507794',
+				password: '111111',
 				message: '',
 				isVerify: false,
-				positionTop: 0
+				positionTop: 0,
+				verifyKey: 1,
 			}
 		},
 		onLoad() {
@@ -51,24 +51,34 @@
 		components: {
 			"move-verify": moveVerify,
 		},
+		onShow() {
+			this.isVerify = false
+			++this.verifyKey
+		},
 		methods: {
 			bindLogin() {
 
 				if (this.account == '') {
-					this.message = '请输入账号'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '请输入账号',
+						icon: 'none'
+					});
 					return
 				}
 
 				if (this.password == '') {
-					this.message = '请输入密码'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '请输入密码',
+						icon: 'none'
+					});
 					return
 				}
 
 				if (!this.isVerify) {
-					this.message = '请先验证'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '请先验证',
+						icon: 'none'
+					});
 					return
 				}
 
@@ -91,8 +101,10 @@
 					this.toMain(this.account);
 				}).catch((err) => {
 					this.$refs.loading.close()
-					this.message = err.data.error_description
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 			verifyResult() {

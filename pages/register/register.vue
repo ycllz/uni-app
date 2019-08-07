@@ -17,7 +17,7 @@
 			<input-box v-model="secondarySecurityPassword" ref="input7" :verification="['isNull','isInt']" :verificationTip="['二级密码不能为空','二级密码必须是数字']"
 			 placeholder="必须输入6位数字" leftText="确认二级密码:"></input-box>
 			<input-box v-model="body.recommenderAccount" ref="input8" :verification="['isNull']" :verificationTip="['邀请码不能为空']"
-			 placeholder="邀请码" leftText="邀请码:"></input-box> 
+			 placeholder="邀请账号" leftText="邀请码:"></input-box> 
 
 			<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 				<button type="primary" @tap="submit">确认</button>
@@ -92,41 +92,62 @@
 			},
 			//发送验证码
 			sendCodeMessage() {
+				if(!regExpUtil.isPhoneNum(this.body.userAccount)){
+					uni.showToast({
+						title:  '请输入正确的手机号',
+						icon: 'none'
+					});
+					return
+				}
+				
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
 				//+this.account  todo
 				let body = {
-					'Account': uni.getStorageSync("account")
+					'Account': this.body.userAccount
 				}
 				http.post('api/NoAuthorize/SendCodeMessage', body).then((res) => {
 					if (res.data.StatusCode == 1) {
 						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
 						if (res.data.Data == 1) {
-							this.message = '发送成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '发送成功',
+								icon: 'none'
+							});
 							this.countDown()
-							
 						} else if (res.data.Data == 0) {
-							this.message = '发送失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '发送失败',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 2) {
-							this.message = '参数为空'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '参数为空',
+								icon: 'none'
+							});
 						}else if (res.data.Data == 3) {
-							this.message = '重复发送短信'
-							this.$refs.toast.show()
-						}else{
-							this.message = '发送失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '重复发送短信',
+								icon: 'none'
+							});
+						} else {
+							uni.showToast({
+								title:  '发送失败',
+								icon: 'none'
+							});
 						}
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 			submit() {
@@ -138,20 +159,26 @@
 					
 
 					if (this.loginPassword != this.secondaryLoginPassword) {
-						this.message = '两次登录密码不一致'
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  '两次登录密码不一致',
+							icon: 'none'
+						});
 						return
 					}
 					
 					if(this.securityPassword.length != 6 || this.secondarySecurityPassword.length != 6){
-						this.message = '二级密码必须是6位'
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  '二级密码必须是6位',
+							icon: 'none'
+						});
 						return
 					}
 
 					if (this.securityPassword != this.secondarySecurityPassword) {
-						this.message = '两次二级密码不一致'
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  '两次二级密码不一致',
+							icon: 'none'
+						});
 						return
 					}
 
@@ -164,18 +191,24 @@
 					
 					http.post('api/NoAuthorize/Register', this.body).then((res) => {
 						if (res.data.StatusCode == 1) {
-							this.message = '注册成功，请登录'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '注册成功，请登录',
+								icon: 'none'
+							});
 							uni.redirectTo({
 								url: '../login/login'
 							});
 						} else {
-							this.message = res.data.Message
-							this.$refs.toast.show()
+							uni.showToast({
+								title: res.data.Message,
+								icon: 'none'
+							});
 						}
 					}).catch((err) => {
-						this.message = '请求失败'
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  '网络繁忙，请稍后重试',
+							icon: 'none'
+						});
 					})
 				}
 			},

@@ -2,7 +2,7 @@
 	<!-- 忘记密码 第二步 -->
 	<view class="main">
 		<view class="main-list">
-			<input-box :inputValue="account" disabled="true" :clearShow="false" leftText="账号:"></input-box>
+			<input-box :inputValue="account" :disabled="true" :clearShow="false" leftText="账号:"></input-box>
 			<input-box v-model="newPassword" ref="input1" :verification="['isNull','isPassWord']" :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']"
 			 placeholder="新密码" leftText="新密码:"></input-box>
 			<input-box v-model="confimNewPassword" placeholder="确认新密码" ref="input2" :verification="['isNull','isPassWord']"
@@ -42,6 +42,7 @@
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			//忘记密码的账号
 			this.account = option.value
+			console.log(option.value)
 		},
 		methods: {
 			//倒计时
@@ -71,39 +72,53 @@
 					if (res.data.StatusCode == 1) {
 						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
 						if (res.data.Data == 1) {
-							this.message = '发送成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title: '发送成功',
+								icon: 'none'
+							});
 							this.countDown()
-							
 						} else if (res.data.Data == 0) {
-							this.message = '发送失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title: '发送失败',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 2) {
-							this.message = '参数为空'
-							this.$refs.toast.show()
-						}else if (res.data.Data == 3) {
-							this.message = '重复发送短信'
-							this.$refs.toast.show()
-						}else{
-							this.message = '发送失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title: '参数为空',
+								icon: 'none'
+							});
+						} else if (res.data.Data == 3) {
+							uni.showToast({
+								title: '重复发送短信',
+								icon: 'none'
+							});
+						} else {
+							uni.showToast({
+								title: '发送失败',
+								icon: 'none'
+							});
 						}
-						
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title: res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title: '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 			submit() {
 				if (this.$refs.input1.getValue() && this.$refs.input2.getValue() && this.$refs.input3.getValue()) {
 
 					if (this.newPassword != this.confimNewPassword) {
-						this.message = '两次新密码不一致'
-						this.$refs.toast.show()
+						uni.showToast({
+							title: '两次新密码不一致',
+							icon: 'none'
+						});
 						return
 					}
 
@@ -124,44 +139,58 @@
 						if (res.data.StatusCode == 1) {
 							//找回密码(0：处理失败，1：处理成功，2：验证码失效，3：验证码不正确，4：参数为空，5：用户不存在
 							if (res.data.Data == 1) {
-								this.message = '处理成功'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '处理成功',
+									icon: 'none'
+								});
 								//返回2个页面
 								uni.navigateBack({
 									delta: 2
 								});
 							} else if (res.data.Data == 0) {
-								this.message = '处理失败'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '处理失败',
+									icon: 'none'
+								});
 							} else if (res.data.Data == 2) {
-								this.message = '验证码失效'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '验证码失效',
+									icon: 'none'
+								});
 							} else if (res.data.Data == 3) {
-								this.message = '验证码不正确'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '验证码不正确',
+									icon: 'none'
+								});
 							} else if (res.data.Data == 4) {
-								this.message = '参数为空'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '参数为空',
+									icon: 'none'
+								});
 							} else if (res.data.Data == 5) {
-								this.message = '用户不存在'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '用户不存在',
+									icon: 'none'
+								});
 							} else {
-								this.message = '处理失败'
-								this.$refs.toast.show()
+								uni.showToast({
+									title: '处理失败',
+									icon: 'none'
+								});
 							}
-
-
 						} else {
-							this.message = res.data.Message
-							this.$refs.toast.show()
+							uni.showToast({
+								title: res.data.Message,
+								icon: 'none'
+							});
 						}
 					}).catch((err) => {
-						this.message = '请求失败'
-						this.$refs.toast.show()
+						uni.showToast({
+							title: '网络繁忙，请稍后重试',
+							icon: 'none'
+						});
 					})
 				}
-
-
 			},
 		}
 	}

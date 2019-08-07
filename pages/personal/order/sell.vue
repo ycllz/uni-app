@@ -14,8 +14,10 @@
 			</view>
 		</view>
 		<view class="main-list">
-			<input-box v-model="body.price" placeholder="出售资产" leftText="出售资产:"></input-box>
-			<input-box v-model="password" placeholder="二级密码" leftText="二级密码:"></input-box>
+			<input-box v-model="body.price" placeholder="出售资产" ref="input1" :verification="['isNull','isInt']" :verificationTip="['出售资产不能为空','出售资产必须是整数']"
+			 leftText="出售资产:"></input-box>
+			<input-box v-model="password" placeholder="二级密码" ref="input2" :verification="['isNull','isInt']" :verificationTip="['二级密码不能为空','二级密码必须是数字']"
+			 leftText="二级密码:"></input-box>
 		</view>
 
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
@@ -30,8 +32,8 @@
 	import inputBox from '@/components/input-box/input-box'
 	import http from '@/common/vmeitime-http/interface.js'
 	import md5 from 'js-md5'
-	
-	
+
+
 	export default {
 		components: {
 			inputBox
@@ -39,7 +41,7 @@
 		data() {
 			return {
 				message: '',
-				password:'',
+				password: '',
 				value: 0,
 				value1: 0,
 				value2: 0,
@@ -87,70 +89,71 @@
 			},
 			//新增
 			toSell() {
-				if (this.body.price < 1) {
-					this.message = '请输入转出资产'
-					this.$refs.toast.show()
-					return
-				}
-				if (this.password < 1) {
-					this.message = '请输入二级密码'
-					this.$refs.toast.show()
-					return
-				}
-				
-				http.config.header = {
-					'Authorization': uni.getStorageSync("token")
-				}
-				let p1 = md5(this.password.toString())
-				let p2 = md5(p1)
-				this.body.safePwd = p2
-				
-				http.post('api/ReferInCome/Exchange', this.body).then((res) => {
-					if (res.data.StatusCode == 1) {
-						//(0：兑换失败，1：兑换成功，2：二级密码校检失败，3：类型指定错误，
-						//4：当前额度小于要兑换的价值，5：低于最低兑换值)
-						if(res.data.Data == 0){
-							this.message = '兑换失败'
-							this.$refs.toast.show()
-						}else if(res.data.Data == 1){
+				if (this.$refs.input1.getValue() && this.$refs.input2.getValue()) {
+					http.config.header = {
+						'Authorization': uni.getStorageSync("token")
+					}
+					let p1 = md5(this.password.toString())
+					let p2 = md5(p1)
+					this.body.safePwd = p2
+
+					http.post('api/ReferInCome/Exchange', this.body).then((res) => {
+						if (res.data.StatusCode == 1) {
+							//(0：兑换失败，1：兑换成功，2：二级密码校检失败，3：类型指定错误，
+							//4：当前额度小于要兑换的价值，5：低于最低兑换值)
+							if (res.data.Data == 0) {
+								uni.showToast({
+									title:  '兑换失败',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 1) {
+								uni.showToast({
+									title: '兑换成功~',
+									icon: 'none'
+								});
+								uni.navigateBack({
+									delta: 2
+								});
+							} else if (res.data.Data == 2) {
+								uni.showToast({
+									title: '二级密码错误',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 3) {
+								uni.showToast({
+									title: '类型指定错误',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 4) {
+								uni.showToast({
+									title: '当前额度小于要兑换的价值',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 5) {
+								uni.showToast({
+									title: '低于最低兑换值',
+									icon: 'none'
+								});
+							} else {
+								uni.showToast({
+									title: '兑换失败',
+									icon: 'none'
+								});
+							}
+						} else {
 							uni.showToast({
-								title: '兑换成功~',
+								title: res.data.Message,
 								icon: 'none'
 							});
-							/* this.message = '兑换成功~'
-							this.$refs.toast.show() */
-							uni.navigateBack({
-								delta: 2
-							});
 						}
-						else if(res.data.Data == 2){
-							this.message = '二级密码错误'
-							this.$refs.toast.show()
-						}
-						else if(res.data.Data == 3){
-							this.message = '类型指定错误'
-							this.$refs.toast.show()
-						}
-						else if(res.data.Data == 4){
-							this.message = '当前额度小于要兑换的价值'
-							this.$refs.toast.show()
-						}
-						else if(res.data.Data == 5){
-							this.message = '低于最低兑换值'
-							this.$refs.toast.show()
-						}
-					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
-					}
-				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
-				})
-				
-				
+					}).catch((err) => {
+						uni.showToast({
+							title:  '网络繁忙，请稍后重试',
+							icon: 'none'
+						});
+					})
+				}
 			}
-
 		}
 	}
 </script>

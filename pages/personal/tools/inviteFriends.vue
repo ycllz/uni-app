@@ -5,7 +5,7 @@
 				<text>{{account}}</text>
 			</div>
 			<view class="qrimg-i">
-				<tki-qrcode v-if="ifShow" :icon="icon" cid="qrcode2" ref="qrcode2" val="第二个二维码" :size="size" :onval="onval" :loadMake="loadMake"
+				<tki-qrcode v-if="ifShow" :icon="icon" cid="qrcode2" ref="qrcode2" :val="val" :size="size" :onval="onval" :loadMake="loadMake"
 				 :usingComponents="true" @result="qrR" />
 			</view>
 		</view>
@@ -42,6 +42,7 @@
 		},
 		mounted() {
 			this.account = uni.getStorageSync("account")
+			this.val = this.account
 		}
 	}
 </script>

@@ -40,11 +40,6 @@
 
 		</view>
 
-
-
-
-
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -108,25 +103,33 @@
 						}
 
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 			//上传图片
 			uploadImage() {
 
 				if (this.safePwd == '') {
-					this.message = '请输入二级密码'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '请输入二级密码',
+						icon: 'none'
+					});
 					return
 				}
 				if (this.imageList.length == 0) {
-					this.message = '请上传付款凭证'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '请上传付款凭证',
+						icon: 'none'
+					});
 					return
 				}
 
@@ -153,22 +156,25 @@
 					success: (uploadFileRes) => {
 						console.log(uploadFileRes)
 						let res = JSON.parse(uploadFileRes.data)
-						console.log(res)
 						if (res.StatusCode == 1) {
 							if (res.Data.isSuccess) {
 								this.body.payUrl = res.Data.filePath
 								this.submitPay()
 							} else {
-								this.message = res.Data.msg
-								this.$refs.toast.show()
+								uni.showToast({
+									title:  res.data.Message,
+									icon: 'none'
+								});
 							}
 						} else {
 
 						}
 					},
 					fail: (e) => {
-						this.message = '请求失败'
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  '网络繁忙，请稍后重试',
+							icon: 'none'
+						});
 					}
 				});
 			},
@@ -182,30 +188,44 @@
 					if (res.data.StatusCode == 1) {
 						//支付订单(0：订单状态异常，1：成功，2：人员不匹配,3:二级密码不正确，4：提交失败)
 						if (res.data.Data == 1) {
-							this.message = '付款成功'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '付款成功',
+								icon: 'none'
+							});
 							uni.navigateBack()
 						} else if (res.data.Data == 0) {
-							this.message = '订单状态异常'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '订单状态异常',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 2) {
-							this.message = '人员不匹配'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '人员不匹配',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 3) {
-							this.message = '二级密码不正确'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '二级密码不正确',
+								icon: 'none'
+							});
 						} else if (res.data.Data == 4) {
-							this.message = '提交失败'
-							this.$refs.toast.show()
+							uni.showToast({
+								title:  '提交失败',
+								icon: 'none'
+							});
 						}
 
 					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
 				})
 			},
 			previewImage: function(e) {

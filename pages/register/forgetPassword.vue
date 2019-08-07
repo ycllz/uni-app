@@ -48,39 +48,21 @@
 			},
 			next() {
 
-				/* if (this.imageCode == '') {
-					this.message = '请输入手机号码'
-					this.$refs.toast.show()
-					return
-				}
-
-				if (this.phone.length != 11) {
-					this.message = '请输入正确的手机号码'
-					this.$refs.toast.show()
-					return
-				} 
-
-				if (this.imageCode == '') {
-					this.message = '请输入验证码'
-					this.$refs.toast.show()
-					return
-				}*/
-
 				if (this.$refs.input1.getValue() && this.$refs.input2.getValue()) {
 						let that = this
 						uni.getStorage({
 							key: 'imgcode',
 							success: function(res) {
-								console.log(res.data.toLowerCase())
-								console.log(that.imageCode)
 
 								if (that.imageCode == res.data.toLowerCase()) {
 									uni.navigateTo({
 										url: 'forgetPasswordScondStep?value=' + that.phone
 									})
 								} else {
-									that.message = '验证码不正确'
-									that.$refs.toast.show()
+									uni.showToast({
+										title:  '验证码不正确',
+										icon: 'none'
+									});
 									that.$refs.imgcode.refresh();
 								}
 							}

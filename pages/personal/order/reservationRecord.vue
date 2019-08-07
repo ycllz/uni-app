@@ -11,7 +11,6 @@
 		<view class="load-more-view">
 			<text class="loadMore">加载中...</text>
 		</view>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -77,15 +76,20 @@
 					} else {
 						this.refreshing = false;
 						uni.stopPullDownRefresh();
-						this.message = res.data.Message
-						this.$refs.toast.show()
+						uni.showToast({
+							title:  res.data.Message,
+							icon: 'none'
+						});
 					}
 
 				}).catch((err) => {
 					this.refreshing = false;
 					uni.stopPullDownRefresh();
-					this.message = '请求失败'
-					this.$refs.toast.show()
+					uni.showToast({
+						title:  '网络繁忙，请稍后重试',
+						icon: 'none'
+					});
+				
 				})
 			}
 		}
