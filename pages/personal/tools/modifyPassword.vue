@@ -160,7 +160,7 @@ console.log(2222222222)
 						} else if (res.data.Data == 2) {
 							this.message = '参数为空'
 							this.$refs.toast.show()
-						}else if (res.data.Data == 2) {
+						}else if (res.data.Data == 3) {
 							this.message = '重复发送短信'
 							this.$refs.toast.show()
 						}else{
