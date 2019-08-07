@@ -6,7 +6,7 @@
 			<input class="zai-input" placeholder-class v-model="account" placeholder="请输入账号" />
 			<input class="zai-input" placeholder-class v-model="password" password placeholder="请输入密码" />
 			<view class="zai-verify">
-				<move-verify @result='verifyResult'></move-verify>
+				<move-verify :key="verifyKey" @result='verifyResult'></move-verify>
 			</view>
 			<button class="zai-btn" @click="bindLogin">立即登录</button>
 			<view class="zai-label">
@@ -35,14 +35,15 @@
 	export default {
 		data() {
 			return {
-				version:'',
+				version: '',
 				providerList: [],
 				hasProvider: false,
-				account: '',
-				password: '',
+				account: '17378507794',
+				password: '111111',
 				message: '',
 				isVerify: false,
-				positionTop: 0
+				positionTop: 0,
+				verifyKey: 1,
 			}
 		},
 		onLoad() {
@@ -50,6 +51,10 @@
 		},
 		components: {
 			"move-verify": moveVerify,
+		},
+		onShow() {
+			this.isVerify = false
+			++this.verifyKey
 		},
 		methods: {
 			bindLogin() {

@@ -2,7 +2,7 @@
 	<!-- 忘记密码 第二步 -->
 	<view class="main">
 		<view class="main-list">
-			<input-box :inputValue="account" disabled="true" :clearShow="false" leftText="账号:"></input-box>
+			<input-box :inputValue ="account" :disabled="true" :clearShow="false" leftText="账号:"></input-box>
 			<input-box v-model="newPassword" ref="input1" :verification="['isNull','isPassWord']" :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']"
 			 placeholder="新密码" leftText="新密码:"></input-box>
 			<input-box v-model="confimNewPassword" placeholder="确认新密码" ref="input2" :verification="['isNull','isPassWord']"
@@ -42,6 +42,7 @@
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			//忘记密码的账号
 			this.account = option.value
+			console.log(option.value)
 		},
 		methods: {
 			//倒计时

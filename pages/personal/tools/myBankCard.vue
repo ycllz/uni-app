@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div class="div-btn">
-					<button class="mini-btn" type="warn" size="mini">禁用</button>
+					<button class="mini-btn" type="warn" @click="disPayModel(item.f_id)" size="mini">禁用</button>
 					<!-- 	<button type="warn">操作</button> -->
 				</div>
 			</view>
@@ -84,7 +84,7 @@
 		data() {
 			return {
 				message: '',
-				refreshing:false,
+				refreshing: false,
 				cardList: [],
 			}
 		},
@@ -122,6 +122,42 @@
 					uni.stopPullDownRefresh();
 				})
 			},
+			disPayModel(id) {
+				http.config.header = {
+					'Authorization': uni.getStorageSync("token")
+				}
+				http.post('api/PayModel/DisPayModel?id=' + id).then((res) => {
+					if (res.data.StatusCode == 1) {
+						//禁用收款码 0 失败 1 成功 2 未找到收款方式 3 至少保留两种收款方式
+						if (res.data.Data == 0) {
+							this.message = '处理失败'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 0) {
+							this.message = '处理成功'
+							this.$refs.toast.show()
+							this.queryBankList()
+						} else if (res.data.Data == 0) {
+							this.message = '未找到收款方式'
+							this.$refs.toast.show()
+						} else if (res.data.Data == 0) {
+							this.message = '至少保留两种收款方式'
+							this.$refs.toast.show()
+						} else {
+							this.message = '处理失败'
+							this.$refs.toast.show()
+						}
+					} else {
+						this.message = res.data.Message
+						this.$refs.toast.show()
+					}
+
+				}).catch((err) => {
+					this.message = '请求失败'
+					this.$refs.toast.show()
+					this.refreshing = false;
+					uni.stopPullDownRefresh();
+				})
+			}
 		},
 		mounted() {
 			this.queryBankList()

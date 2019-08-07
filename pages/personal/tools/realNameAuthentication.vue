@@ -8,9 +8,11 @@
 		</template>
 		<template v-else>
 			<view class="center-list">
-				<input-box v-model="realName" placeholder="真实姓名:" leftText="真实姓名"></input-box>
-				<input-box v-model="idCard" placeholder="身份证号:" leftText="请输入您的身份证号"></input-box>
-				<input-box v-model="cardNumber" placeholder="银行卡号:" leftText="请输入您的银行卡号"></input-box>
+				<input-box v-model="realName" placeholder="真实姓名:" ref="input1" :verification="['isNull','isChineseAndEnlish']"
+				 :verificationTip="['真实姓名不能为空','真实姓名只能是中文或字母']" leftText="真实姓名"></input-box>
+				<input-box v-model="idCard" ref="input2" :verification="['isNull']" :verificationTip="['身份证号不能为空']" placeholder="身份证号:"
+				 leftText="请输入您的身份证号"></input-box>
+				<!-- 		<input-box v-model="cardNumber" placeholder="银行卡号:" leftText="请输入您的银行卡号"></input-box> -->
 			</view>
 
 			<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
@@ -24,6 +26,8 @@
 <script>
 	import inputBox from '@/components/input-box/input-box'
 	import http from '@/common/vmeitime-http/interface.js'
+	import regExpUtil from '@/common/regExpUtil.js'
+	
 	export default {
 		data() {
 			return {
@@ -43,7 +47,7 @@
 		},
 		methods: {
 			authertication() {
-				if (this.realName == '') {
+				/* if (this.realName == '') {
 					this.message = '请输入真是姓名'
 					this.$refs.toast.show()
 					return
@@ -53,54 +57,69 @@
 					this.message = '请输入身份证号'
 					this.$refs.toast.show()
 					return
-				}
+				} */
 
-				if (this.cardNumber == '') {
+				/* if (this.cardNumber == '') {
 					this.message = '请输入银行卡号'
 					this.$refs.toast.show()
 					return
-				}
+				} */
+				if (this.$refs.input1.getValue() && this.$refs.input2.getValue()) {
+					
+					console.log(this.idCard)
+					
+					if(!regExpUtil.isIdCard(this.idCard)){
+						this.message = '请输入正确的身份证号'
+						this.$refs.toast.show()
+						return
+					}
+					
+					http.config.header = {
+						'Authorization': uni.getStorageSync("token")
+					}
+					
+					let body = {
+						realName:this.realName,
+						cardId:this.idCard
+					}
+					
+					http.post('api/Account/RealName',body).then((res) => {
 
+						if (res.data.StatusCode == 1) {
+							//实名认证(0：提交失败，1：提交成功，2：身份证号码格式不正确,3:至少添加两种收款方式 4 身份信息已存在
+							if (res.data.Data == 1) {
+								this.message = '信息已提交'
+								this.$refs.toast.show()
+								uni.navigateBack()
+							} else if (res.data.Data == 0) {
+								this.message = '提交失败'
+								this.$refs.toast.show()
+							} else if (res.data.Data == 2) {
+								this.message = '身份证号码格式不正确'
+								this.$refs.toast.show()
+							} else if (res.data.Data == 3) {
+								this.message = '至少添加两种收款方式'
+								this.$refs.toast.show()
+							} else if (res.data.Data == 4) {
+								this.message = '身份信息已存在'
+								this.$refs.toast.show()
+							} else {
+								this.message = '提交失败'
+								this.$refs.toast.show()
+							}
 
-				http.config.header = {
-					'Authorization': uni.getStorageSync("token")
-				}
-
-				http.post('api/Account/RealName?realname=' + this.realName +
-					"&cardId=" + this.idCard).then((res) => {
-
-					if (res.data.StatusCode == 1) {
-						//实名认证(0：提交失败，1：提交成功，2：身份证号码格式不正确,3:至少添加两种收款方式 4 身份信息已存在
-						if (res.data.Data == 1) {
-							this.message = '信息已提交'
-							this.$refs.toast.show()
-							uni.navigateBack()
-						}else if(res.data.Data == 0){
-							this.message = '提交失败'
-							this.$refs.toast.show()
-						}else if(res.data.Data == 2){
-							this.message = '身份证号码格式不正确'
-							this.$refs.toast.show()
-						}else if(res.data.Data == 3){
-							this.message = '至少添加两种收款方式'
-							this.$refs.toast.show()
-						}else if(res.data.Data == 4){
-							this.message = '身份信息已存在'
-							this.$refs.toast.show()
-						}else{
-							this.message = '提交失败'
+						} else {
+							this.message = res.data.Message
 							this.$refs.toast.show()
 						}
-						
-					} else {
-						this.message = res.data.Message
-						this.$refs.toast.show()
-					}
 
-				}).catch((err) => {
-					this.message = '请求失败'
-					this.$refs.toast.show()
-				})
+					}).catch((err) => {
+						this.message = '请求失败'
+						this.$refs.toast.show()
+					})
+				}
+
+
 			}
 		}
 	}

@@ -17,7 +17,7 @@
 			<input-box v-model="secondarySecurityPassword" ref="input7" :verification="['isNull','isInt']" :verificationTip="['二级密码不能为空','二级密码必须是数字']"
 			 placeholder="必须输入6位数字" leftText="确认二级密码:"></input-box>
 			<input-box v-model="body.recommenderAccount" ref="input8" :verification="['isNull']" :verificationTip="['邀请码不能为空']"
-			 placeholder="邀请码" leftText="邀请码:"></input-box> 
+			 placeholder="邀请账号" leftText="邀请码:"></input-box> 
 
 			<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 				<button type="primary" @tap="submit">确认</button>
@@ -92,12 +92,18 @@
 			},
 			//发送验证码
 			sendCodeMessage() {
+				if(!regExpUtil.isPhoneNum(this.body.userAccount)){
+					this.message = '请输入正确的手机号'
+					this.$refs.toast.show()
+					return
+				}
+				
 				http.config.header = {
 					'Authorization': uni.getStorageSync("token")
 				}
 				//+this.account  todo
 				let body = {
-					'Account': uni.getStorageSync("account")
+					'Account': this.body.userAccount
 				}
 				http.post('api/NoAuthorize/SendCodeMessage', body).then((res) => {
 					if (res.data.StatusCode == 1) {

@@ -9,17 +9,24 @@
             "src" : "图片路径"
         }
     ],
-    "versionName" : "0.3 beta",
-    "versionCode" : 4,
+    "versionName" : "0.4 beta",
+    "versionCode" : 5,
     "app-plus" : {
         "usingComponents" : true,
         "distribute" : {
             "icons" : {
                 "android" : {
-                    "hdpi" : "C:/Users/Administrator/Desktop/logo_92.png",
-                    "xhdpi" : "C:/Users/Administrator/Desktop/logo_92.png",
-                    "xxhdpi" : "C:/Users/Administrator/Desktop/logo_144.png",
-                    "xxxhdpi" : "C:/Users/Administrator/Desktop/logo_192.png"
+                    "hdpi" : "C:/Users/Administrator/Desktop/logo.png",
+                    "xhdpi" : "C:/Users/Administrator/Desktop/logo.png",
+                    "xxhdpi" : "C:/Users/Administrator/Desktop/logo.png",
+                    "xxxhdpi" : "C:/Users/Administrator/Desktop/logo.png"
+                }
+            },
+            "splashscreen" : {
+                "android" : {
+                    "hdpi" : "",
+                    "xhdpi" : "",
+                    "xxhdpi" : ""
                 }
             }
         }

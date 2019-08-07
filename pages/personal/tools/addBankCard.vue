@@ -25,7 +25,7 @@
 			</view>
 
 
-			<view class="choose-code">请选择收款码:
+			<view class="choose-code" v-if="body.type != 3">请选择收款码:
 				<view class="uni-uploader__files">
 					<block v-for="(image,index) in imageList" :key="index">
 						<view class="uni-uploader__file" style="position: relative;">
@@ -166,51 +166,66 @@
 					return
 				} */
 				if (this.valitate()) {
-					if (this.imageList.length == 0) {
-						this.message = '请选择收款码'
-						this.$refs.toast.show()
-						return
-					}
 					this.body.userAccount = uni.getStorageSync("account")
-					var images = [];
 
-					for (var i = 0, len = this.imageList.length; i < len; i++) {
-						var image_obj = {
-							name: 'image-' + i,
-							uri: this.imageList[i]
-						};
-						images.push(image_obj);
+					if (this.body.type != 3) {
+						//银行卡
+						if (this.imageList.length == 0) {
+							this.message = '请选择收款码'
+							this.$refs.toast.show()
+							return
+						}
+
+						var images = [];
+
+						for (var i = 0, len = this.imageList.length; i < len; i++) {
+							var image_obj = {
+								name: 'image-' + i,
+								uri: this.imageList[i]
+							};
+							images.push(image_obj);
+						}
+
+						//上传图片
+						uni.uploadFile({
+							url: this.baseUrl + 'api/Upload/UploadImage',
+							files: images,
+							filePath: images[0].uri,
+							header: {
+								'Authorization': uni.getStorageSync("token")
+							},
+							name: 'file',
+							success: (uploadFileRes) => {
+								console.log(uploadFileRes)
+								let res = JSON.parse(uploadFileRes.data)
+								console.log(res)
+								if (res.StatusCode == 1) {
+									if (res.Data.isSuccess) {
+										this.body.filePath = res.Data.filePath
+										this.submitAdd()
+									} else {
+										this.message = res.Data.msg
+										this.$refs.toast.show()
+									}
+								} else {
+
+								}
+							},
+							fail: (e) => {
+								this.message = '请求失败'
+								this.$refs.toast.show()
+							}
+						});
+					} else {
+						//微信 支付宝
+						this.body.filePath = ''
+						this.submitAdd()
 					}
 
-					uni.uploadFile({
-						url: this.baseUrl + 'api/Upload/UploadImage',
-						files: images,
-						filePath: images[0].uri,
-						header: {
-							'Authorization': uni.getStorageSync("token")
-						},
-						name: 'file',
-						success: (uploadFileRes) => {
-							console.log(uploadFileRes)
-							let res = JSON.parse(uploadFileRes.data)
-							console.log(res)
-							if (res.StatusCode == 1) {
-								if (res.Data.isSuccess) {
-									this.body.filePath = res.Data.filePath
-									this.submitAdd()
-								} else {
-									this.message = res.Data.msg
-									this.$refs.toast.show()
-								}
-							} else {
 
-							}
-						},
-						fail: (e) => {
-							this.message = '请求失败'
-							this.$refs.toast.show()
-						}
-					});
+
+
+
 
 				}
 
@@ -289,17 +304,17 @@
 							this.message = '发送成功'
 							this.$refs.toast.show()
 							this.countDown()
-							
+
 						} else if (res.data.Data == 0) {
 							this.message = '发送失败'
 							this.$refs.toast.show()
 						} else if (res.data.Data == 2) {
 							this.message = '参数为空'
 							this.$refs.toast.show()
-						}else if (res.data.Data == 3) {
+						} else if (res.data.Data == 3) {
 							this.message = '重复发送短信'
 							this.$refs.toast.show()
-						}else{
+						} else {
 							this.message = '发送失败'
 							this.$refs.toast.show()
 						}
