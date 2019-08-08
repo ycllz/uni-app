@@ -13,10 +13,10 @@
 			<view class="item">收益状态:{{orderDetail._id}}</view>
 
 			<view>转让方收款账号</view>
-			
-			
-			
-			
+
+
+
+
 			<view class="choose-code">请选上传付款码
 				<view class="uni-uploader__files">
 					<block v-for="(image,index) in imageList" :key="index">
@@ -32,7 +32,8 @@
 			</view>
 
 			<view class="border-top-view">
-				<input-box v-model="safePwd" placeholder="二级密码" leftText="二级密码:"></input-box>
+				<input-box v-model="safePwd" placeholder="二级密码" leftText="二级密码:" ref="input1" :verification="['isNull','isInt']"
+				 :verificationTip="['二级密码不能为空','二级密码必须是数字']" :clearShow="false"></input-box>
 			</view>
 			<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 				<button type="primary" @tap="uploadImage">确认</button>
@@ -104,13 +105,13 @@
 
 					} else {
 						uni.showToast({
-							title:  res.data.Message,
+							title: res.data.Message,
 							icon: 'none'
 						});
 					}
 				}).catch((err) => {
 					uni.showToast({
-						title:  '网络繁忙，请稍后重试',
+						title: '网络繁忙，请稍后重试',
 						icon: 'none'
 					});
 				})
@@ -120,14 +121,14 @@
 
 				if (this.safePwd == '') {
 					uni.showToast({
-						title:  '请输入二级密码',
+						title: '请输入二级密码',
 						icon: 'none'
 					});
 					return
 				}
 				if (this.imageList.length == 0) {
 					uni.showToast({
-						title:  '请上传付款凭证',
+						title: '请上传付款凭证',
 						icon: 'none'
 					});
 					return
@@ -162,7 +163,7 @@
 								this.submitPay()
 							} else {
 								uni.showToast({
-									title:  res.data.Message,
+									title: res.data.Message,
 									icon: 'none'
 								});
 							}
@@ -172,61 +173,71 @@
 					},
 					fail: (e) => {
 						uni.showToast({
-							title:  '网络繁忙，请稍后重试',
+							title: '网络繁忙，请稍后重试',
 							icon: 'none'
 						});
 					}
 				});
 			},
 			submitPay() {
-				let p1 = md5(this.safePwd.toString())
-				this.body.safePwd = md5(p1)
-				http.config.header = {
-					'Authorization': uni.getStorageSync("token")
-				}
-				http.post('api/Order/Pay', this.body).then((res) => {
-					if (res.data.StatusCode == 1) {
-						//支付订单(0：订单状态异常，1：成功，2：人员不匹配,3:二级密码不正确，4：提交失败)
-						if (res.data.Data == 1) {
+				if (this.$refs.input1.getValue()) {
+					if (this.safePwd.length != 6) {
+						uni.showToast({
+							title: '二级密码必须是6位',
+							icon: 'none'
+						});
+						return
+					}
+					
+					let p1 = md5(this.safePwd.toString())
+					this.body.safePwd = md5(p1)
+					http.config.header = {
+						'Authorization': uni.getStorageSync("token")
+					}
+					http.post('api/Order/Pay', this.body).then((res) => {
+						if (res.data.StatusCode == 1) {
+							//支付订单(0：订单状态异常，1：成功，2：人员不匹配,3:二级密码不正确，4：提交失败)
+							if (res.data.Data == 1) {
+								uni.showToast({
+									title: '付款成功',
+									icon: 'none'
+								});
+								uni.navigateBack()
+							} else if (res.data.Data == 0) {
+								uni.showToast({
+									title: '订单状态异常',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 2) {
+								uni.showToast({
+									title: '人员不匹配',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 3) {
+								uni.showToast({
+									title: '二级密码不正确',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 4) {
+								uni.showToast({
+									title: '提交失败',
+									icon: 'none'
+								});
+							}
+
+						} else {
 							uni.showToast({
-								title:  '付款成功',
-								icon: 'none'
-							});
-							uni.navigateBack()
-						} else if (res.data.Data == 0) {
-							uni.showToast({
-								title:  '订单状态异常',
-								icon: 'none'
-							});
-						} else if (res.data.Data == 2) {
-							uni.showToast({
-								title:  '人员不匹配',
-								icon: 'none'
-							});
-						} else if (res.data.Data == 3) {
-							uni.showToast({
-								title:  '二级密码不正确',
-								icon: 'none'
-							});
-						} else if (res.data.Data == 4) {
-							uni.showToast({
-								title:  '提交失败',
+								title: res.data.Message,
 								icon: 'none'
 							});
 						}
-
-					} else {
+					}).catch((err) => {
 						uni.showToast({
-							title:  res.data.Message,
+							title: '网络繁忙，请稍后重试',
 							icon: 'none'
 						});
-					}
-				}).catch((err) => {
-					uni.showToast({
-						title:  '网络繁忙，请稍后重试',
-						icon: 'none'
-					});
-				})
+					})
+				}
 			},
 			previewImage: function(e) {
 				var current = e.target.dataset.src

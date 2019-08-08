@@ -5,7 +5,6 @@
 			<view class="main-list">
 				<cmd-cell-item v-for="item in list" :key="item.id" :title="item.f_name" :brief="item.f_phone" :addon="item.f_createtime" />
 			</view>
-			<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 			<uLi-load-more :status="loadMoreStatus"></uLi-load-more>
 		</view>
 

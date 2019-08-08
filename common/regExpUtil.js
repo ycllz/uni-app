@@ -41,11 +41,13 @@ regExpUtil.checkPsw = function(str) {
  * 校验是否是手机号码
  */
 regExpUtil.isPhoneNum = function(str) {
-	var reg = new RegExp("/^(1[0-9])\d{9}$/"); //正则表达式
+	var p = /^(1[0-9])\d{9}$/;
+	return p.test(str)
+/* 	var reg = new RegExp("/^(1[0-9])\d{9}$/"); //正则表达式
 	var r = str.match(reg);
 	if (r != null) {
 		return true;
-	}
+	} */
 }
 
 /**

@@ -82,7 +82,6 @@
 		<!-- mask:  	true 无遮罩层              		|     false 有遮罩层 						 -->
 		<!-- click:  	true 点击空白无法关闭加载状态   |     false 点击空白可关闭加载状态 -->
 		<w-loading text="加载中.." mask="true" click="false" ref="loading"></w-loading>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -193,9 +192,11 @@
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {
 			const index = e.index;
+			let value = this.userDetail.f_name
+			let value1 = uni.getStorageSync("account")
 			if (index === 0) {
 				uni.navigateTo({
-					url: './setting/setting'
+					url: './setting/setting?value=' + value + '&value1=' + value1
 				})
 			}
 		},
@@ -281,24 +282,26 @@
 				})
 			},
 			toSetting() {
+				/* let vaue = this.userDetail.f_name
+				let value1 = uni.getStorageSync("account")
 				uni.navigateTo({
-					url: '../../user/setting/setting'
-				})
+					url: '../../user/setting/setting?value=' + value + '&value1=' + vaue1
+				}) */
 			},
 			toMyQR() {
-				uni.navigateTo({
+				/* uni.navigateTo({
 					url: '../../user/myQR/myQR'
-				})
+				}) */
 			},
 			toLogin() {
-				uni.showToast({
+				/* uni.showToast({
 					title: '请登录',
 					icon: "none"
 				});
 				uni.navigateTo({
 					url: '../../login/login'
 				})
-				this.isfirst = false;
+				this.isfirst = false; */
 			},
 			isLogin() {
 				//实际应用中,用户登录状态应该用token等方法去维持登录状态.

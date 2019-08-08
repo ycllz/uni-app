@@ -9,9 +9,9 @@
 		<template v-else>
 			<view class="center-list">
 				<input-box v-model="realName" placeholder="真实姓名:" ref="input1" :verification="['isNull','isChineseAndEnlish']"
-				 :verificationTip="['真实姓名不能为空','真实姓名只能是中文或字母']" leftText="真实姓名"></input-box>
+				 :verificationTip="['真实姓名不能为空','真实姓名只能是中文或字母']" leftText="真实姓名" :clearShow="false"></input-box>
 				<input-box v-model="idCard" ref="input2" :verification="['isNull']" :verificationTip="['身份证号不能为空']" placeholder="身份证号:"
-				 leftText="请输入您的身份证号"></input-box>
+				 leftText="请输入您的身份证号" :clearShow="false"></input-box>
 				<!-- 		<input-box v-model="cardNumber" placeholder="银行卡号:" leftText="请输入您的银行卡号"></input-box> -->
 			</view>
 
@@ -19,7 +19,6 @@
 				<button type="primary" @tap="authertication">确认</button>
 			</view>
 		</template>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 

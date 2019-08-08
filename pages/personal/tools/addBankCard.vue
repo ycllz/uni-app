@@ -16,12 +16,12 @@
 		<view class="main-list">
 
 			<input-box v-model="body.accountName" ref="input1" :verification="['isNull']" :verificationTip="['账户名称不能为空']"
-			 placeholder="账户名称" leftText="账户名称:"></input-box>
+			 placeholder="账户名称" leftText="账户名称:" :clearShow="false"></input-box>
 			<input-box v-model="body.account" ref="input2" :verification="['isNull']" :verificationTip="['账号不能为空']" placeholder="账号"
-			 leftText="账号:"></input-box>
+			 leftText="账号:" :clearShow="false"></input-box>
 			<view v-if="body.type == 3">
 				<input-box v-model="body.f_SubBranchName" ref="input4" :verification="['isNull']" :verificationTip="['开户行地址不能为空']"
-				 placeholder="开户行地址" leftText="开户行地址:"></input-box>
+				 placeholder="开户行地址" leftText="开户行地址:" :clearShow="false"></input-box>
 			</view>
 
 
@@ -41,7 +41,7 @@
 
 			<view class="border-top-view">
 				<input-box v-model="body.code" ref="input3" placeholder="请输入验证码" :verification="['isNull']" :verificationTip="['验证码不能为空']"
-				 @rightClick="sendCodeMessage" :rightText="content"></input-box>
+				 @rightClick="sendCodeMessage" :rightText="content" :clearShow="false"></input-box>
 			</view>
 
 		</view>
@@ -49,8 +49,7 @@
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 			<button type="primary" @tap="uploadImage">确认</button>
 		</view>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
-
+		<w-loading text="加载中.." mask="true" click="false" ref="loading"></w-loading>
 	</view>
 </template>
 
@@ -150,7 +149,7 @@
 			//新增
 			uploadImage() {
 
-				
+
 				if (this.valitate()) {
 					this.body.userAccount = uni.getStorageSync("account")
 
@@ -158,12 +157,12 @@
 						//银行卡
 						if (this.imageList.length == 0) {
 							uni.showToast({
-								title:  '请选择收款码',
+								title: '请选择收款码',
 								icon: 'none'
 							});
 							return
 						}
-
+						this.$refs.loading.open()
 						var images = [];
 
 						for (var i = 0, len = this.imageList.length; i < len; i++) {
@@ -192,23 +191,30 @@
 										this.body.filePath = res.Data.filePath
 										this.submitAdd()
 									} else {
+										this.$refs.loading.close()
 										uni.showToast({
-											title:  res.Data.msg,
+											title: res.Data.msg,
 											icon: 'none'
 										});
 									}
 								} else {
-
+									this.$refs.loading.close()
+									uni.showToast({
+										title: res.Message,
+										icon: 'none'
+									});
 								}
 							},
 							fail: (e) => {
+								this.$refs.loading.close()
 								uni.showToast({
-									title:  '网络繁忙，请稍后重试',
+									title: '网络繁忙，请稍后重试',
 									icon: 'none'
 								});
 							}
 						});
 					} else {
+						this.$refs.loading.open()
 						//微信 支付宝
 						this.body.filePath = ''
 						this.submitAdd()
@@ -221,44 +227,47 @@
 				}
 				http.post('api/PayModel/AddPayModel', this.body).then((res) => {
 					if (res.data.StatusCode == 1) {
+						this.$refs.loading.close()
 						//新增收款方式 （0：新增失败，1：新增成功，2：用户不存在，3：账号已存在）
 						if (res.data.Data == 1) {
 							uni.showToast({
-								title:  '添加成功',
+								title: '添加成功',
 								icon: 'none'
 							});
 							uni.navigateBack()
 						} else if (res.data.Data == 0) {
 							uni.showToast({
-								title:  '新增失败',
+								title: '新增失败',
 								icon: 'none'
 							});
 						} else if (res.data.Data == 2) {
 							uni.showToast({
-								title:  '用户不存在',
+								title: '用户不存在',
 								icon: 'none'
 							});
 						} else if (res.data.Data == 3) {
 							uni.showToast({
-								title:  '账号已存在',
+								title: '账号已存在',
 								icon: 'none'
 							});
 						} else {
 							uni.showToast({
-								title:  '新增失败',
+								title: '新增失败',
 								icon: 'none'
 							});
 						}
 
 					} else {
+						this.$refs.loading.close()
 						uni.showToast({
-							title:  res.data.Message,
+							title: res.data.Message,
 							icon: 'none'
 						});
 					}
 				}).catch((err) => {
+					this.$refs.loading.close()
 					uni.showToast({
-						title:  '网络繁忙，请稍后重试',
+						title: '网络繁忙，请稍后重试',
 						icon: 'none'
 					});
 				})
@@ -291,40 +300,40 @@
 						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
 						if (res.data.Data == 1) {
 							uni.showToast({
-								title:  '发送成功',
+								title: '发送成功',
 								icon: 'none'
 							});
 							this.countDown()
 						} else if (res.data.Data == 0) {
 							uni.showToast({
-								title:  '发送失败',
+								title: '发送失败',
 								icon: 'none'
 							});
 						} else if (res.data.Data == 2) {
 							uni.showToast({
-								title:  '参数为空',
+								title: '参数为空',
 								icon: 'none'
 							});
-						}else if (res.data.Data == 3) {
+						} else if (res.data.Data == 3) {
 							uni.showToast({
-								title:  '重复发送短信',
+								title: '重复发送短信',
 								icon: 'none'
 							});
 						} else {
 							uni.showToast({
-								title:  '发送失败',
+								title: '发送失败',
 								icon: 'none'
 							});
 						}
 					} else {
 						uni.showToast({
-							title:  res.data.Message,
+							title: res.data.Message,
 							icon: 'none'
 						});
 					}
 				}).catch((err) => {
 					uni.showToast({
-						title:  '网络繁忙，请稍后重试',
+						title: '网络繁忙，请稍后重试',
 						icon: 'none'
 					});
 				})

@@ -2,11 +2,11 @@
 	<!-- 军粮 -->
 	<view>
 		<view class="main">
-			<view class="top-card" style="margin-top: 20upx;">
+			<!-- <view class="top-card" style="margin-top: 20upx;">
 				<uni-card>
 					当前剩余军粮 {{currentDiff}}
 				</uni-card>
-			</view>
+			</view> -->
 			<view class="main-list" style="margin-top: 30upx;">
 				<cmd-cell-item v-for="item in list" :key="item.id" :title="item.f_changevalue" brief="预约/领养扣除" :addon="item.f_createtime" />
 			</view>
@@ -58,7 +58,6 @@
 				this.body.page++;
 				this.getPageList();
 			}
-		
 		},
 		methods: {
 			getPageList() {

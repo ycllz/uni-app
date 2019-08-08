@@ -4,16 +4,15 @@
 		<view class="main-list">
 			<input-box :inputValue="account" :disabled="true" :clearShow="false" leftText="账号:"></input-box>
 			<input-box v-model="newPassword" ref="input1" :verification="['isNull','isPassWord']" :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']"
-			 placeholder="新密码" leftText="新密码:"></input-box>
+			 placeholder="新密码" leftText="新密码:" :clearShow="false"></input-box>
 			<input-box v-model="confimNewPassword" placeholder="确认新密码" ref="input2" :verification="['isNull','isPassWord']"
-			 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:"></input-box>
+			 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:" :clearShow="false"></input-box>
 			<input-box v-model="code" ref="input3" placeholder="请输入验证码" :verification="['isNull']" :verificationTip="['验证码不能为空']"
-			 @rightClick="sendCodeMessage" :rightText="content"></input-box>
+			 @rightClick="sendCodeMessage" :rightText="content" :clearShow="false"></input-box>
 		</view>
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
 			<button type="primary" @tap="submit">确认</button>
 		</view>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
@@ -129,7 +128,6 @@
 					let p1 = md5(this.newPassword.toString())
 					let p2 = md5(p1)
 
-					this.account = uni.getStorageSync("account")
 					let body = {
 						account: this.account,
 						password: p2,
@@ -140,13 +138,16 @@
 							//找回密码(0：处理失败，1：处理成功，2：验证码失效，3：验证码不正确，4：参数为空，5：用户不存在
 							if (res.data.Data == 1) {
 								uni.showToast({
-									title: '处理成功',
+									title: '处理成功,即将返回登录页面',
 									icon: 'none'
 								});
-								//返回2个页面
-								uni.navigateBack({
-									delta: 2
-								});
+								setTimeout(function() {
+									//返回2个页面
+									uni.navigateBack({
+										delta: 2
+									});
+								}, 1500);
+								
 							} else if (res.data.Data == 0) {
 								uni.showToast({
 									title: '处理失败',
@@ -170,6 +171,11 @@
 							} else if (res.data.Data == 5) {
 								uni.showToast({
 									title: '用户不存在',
+									icon: 'none'
+								});
+							}  else if (res.data.Data == 6) {
+								uni.showToast({
+									title: '新密码不能与旧密码相同',
 									icon: 'none'
 								});
 							} else {

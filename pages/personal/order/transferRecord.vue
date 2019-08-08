@@ -46,7 +46,6 @@
 				</view>
 			</view>
 		</view>
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 

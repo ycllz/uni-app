@@ -24,7 +24,6 @@
 			<button type="primary" @tap="toSell">确认</button>
 		</view>
 
-		<yu-toast :message="message" verticalAlign="center" ref="toast"></yu-toast>
 	</view>
 </template>
 
