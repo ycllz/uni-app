@@ -3,19 +3,19 @@
 		<view class="center-list" style="margin-top: 20upx;">
 			<template v-if="type == 1">
 				<input-box v-model="newPassword" placeholder="新密码" ref="input1" :verification="['isNull','isPassWord']"
-				 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:"></input-box>
+				 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:" :clearShow="false"></input-box>
 				<input-box v-model="confimNewPassword" placeholder="确认新密码" ref="input2" :verification="['isNull','isPassWord']"
-				 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:"></input-box>
+				 :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']" leftText="新密码:" :clearShow="false"></input-box>
 				<input-box v-model="codemsg" placeholder="请输入验证码" ref="input3" :verification="['isNull']" :verificationTip="['验证码不能为空']"
-				 @rightClick="sendCodeMessage" :rightText="content"></input-box>
+				 @rightClick="sendCodeMessage" :rightText="content" :clearShow="false"></input-box>
 			</template>
 			<template v-else-if="type == 2">
 				<input-box v-model="newPassword" placeholder="新密码" ref="input4" :verification="['isNull','isInt']" :verificationTip="['二级密码不能为空','二级密码必须是数字']"
-				 leftText="新密码:"></input-box>
+				 leftText="新密码:" :clearShow="false"></input-box>
 				<input-box v-model="confimNewPassword" placeholder="确认新密码" ref="input5" :verification="['isNull','isInt']"
-				 :verificationTip="['二级密码不能为空','二级密码必须是数字']" leftText="新密码:"></input-box>
+				 :verificationTip="['二级密码不能为空','二级密码必须是数字']" leftText="新密码:" :clearShow="false"></input-box>
 				<input-box v-model="codemsg" placeholder="请输入验证码" ref="input6" :verification="['isNull']" :verificationTip="['验证码不能为空']"
-				 @rightClick="sendCodeMessage" :rightText="content"></input-box>
+				 @rightClick="sendCodeMessage" :rightText="content" :clearShow="false"></input-box>
 			</template>
 
 

@@ -15,9 +15,9 @@
 		</view>
 		<view class="main-list">
 			<input-box v-model="body.price" placeholder="出售资产" ref="input1" :verification="['isNull','isInt']" :verificationTip="['出售资产不能为空','出售资产必须是整数']"
-			 leftText="出售资产:"></input-box>
+			 leftText="出售资产:" :clearShow="false"></input-box>
 			<input-box v-model="password" placeholder="二级密码" ref="input2" :verification="['isNull','isInt']" :verificationTip="['二级密码不能为空','二级密码必须是数字']"
-			 leftText="二级密码:"></input-box>
+			 leftText="二级密码:" :clearShow="false"></input-box>
 		</view>
 
 		<view class="view-btn" style="padding-left: 20upx;padding-right: 20upx;margin-top: 20upx;">
