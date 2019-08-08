@@ -18,23 +18,4 @@
 	    -ms-flex-direction: column;
 	        flex-direction: column;
 }
-.account {
-	border-bottom: 2rpx solid #F5F5F5;
-	border-top: 2rpx solid #F5F5F5;
-	height: 88rpx;
-	line-height: 88rpx;
-	margin-left: 30rpx;
-}
-.text-box {
-	height: 90rpx;
-	vertical-align: middle;
-	border-bottom: 2rpx solid #F5F5F5;
-	display: inline-block;
-	line-height: 90rpx;
-	color: #4A4A4A;
-	font-size: 32rpx;
-}
-.text-box .td {
-	margin-left: 30rpx;
-}
 

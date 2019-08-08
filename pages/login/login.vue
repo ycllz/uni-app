@@ -38,7 +38,7 @@
 				providerList: [],
 				hasProvider: false,
 				account: '15882039655',
-				password: 'a1111111',
+				password: 'a111111',
 				message: '',
 				isVerify: false,
 				positionTop: 0,
@@ -102,8 +102,9 @@
 					this.toMain(this.account);
 				}).catch((err) => {
 					this.$refs.loading.close()
+					console.log(err)
 					uni.showToast({
-						title:  '网络繁忙，请稍后重试',
+						title:  err.data.error_description,
 						icon: 'none'
 					});
 				})

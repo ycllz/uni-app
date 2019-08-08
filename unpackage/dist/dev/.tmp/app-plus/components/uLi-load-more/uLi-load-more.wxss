@@ -2,14 +2,14 @@
   font-family: 'iconfont';
   src: url("https://at.alicdn.com/t/font_1288772_8nmx02hevxl.ttf") format("truetype");
 }
-.loadingView.data-v-df0762b6 {
+.loadingView.data-v-74afe5ff {
   font-family: iconfont;
   line-height: 1;
   font-size: 40rpx;
-  -webkit-animation: rotate-data-v-df0762b6 3s linear infinite;
-          animation: rotate-data-v-df0762b6 3s linear infinite;
+  -webkit-animation: rotate-data-v-74afe5ff 3s linear infinite;
+          animation: rotate-data-v-74afe5ff 3s linear infinite;
 }
-@-webkit-keyframes rotate-data-v-df0762b6 {
+@-webkit-keyframes rotate-data-v-74afe5ff {
 from {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
@@ -19,7 +19,7 @@ to {
             transform: rotate(360deg);
 }
 }
-@keyframes rotate-data-v-df0762b6 {
+@keyframes rotate-data-v-74afe5ff {
 from {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
@@ -29,7 +29,7 @@ to {
             transform: rotate(360deg);
 }
 }
-.uni-load-more.data-v-df0762b6 {
+.uni-load-more.data-v-74afe5ff {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -49,11 +49,11 @@ to {
       -ms-flex-pack: center;
           justify-content: center;
 }
-.uni-load-more__text.data-v-df0762b6 {
+.uni-load-more__text.data-v-74afe5ff {
     font-size: 28rpx;
     color: #999;
 }
-.uni-load-more__img.data-v-df0762b6 {
+.uni-load-more__img.data-v-74afe5ff {
     height: 24px;
     width: 24px;
     margin-right: 10px;

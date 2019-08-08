@@ -40,7 +40,7 @@
 							<text class="card-title card-list2-title">可挖DOGE:收益{{item.f_TimeLimit}}% </text>
 						</view>
 					</view> -->
-					<template v-if="item.f_Status !=1">
+					<template v-if="item.f_Status ==2 || item.f_Status ==4">
 						<view class="card-bottm row card-tag">
 							<uni-tag :text="item.f_StatusStr" type="success" @click="diffSubscribe(item)"></uni-tag>
 						</view>

@@ -22,7 +22,8 @@
     "pages/personal/tools/myTeam",
     "pages/register/forgetPasswordScondStep",
     "pages/personal/order/sell",
-    "pages/personal/order/payMoney"
+    "pages/personal/order/payMoney",
+    "pages/personal/order/turnOutDiff"
   ],
   "window": {
     "navigationBarTextStyle": "black",

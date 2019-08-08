@@ -7,33 +7,46 @@
 					<cmd-cell-item :title="item.f_template_name" :brief="item.f_changevalueStr" :addon="item.f_createtime" />
 				</view>
 			</view>
+			<uLi-load-more :status="loadMoreStatus"></uLi-load-more>
 		</view>
-		<view class="load-more-view">
-			<text class="loadMore">加载中...</text>
-		</view>
+		
 	</view>
 </template>
 
 <script>
 	import http from '@/common/vmeitime-http/interface.js'
 	import cmdCellItem from '@/components/cmd-cell-item/cmd-cell-item.vue'
-
+import uLiLoadMore from "@/components/uLi-load-more/uLi-load-more.vue"
 
 	export default {
 		components: {
 			cmdCellItem,
+			uLiLoadMore
 		},
 		data() {
 			return {
+				loadMoreStatus: 'more',
 				reservationList: '',
 				value: 0,
 				message: '',
-				recordList: [],
 				refreshing: false,
 				body: {
 					page: 1,
-					rowCount: 10
+					rowCount: 15
 				}
+			}
+		},
+		onReachBottom() {
+			console.log(this.reservationList.length )
+			console.log(this.body.rowCount )
+			if (this.reservationList.length < this.body.rowCount) {
+				uni.showToast({
+					title: '没有更多了',
+					icon: 'none'
+				});
+			} else {
+				this.body.page++;
+				this.getData();
 			}
 		},
 		onLoad() {
@@ -42,10 +55,8 @@
 		},
 		onPullDownRefresh() {
 			console.log('下拉刷新');
+			this.body.page = 1;
 			this.refreshing = true;
-			this.getData();
-		},
-		onReachBottom() {
 			this.getData();
 		},
 		methods: {

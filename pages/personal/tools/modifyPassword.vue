@@ -54,7 +54,6 @@
 			this.type = option.type
 		},
 		methods: {
-
 			validate() {
 				//登录密码
 				if (this.type == 1) {
@@ -67,13 +66,13 @@
 				} else if (this.type == 2) {
 					//二级支付密码
 					if (this.$refs.input4.getValue() && this.$refs.input5.getValue() && this.$refs.input6.getValue()) {
-						if(this.newPassword.length != 6 || this.confimNewPassword.length != 6){
+						if (this.newPassword.length != 6 || this.confimNewPassword.length != 6) {
 							uni.showToast({
-								title:  '二级密码必须是6位',
+								title: '二级密码必须是6位',
 								icon: 'none'
 							});
 							return false
-						}else{
+						} else {
 							return true
 						}
 					} else {
@@ -85,10 +84,10 @@
 			},
 			//确认修改
 			submitModify() {
-				if (this.validate()) { 
+				if (this.validate()) {
 					if (this.newPassword != this.confimNewPassword) {
 						uni.showToast({
-							title:  '两次输入密码不一致6位',
+							title: '两次输入密码不一致6位',
 							icon: 'none'
 						});
 						return
@@ -101,22 +100,57 @@
 						'Authorization': uni.getStorageSync("token")
 					}
 
-					http.post('api/Account/UpdatePassword?psd=' + newPwd + "&type=" +
-						this.type + "&codemsg=" + this.codemsg).then((res) => {
+					let body = {
+						password: newPwd,
+						codeMsg: this.codemsg,
+						type: this.type
+					}
+
+					http.post('api/Account/UpdatePassword', body).then((res) => {
 						if (res.data.StatusCode == 1) {
-							uni.showToast({
-								title:  '修改成功6位',
-								icon: 'none'
-							});
+							//修改密码(0：修改失败，1：修改成功，2：验证码失效，3：验证码不正确) 
+							if (res.data.Data == 0) {
+								uni.showToast({
+									title: '修改失败',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 1) {
+								uni.showToast({
+									title: '修改成功',
+									icon: 'none'
+								});
+
+								setTimeout(function() {
+									//返回2个页面
+									uni.navigateBack({
+										delta: 2
+									});
+								}, 1500);
+							} else if (res.data.Data == 2) {
+								uni.showToast({
+									title: '验证码失效',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 3) {
+								uni.showToast({
+									title: '验证码不正确',
+									icon: 'none'
+								});
+							} else {
+								uni.showToast({
+									title: '修改失败',
+									icon: 'none'
+								});
+							}
 						} else {
 							uni.showToast({
-								title:  res.data.Message,
+								title: res.data.Message,
 								icon: 'none'
 							});
 						}
 					}).catch((err) => {
 						uni.showToast({
-							title:  '网络繁忙，请稍后重试',
+							title: '网络繁忙，请稍后重试',
 							icon: 'none'
 						});
 					})
@@ -150,40 +184,40 @@
 						//发送验证码(0：发送失败，1：发送成功，2：参数为空，3：重复发送短信
 						if (res.data.Data == 1) {
 							uni.showToast({
-								title:  '发送成功',
+								title: '发送成功',
 								icon: 'none'
 							});
 							this.countDown()
 						} else if (res.data.Data == 0) {
 							uni.showToast({
-								title:  '发送失败',
+								title: '发送失败',
 								icon: 'none'
 							});
 						} else if (res.data.Data == 2) {
 							uni.showToast({
-								title:  '参数为空',
+								title: '参数为空',
 								icon: 'none'
 							});
-						}else if (res.data.Data == 3) {
+						} else if (res.data.Data == 3) {
 							uni.showToast({
-								title:  '重复发送短信',
+								title: '重复发送短信',
 								icon: 'none'
 							});
 						} else {
 							uni.showToast({
-								title:  '发送失败',
+								title: '发送失败',
 								icon: 'none'
 							});
 						}
 					} else {
 						uni.showToast({
-							title:  res.data.Message,
+							title: res.data.Message,
 							icon: 'none'
 						});
 					}
 				}).catch((err) => {
 					uni.showToast({
-						title:  '网络繁忙，请稍后重试',
+						title: '网络繁忙，请稍后重试',
 						icon: 'none'
 					});
 				})

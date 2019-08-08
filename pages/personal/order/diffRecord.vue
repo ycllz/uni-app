@@ -2,6 +2,8 @@
 	<!-- 军粮 -->
 	<view>
 		<view class="main">
+			<cmd-nav-bar :fixed="false" right-color="#000" font-color="#000" background-color="#fff" right-text="调拨" back title="军粮" @rightText="goTurnOut()"></cmd-nav-bar>
+			<!-- <cmd-nav-bar :fixed="false" back title="军粮" right-text="调拨" back  right-color="#000" background-color="#fff"></cmd-nav-bar> -->
 			<!-- <view class="top-card" style="margin-top: 20upx;">
 				<uni-card>
 					当前剩余军粮 {{currentDiff}}
@@ -20,12 +22,14 @@
 	import uniCard from "@/components/uni-card/uni-card"
 	import http from '@/common/vmeitime-http/interface.js'
 	import uLiLoadMore from "@/components/uLi-load-more/uLi-load-more.vue"
-
+	import cmdNavBar from "@/components/cmd-nav-bar/cmd-nav-bar.vue"
+	
 	export default {
 		components: {
 			cmdCellItem,
 			uniCard,
-			uLiLoadMore
+			uLiLoadMore,
+			cmdNavBar
 		},
 		data() {
 			return {
@@ -85,7 +89,12 @@
 						icon: 'none'
 					});
 				})
-			}
+			},
+			goTurnOut(){
+				uni.navigateTo({
+					url: 'turnOutDiff'
+				})
+			},
 		},
 		mounted() {
 			this.getPageList()
@@ -97,7 +106,6 @@
 	.main {
 		flex-direction: column;
 		min-height: 100vh;
-		padding-top: 15upx;
 		background: #efefef;
 	}
 

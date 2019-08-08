@@ -90,7 +90,10 @@
 			"path": "pages/personal/order/diffRecord",
 			"style": {
 				"navigationBarTitleText": "军粮",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": false //禁用原生导航栏
+				}
 			}
 		}, {
 			"path": "pages/personal/order/promoteRecord",
@@ -164,6 +167,13 @@
             "path" : "pages/personal/order/payMoney",
             "style": {
             	"navigationBarTitleText": "付款",
+            	"enablePullDownRefresh": false
+            }
+        }
+        ,{
+            "path" : "pages/personal/order/turnOutDiff",
+            "style": {
+            	"navigationBarTitleText": "调拨",
             	"enablePullDownRefresh": false
             }
         }

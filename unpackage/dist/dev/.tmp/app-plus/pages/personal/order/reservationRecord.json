@@ -2,6 +2,7 @@
   "navigationBarTitleText": "预约记录",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "cmd-cell-item": "/components/cmd-cell-item/cmd-cell-item"
+    "cmd-cell-item": "/components/cmd-cell-item/cmd-cell-item",
+    "u-li-load-more": "/components/uLi-load-more/uLi-load-more"
   }
 }

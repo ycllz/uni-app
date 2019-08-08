@@ -2,6 +2,9 @@
 	<!-- 忘记密码 第二步 -->
 	<view class="main">
 		<view class="main-list">
+			<view class="text-box">
+				<text class="td">{{account}}</text>
+			</view>
 			<!-- <input-box v-model="account" :clearShow="false" leftText="账号:"></input-box> -->
 			<input-box v-model="newPassword" ref="input1" :verification="['isNull','isPassWord']" :verificationTip="['密码不能为空','密码必须是6-16位数字和字母的组成']"
 			 placeholder="新密码" leftText="新密码:" :clearShow="false"></input-box>
@@ -41,7 +44,7 @@
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
 			//忘记密码的账号
 			console.log("-----------------" + option.value)
-			
+
 			this.account = option.value
 			/* setTimeout(function() {
 				that.account = a
@@ -151,7 +154,7 @@
 										delta: 2
 									});
 								}, 1500);
-								
+
 							} else if (res.data.Data == 0) {
 								uni.showToast({
 									title: '处理失败',
@@ -177,7 +180,7 @@
 									title: '用户不存在',
 									icon: 'none'
 								});
-							}  else if (res.data.Data == 6) {
+							} else if (res.data.Data == 6) {
 								uni.showToast({
 									title: '新密码不能与旧密码相同',
 									icon: 'none'
@@ -225,6 +228,20 @@
 		border-top: 2upx solid #F5F5F5;
 		height: 88upx;
 		line-height: 88upx;
+		margin-left: 30upx;
+	}
+
+	.text-box {
+		height: 90upx;
+		vertical-align: middle;
+		border-bottom: 2upx solid #F5F5F5;
+		display: inline-block;
+		line-height: 90upx;
+		color: #4A4A4A;
+		font-size: 32upx;
+	}
+
+	.text-box .td {
 		margin-left: 30upx;
 	}
 </style>

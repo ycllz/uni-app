@@ -16,40 +16,20 @@
 
 				<div class="div-card">
 					<div>
-						<text>账户名称：</text>
+						<text>账户名称：{{item.f_accountnameStr}}</text>
 					</div>
 					<div>
-						<text>账户：{{item.f_account}}</text>
+						<text>账户：{{item.f_accountStr}}</text>
 					</div>
 					<div>
 						<text>账户类型：{{item.f_name}}</text>
 					</div>
 				</div>
 				<div class="div-btn">
-					<button class="mini-btn" type="warn" @click="disPayModel(item.f_id)" size="mini">禁用</button>
+					<button class="mini-btn" type="warn" @click="disPayModel(item._id)" size="mini">禁用</button>
 					<!-- 	<button type="warn">操作</button> -->
 				</div>
 			</view>
-
-			<!-- <view class="main-list-item">
-				<div class="div-image">
-					<image src="../../../static/face.jpg"></image>
-				</div>
-				<div class="div-card">
-					<div>
-						<text>账户名称：赵长东</text>
-					</div>
-					<div>
-						<text>账户：15882039655</text>
-					</div>
-					<div>
-						<text>账户类型：支付宝支付</text>
-					</div>
-				</div>
-				<div class="div-btn">
-					<button type="warn">操作</button>
-				</div>
-			</view> -->
 
 			<view class="div-tip">
 				<text>
@@ -107,10 +87,17 @@
 				}
 				http.post('api/PayModel/GetList').then((res) => {
 					if (res.data.StatusCode == 1) {
+						let resData = res.data.Data
+						for (var i = 0; i < resData.length; i++) {
+							resData[i].f_accountnameStr = resData[i].f_accountname.length > 12 ? resData[i].f_accountname.substring(0, 12) +
+								'...' : resData[i].f_accountname
+							resData[i].f_accountStr = resData[i].f_account.length > 12 ? resData[i].f_account.substring(0, 12) +
+								'...' : resData[i].f_account
+						}
 						this.cardList = res.data.Data
 					} else {
 						uni.showToast({
-							title:  res.data.Message,
+							title: res.data.Message,
 							icon: 'none'
 						});
 					}
@@ -118,7 +105,7 @@
 					uni.stopPullDownRefresh();
 				}).catch((err) => {
 					uni.showToast({
-						title:  '网络繁忙，请稍后重试',
+						title: '网络繁忙，请稍后重试',
 						icon: 'none'
 					});
 					this.refreshing = false;
@@ -228,7 +215,7 @@
 
 
 	.div-card {
-		width: 360upx;
+		width: 400upx;
 		margin-left: 15upx;
 		margin-top: 22upx;
 		float: left;
