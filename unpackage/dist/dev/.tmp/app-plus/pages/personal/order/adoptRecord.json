@@ -2,7 +2,6 @@
   "navigationBarTitleText": "领养记录",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "yu-toast": "/components/yu-toast/yu-toast",
     "wuc-tab": "/components/wuc-tab/wuc-tab",
     "uni-card": "/components/uni-card/uni-card",
     "uni-tag": "/components/uni-tag/uni-tag"

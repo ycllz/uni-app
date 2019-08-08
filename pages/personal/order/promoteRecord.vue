@@ -37,7 +37,7 @@
 				value: 0,
 				value1: 0,
 				value2: 0,
-				list:[],
+				list: [],
 				message: '',
 				body: {
 					page: 1,
@@ -48,6 +48,7 @@
 			}
 		},
 		onLoad: function(option) { //option为object类型，会序列化上个页面传递的参数
+			console.log("-----------------" + option.value)
 			//推广收益
 			this.value = option.value
 			//团队收益
@@ -58,7 +59,7 @@
 		onReachBottom() {
 			if (this.list.length < this.body.rowCount) {
 				uni.showToast({
-					title:  '没有更多了',
+					title: '没有更多了',
 					icon: 'none'
 				});
 			} else {

@@ -2,7 +2,7 @@
   "navigationBarTitleText": "添加银行卡",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "yu-toast": "/components/yu-toast/yu-toast",
+    "w-loading": "/common/w-loading",
     "input-box": "/components/input-box/input-box"
   }
 }

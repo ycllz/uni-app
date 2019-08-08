@@ -3,7 +3,6 @@
   "enablePullDownRefresh": true,
   "usingComponents": {
     "w-loading": "/common/w-loading",
-    "yu-toast": "/components/yu-toast/yu-toast",
     "uni-tag": "/components/uni-tag/uni-tag"
   }
 }

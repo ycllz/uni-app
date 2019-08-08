@@ -2,7 +2,6 @@
   "navigationBarTitleText": "出售",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "yu-toast": "/components/yu-toast/yu-toast",
     "input-box": "/components/input-box/input-box"
   }
 }

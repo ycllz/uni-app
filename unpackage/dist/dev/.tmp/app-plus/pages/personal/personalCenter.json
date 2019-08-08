@@ -16,7 +16,6 @@
     ]
   },
   "usingComponents": {
-    "w-loading": "/common/w-loading",
-    "yu-toast": "/components/yu-toast/yu-toast"
+    "w-loading": "/common/w-loading"
   }
 }

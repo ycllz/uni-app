@@ -2,8 +2,8 @@
   "navigationBarTitleText": "收益记录",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "yu-toast": "/components/yu-toast/yu-toast",
     "cmd-cell-item": "/components/cmd-cell-item/cmd-cell-item",
-    "uni-card": "/components/uni-card/uni-card"
+    "uni-card": "/components/uni-card/uni-card",
+    "u-li-load-more": "/components/uLi-load-more/uLi-load-more"
   }
 }

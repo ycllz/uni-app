@@ -1,1 +1,0 @@
-<view><block wx:if="{{showStatus}}"><view class="{{['yu-toast-container active',verticalAlign]}}" style="{{(verticalAlign==='center'?verticalCenterStyle:'')}}"><text class="yu-toast-message" style="{{(messageStyle)}}">{{message}}</text></view></block></view>

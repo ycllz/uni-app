@@ -228,7 +228,7 @@
 
 
 	.div-card {
-		width: 320upx;
+		width: 360upx;
 		margin-left: 15upx;
 		margin-top: 22upx;
 		float: left;

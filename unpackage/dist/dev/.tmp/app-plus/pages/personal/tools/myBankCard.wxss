@@ -49,7 +49,7 @@
 	height: 80px;
 }
 .div-card {
-	width: 320rpx;
+	width: 360rpx;
 	margin-left: 15rpx;
 	margin-top: 22rpx;
 	float: left;

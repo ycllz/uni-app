@@ -2,7 +2,6 @@
   "navigationBarTitleText": "我的团队",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "yu-toast": "/components/yu-toast/yu-toast",
     "cmd-cell-item": "/components/cmd-cell-item/cmd-cell-item",
     "u-li-load-more": "/components/uLi-load-more/uLi-load-more"
   }

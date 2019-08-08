@@ -7,8 +7,8 @@
   "id": "__UNI__417A1A7",
   "name": "欧皇争霸",
   "version": {
-    "name": "0.1 beta",
-    "code": 1
+    "name": "0.4 beta",
+    "code": 5
   },
   "description": "游戏类购物",
   "launch_path": "__uniapptabbar.html",
@@ -46,10 +46,17 @@
     "distribute": {
       "icons": {
         "android": {
-          "hdpi": "C:/Users/Administrator/Desktop/logo_92.png",
-          "xhdpi": "C:/Users/Administrator/Desktop/logo_92.png",
-          "xxhdpi": "C:/Users/Administrator/Desktop/logo_144.png",
-          "xxxhdpi": "C:/Users/Administrator/Desktop/logo_192.png"
+          "hdpi": "C:/Users/Administrator/Desktop/logo.png",
+          "xhdpi": "C:/Users/Administrator/Desktop/logo.png",
+          "xxhdpi": "C:/Users/Administrator/Desktop/logo.png",
+          "xxxhdpi": "C:/Users/Administrator/Desktop/logo.png"
+        }
+      },
+      "splashscreen": {
+        "android": {
+          "hdpi": "",
+          "xhdpi": "",
+          "xxhdpi": ""
         }
       },
       "plugins": {

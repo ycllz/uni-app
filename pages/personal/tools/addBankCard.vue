@@ -33,7 +33,7 @@
 							<view class="close-view" @click="close(index)">×</view>
 						</view>
 					</block>
-					<view class="uni-uploader__input-box" v-show="imageList.length < 1">
+					<view class="uni-uploader__input-box" v-if="imageList.length < 1">
 						<view class="uni-uploader__input" @tap="chooseImage"></view>
 					</view>
 				</view>
