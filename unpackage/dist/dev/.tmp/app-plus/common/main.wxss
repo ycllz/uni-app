@@ -33,3 +33,10 @@
 	background-color: #249873 !important;
 } */
 
+.layout.data-v-866464b4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+

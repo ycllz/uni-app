@@ -108,7 +108,7 @@
 
 					http.post('api/Account/UpdatePassword', body).then((res) => {
 						if (res.data.StatusCode == 1) {
-							//修改密码(0：修改失败，1：修改成功，2：验证码失效，3：验证码不正确) 
+							//修改密码(0：处理失败，1：处理成功，2：验证码失效，3：验证码不正确，4：参数为空，5：用户不存在 6:不能与初始密码相同
 							if (res.data.Data == 0) {
 								uni.showToast({
 									title: '修改失败',
@@ -125,7 +125,7 @@
 									uni.navigateBack({
 										delta: 2
 									});
-								}, 1500);
+								}, 1000);
 							} else if (res.data.Data == 2) {
 								uni.showToast({
 									title: '验证码失效',
@@ -134,6 +134,21 @@
 							} else if (res.data.Data == 3) {
 								uni.showToast({
 									title: '验证码不正确',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 4) {
+								uni.showToast({
+									title: '参数为空',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 5) {
+								uni.showToast({
+									title: '用户不存在',
+									icon: 'none'
+								});
+							} else if (res.data.Data == 6) {
+								uni.showToast({
+									title: '不能与初始密码相同',
 									icon: 'none'
 								});
 							} else {

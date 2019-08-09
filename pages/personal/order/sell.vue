@@ -110,9 +110,13 @@
 									title: '兑换成功~',
 									icon: 'none'
 								});
-								uni.navigateBack({
-									delta: 2
-								});
+								
+								setTimeout(function() {
+									uni.navigateBack({
+										delta: 2
+									});
+								}, 1500);
+								
 							} else if (res.data.Data == 2) {
 								uni.showToast({
 									title: '二级密码错误',

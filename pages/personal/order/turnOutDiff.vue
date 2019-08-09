@@ -58,7 +58,12 @@
 									title: '调拨账号不存在',
 									icon: 'none'
 								});
-							} else {
+							} else if (res.data.Data == 3) {
+								uni.showToast({
+									title: '调拨不允许是同一个账号',
+									icon: 'none'
+								});
+							}else {
 								uni.showToast({
 									title: '调拨失败',
 									icon: 'none'

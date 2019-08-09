@@ -7,8 +7,17 @@ Vue.config.productionTip = false
 import wLoading from "@/common/w-loading.vue";
 Vue.component('w-loading',wLoading)
 
-import sunUiBasic from './components/sunui-upimg/sunui-upimg-basic.vue'
-Vue.component('sunui-upbasic',sunUiBasic)
+import Row from './components/dl-grid/row.vue'
+import Col from './components/dl-grid/col.vue'
+Vue.component('u-row', Row); //<row>和<col>为H5原生标签, 不能直接用, 可起名<u-row>或者其他的
+Vue.component('u-col', Col);
+
+
+//flex 布局
+import FlexLayout from './components/phj-flex/'
+Vue.use(FlexLayout)
+/* import sunUiBasic from './components/sunui-upimg/sunui-upimg-basic.vue'
+Vue.component('sunui-upbasic',sunUiBasic) */
 
 
 Vue.prototype.$serverUrl = 'https://unidemo.dcloud.net.cn';

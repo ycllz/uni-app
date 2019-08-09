@@ -3,6 +3,8 @@
   "enablePullDownRefresh": true,
   "titleNView": false,
   "usingComponents": {
+    "u-row": "/components/dl-grid/row",
+    "u-col": "/components/dl-grid/col",
     "cmd-nav-bar": "/components/cmd-nav-bar/cmd-nav-bar"
   }
 }

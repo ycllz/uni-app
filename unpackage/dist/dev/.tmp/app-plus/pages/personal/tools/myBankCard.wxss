@@ -25,7 +25,6 @@
 }
 .main-list-item {
 	width: 750rpx;
-	height: 195rpx;
 	-webkit-box-sizing: border-box;
 	        box-sizing: border-box;
 	-webkit-box-orient: horizontal;
@@ -37,25 +36,35 @@
 	border-bottom: 1px solid #c8c7cc;
 	font-size: 15px;
 }
+.main-list-item::before {
+	content: '';
+	display: inline-block;
+	height: 100%;
+	width: 0;
+	vertical-align: middle;
+}
 .div-image {
-	float: left;
+	display: inline-block;
+	vertical-align: middle;
 }
 .div-image>uni-image {
-	width: 80px;
-	height: 80px;
+	width: 160rpx;
+	height: 160rpx;
 }
 .div-image>image {
-	width: 80px;
-	height: 80px;
+	width: 160rpx;
+	height: 160rpx;
 }
 .div-card {
 	width: 400rpx;
 	margin-left: 15rpx;
 	margin-top: 22rpx;
-	float: left;
+	display: inline-block;
+	vertical-align: middle;
 }
 .div-btn {
-	margin-top: 45rpx;
+	display: inline-block;
+	vertical-align: middle;
 }
 .div-tip {
 	padding: 24rpx;

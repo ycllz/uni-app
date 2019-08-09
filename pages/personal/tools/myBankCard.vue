@@ -16,10 +16,10 @@
 
 				<div class="div-card">
 					<div>
-						<text>账户名称：{{item.f_accountnameStr}}</text>
+						<text>账户名称：{{item.f_accountname}}</text>
 					</div>
 					<div>
-						<text>账户：{{item.f_accountStr}}</text>
+						<text>账户：{{item.f_account}}</text>
 					</div>
 					<div>
 						<text>账户类型：{{item.f_name}}</text>
@@ -88,12 +88,12 @@
 				http.post('api/PayModel/GetList').then((res) => {
 					if (res.data.StatusCode == 1) {
 						let resData = res.data.Data
-						for (var i = 0; i < resData.length; i++) {
+						/* for (var i = 0; i < resData.length; i++) {
 							resData[i].f_accountnameStr = resData[i].f_accountname.length > 12 ? resData[i].f_accountname.substring(0, 12) +
 								'...' : resData[i].f_accountname
 							resData[i].f_accountStr = resData[i].f_account.length > 12 ? resData[i].f_account.substring(0, 12) +
 								'...' : resData[i].f_account
-						}
+						} */
 						this.cardList = res.data.Data
 					} else {
 						uni.showToast({
@@ -191,7 +191,6 @@
 
 	.main-list-item {
 		width: 750upx;
-		height: 195upx;
 		box-sizing: border-box;
 		flex-direction: row;
 		padding: 15upx 20upx;
@@ -199,18 +198,29 @@
 		font-size: 15px;
 	}
 
+	.main-list-item::before {
+		content: '';
+		display: inline-block;
+		height: 100%;
+		width: 0;
+		vertical-align: middle;
+	}
+
+
 	.div-image {
-		float: left;
+		display: inline-block;
+		vertical-align: middle;
+
 	}
 
 	.div-image>uni-image {
-		width: 80px;
-		height: 80px;
+		width: 160upx;
+		height: 160upx;
 	}
 
 	.div-image>image {
-		width: 80px;
-		height: 80px;
+		width: 160upx;
+		height: 160upx;
 	}
 
 
@@ -218,11 +228,13 @@
 		width: 400upx;
 		margin-left: 15upx;
 		margin-top: 22upx;
-		float: left;
+		display: inline-block;
+		vertical-align: middle;
 	}
 
 	.div-btn {
-		margin-top: 45upx;
+		display: inline-block;
+		vertical-align: middle;
 	}
 
 	.div-tip {

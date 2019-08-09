@@ -4,7 +4,7 @@
 		<view class="uni-list">
 			<view class="uni-list-cell">
 				<view class="uni-list-cell-left">
-					当前选择
+					当前选择:
 				</view>
 				<view class="uni-list-cell-db">
 					<picker @change="bindPickerChange" :value="index" :range="array" range-key="name">
@@ -276,14 +276,15 @@
 			countDown() {
 				if (!this.canClick) return //改动的是这两行代码
 				this.canClick = false
+				let _this = this
 				let clock = window.setInterval(() => {
-					this.totalTime--
-					this.content = this.totalTime + 's后重新发送'
-					if (this.totalTime < 0) {
+					_this.totalTime--
+					_this.content = _this.totalTime + 's后重新发送'
+					if (_this.totalTime < 0) {
 						window.clearInterval(clock)
-						this.content = '重新发送验证码'
-						this.totalTime = 10
-						this.canClick = true //这里重新开启
+						_this.content = '重新发送验证码'
+						_this.totalTime = 10
+						_this.canClick = true //这里重新开启
 					}
 				}, 1000)
 			},
@@ -407,6 +408,7 @@
 		background-color: #FFFFFF;
 		position: relative;
 		width: 100%;
+		height: 84upx;
 		background-color: #FFFFFF;
 		position: relative;
 		width: 100%;
@@ -415,7 +417,7 @@
 		-webkit-flex-direction: column;
 		-ms-flex-direction: column;
 		flex-direction: column;
-		border-bottom: 1px solid #F5F5F5;
+		border-bottom: 2upx solid #F5F5F5;
 	}
 
 	.uni-list-cell {
@@ -428,14 +430,16 @@
 	}
 
 	.input-box-left {
-		color: #000000 !important;
+		color: #4A4A4A !important;
 		font-size: 15px !important;
 	}
 
 	.uni-list-cell-left {
 		font-size: 14px;
-		padding-left: 35upx;
-		color: #4a4a4a;
+		height: 46upx;
+		padding-top: 18upx;
+		padding-left: 32upx;
+		color: #4A4A4A;
 	}
 
 	.uni-list-cell-db {
@@ -447,9 +451,9 @@
 	}
 
 	.uni-list-cell-db .uni-input {
-		height: 24px;
-		padding: 7px 12px;
-		line-height: 24px;
+		height: 48upx;
+		padding: 18upx 24upx;
+		line-height: 48upx;
 		font-size: 15px;
 		background: #FFF;
 		-webkit-box-flex: 1;
@@ -464,7 +468,7 @@
 	}
 
 	.border-top-view {
-		border-top: 1px solid #F5F5F5;
+		border-top: 2upx solid #F5F5F5;
 	}
 
 
